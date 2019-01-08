@@ -1,6 +1,6 @@
-package org.usfirst.frc.team1014.robot.subsystems;
+package org.usfirst.frc.team7707.robot.subsystems;
 
-import org.usfirst.frc.team1014.robot.commands.PneumaticsStay;
+import org.usfirst.frc.team7707.robot.commands.PneumaticsStay;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
