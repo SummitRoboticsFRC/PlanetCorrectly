@@ -1,6 +1,6 @@
-package org.usfirst.frc.team1014.robot.commands;
+package org.usfirst.frc.team7707.robot.commands;
 
-import org.usfirst.frc.team1014.robot.Robot;
+import org.usfirst.frc.team7707.robot.Robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
