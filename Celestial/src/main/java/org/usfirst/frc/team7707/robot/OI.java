@@ -1,7 +1,7 @@
-package org.usfirst.frc.team1014.robot;
+package org.usfirst.frc.team7707.robot;
 
-import org.usfirst.frc.team1014.robot.commands.Intake;
-import org.usfirst.frc.team1014.robot.commands.Outtake;
+import org.usfirst.frc.team7707.robot.commands.Intake;
+import org.usfirst.frc.team7707.robot.commands.Outtake;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
