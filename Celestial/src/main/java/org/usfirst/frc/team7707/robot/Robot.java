@@ -1,5 +1,5 @@
 
-package org.usfirst.frc.team1014.robot;
+package org.usfirst.frc.team7707.robot;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -10,19 +10,13 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team1014.robot.commands.PIDautodrive;
-import org.usfirst.frc.team1014.robot.commands.PneumaticsOut;
-import org.usfirst.frc.team1014.robot.commands.PneumaticsRepeat;
-import org.usfirst.frc.team1014.robot.commands.PumpUp;
-import org.usfirst.frc.team1014.robot.commands.StartPosCenterScale;
-import org.usfirst.frc.team1014.robot.commands.StartPosCenterSwitch;
-import org.usfirst.frc.team1014.robot.commands.StartPosLeftScale;
-import org.usfirst.frc.team1014.robot.commands.StartPosLeftSwitch;
-import org.usfirst.frc.team1014.robot.commands.StartPosRightScale;
-import org.usfirst.frc.team1014.robot.commands.StartPosRightSwitch;
-import org.usfirst.frc.team1014.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1014.robot.subsystems.IntakeMotors;
-import org.usfirst.frc.team1014.robot.subsystems.PneumaticsSubsystem;
+import org.usfirst.frc.team7707.robot.commands.PIDautodrive;
+import org.usfirst.frc.team7707.robot.commands.PneumaticsOut;
+import org.usfirst.frc.team7707.robot.commands.PneumaticsRepeat;
+import org.usfirst.frc.team7707.robot.commands.PumpUp;
+import org.usfirst.frc.team7707.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team7707.robot.subsystems.IntakeMotors;
+import org.usfirst.frc.team7707.robot.subsystems.PneumaticsSubsystem;
 
 
 /**
