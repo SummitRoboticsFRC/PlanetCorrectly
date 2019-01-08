@@ -1,8 +1,8 @@
-package org.usfirst.frc.team1014.robot.subsystems;
-/*
-import org.usfirst.frc.team1014.robot.Robot;
-import org.usfirst.frc.team1014.robot.RobotMap;
-import org.usfirst.frc.team1014.robot.commands.DriveTrainControllerDrive;
+package org.usfirst.frc.team7707.robot.subsystems;
+
+import org.usfirst.frc.team7707.robot.Robot;
+import org.usfirst.frc.team7707.robot.RobotMap;
+import org.usfirst.frc.team7707.robot.commands.DriveTrainControllerDrive;
 
 //import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -59,21 +59,21 @@ public class DriveTrain extends Subsystem {
 	
     public DriveTrain() {
     	
-    	//frontLeftMotor.set(ControlMode.Follower, RobotMap.backLeftMotor);
-    	//frontRightMotor.set(ControlMode.Follower, RobotMap.backRightMotor);
+    	frontLeftMotor.set(ControlMode.Follower, RobotMap.backLeftMotor);
+    	frontRightMotor.set(ControlMode.Follower, RobotMap.backRightMotor);
     	
-    	//backRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    	//backLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    	backRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    	backLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 	
-    	/*encoderLeft = new Encoder(1, 2, false, Encoder.EncodingType.k4X); 
+    	encoderLeft = new Encoder(1, 2, false, Encoder.EncodingType.k4X); 
     	encoderRight = new Encoder(3, 4, false, Encoder.EncodingType.k4X);
     	encoderLeft.setMaxPeriod(10);
-    	encoderRight.setMaxPeriod(10);*/
+    	encoderRight.setMaxPeriod(10);
     	
-    	//distancePerPulse = SmartDashboard.getNumber("Distance per pulse", 1);
+    	distancePerPulse = SmartDashboard.getNumber("Distance per pulse", 1);
 
-	// roborDrive.setSafetyEnabled(false); if needed to stop jumpyness
-	/*
+	roborDrive.setSafetyEnabled(false); if needed to stop jumpyness
+	
     }
 
 	
@@ -116,8 +116,8 @@ public class DriveTrain extends Subsystem {
     	SmartDashboard.putNumber("Left Encoder ticks", 0);
     	SmartDashboard.putNumber("Right Encoder ticks", 0);
     }
-    */
-    /*
+    
+    
     public double leftTicks() {
     	return (double)encoderLeft.get();
     }
@@ -129,10 +129,10 @@ public class DriveTrain extends Subsystem {
     public void putEncoderTicks() {
     	SmartDashboard.putNumber("Left Encoder ticks", (double)encoderLeft.get());
     	SmartDashboard.putNumber("Right Encoder ticks", (double)encoderRight.get());
-     }*/
+     }
     
-    //}
-    
+    }
+/*    
 import org.usfirst.frc.team1014.robot.RobotMap;
 import org.usfirst.frc.team1014.robot.commands.DriveTrainControllerDrive;
 
@@ -223,6 +223,8 @@ public class DriveTrain extends Subsystem {
     	
     	robotDrive.arcadeDrive(0, 0);
     }
+	
+*/
 }
 
 
