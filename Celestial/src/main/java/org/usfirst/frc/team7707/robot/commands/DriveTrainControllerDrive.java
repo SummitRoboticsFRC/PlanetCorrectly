@@ -36,7 +36,7 @@ public class DriveTrainControllerDrive extends Command {
     	}
 	*/
     	//Robot.driveTrain.robotDrive.arcadeDrive(speedF, speedT);
-	Robot.driveTrain.robotDrive.driveWithController(xboxController);
+	Robot.driveTrain.robotDrive.driveWithController(OI.xboxController1);
 
     }
     	//System.out.println( "left: " + Robot.driveTrain.leftTicks() );

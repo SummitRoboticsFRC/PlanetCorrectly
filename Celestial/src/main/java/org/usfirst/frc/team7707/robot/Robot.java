@@ -15,7 +15,6 @@ import org.usfirst.frc.team7707.robot.commands.PneumaticsOut;
 import org.usfirst.frc.team7707.robot.commands.PneumaticsRepeat;
 import org.usfirst.frc.team7707.robot.commands.PumpUp;
 import org.usfirst.frc.team7707.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team7707.robot.subsystems.IntakeMotors;
 import org.usfirst.frc.team7707.robot.subsystems.PneumaticsSubsystem;
 
 
@@ -39,7 +38,7 @@ public class Robot extends IterativeRobot {
 	public static final DriveTrain driveTrain = new DriveTrain();
     public static final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
     public static final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
-    public static final IntakeMotors intakeMotors = new IntakeMotors();
+    //public static final IntakeMotors intakeMotors = new IntakeMotors();
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -71,8 +70,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Turn Damp", 0.01);
 		SmartDashboard.putNumber("Left Encoder ticks", 0);
 		SmartDashboard.putNumber("Right Encoder ticks", 0);
-		SmartDashboard.putNumber("speedF", driveTrain.driveWithController.speedF);
-		SmartDashboard.putNumber("speedT", driveTrain.driveWithController,speedT);
+		//SmartDashboard.putNumber("speedF", driveTrain.driveWithController.speedF);
+		//SmartDashboard.putNumber("speedT", driveTrain.driveWithController,speedT);
 		//SmartDashboard.putNumber("RE", driveTrain.backRightMotor.getSelectedSensorPosition(0));
 		//SmartDashboard.putNumber("LE", driveTrain.backLeftMotor.getSelectedSensorPosition(0));
 		//SmartDashboard.putNumber("LEE");

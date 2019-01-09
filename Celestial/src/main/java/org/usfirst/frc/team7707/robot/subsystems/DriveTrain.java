@@ -4,7 +4,7 @@ import org.usfirst.frc.team7707.robot.Robot;
 import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.commands.DriveTrainControllerDrive;
 
-//import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,18 +30,13 @@ public class DriveTrain extends Subsystem {
 	//test Team Laptop new
 	//test John
 
-    //public WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(RobotMap.frontLeftMotor);
-    //public WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(RobotMap.backLeftMotor);
-    //public SpeedControllerGroup leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
-    //public WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(RobotMap.frontRightMotor);
-    //public WPI_TalonSRX backRightMotor = new WPI_TalonSRX(RobotMap.backRightMotor);
-    //public SpeedControllerGroup rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);	 
-    //public DifferentialDrive robotDrive = new DifferentialDrive(backLeftMotor, backRightMotor);
-
-	VictorSP frontLeftMotor = new VictorSP(RobotMap.frontLeftMotor);
-	VictorSP frontRightMotor = new VictorSP(RobotMap.frontRightMotor);
-	VictorSP backLeftMotor = new VictorSP(RobotMap.backLeftMotor);
-	VictorSP backRightMotor = new VictorSP(RobotMap.backRightMotor)
+    public WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(RobotMap.frontLeftMotor);
+    public WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(RobotMap.backLeftMotor);
+    public SpeedControllerGroup leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
+    public WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(RobotMap.frontRightMotor);
+    public WPI_TalonSRX backRightMotor = new WPI_TalonSRX(RobotMap.backRightMotor);
+    public SpeedControllerGroup rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);	 
+    public DifferentialDrive robotDrive = new DifferentialDrive(backLeftMotor, backRightMotor);
 	
     double kP;
     double kI;
@@ -51,10 +46,10 @@ public class DriveTrain extends Subsystem {
 	double speedF;
 	double speedT;
 	double error;
-	//double distancePerPulse;
+	double distancePerPulse;
 	
-	//Encoder encoderLeft;
-	//Encoder encoderRight;
+	Encoder encoderLeft;
+	Encoder encoderRight;
 	
 	
     public DriveTrain() {
@@ -72,7 +67,7 @@ public class DriveTrain extends Subsystem {
     	
     	distancePerPulse = SmartDashboard.getNumber("Distance per pulse", 1);
 
-	roborDrive.setSafetyEnabled(false); if needed to stop jumpyness
+	    robotDrive.setSafetyEnabled(false); //if needed to stop jumpyness
 	
     }
 
@@ -149,82 +144,82 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class DriveTrain extends Subsystem {
+// public class DriveTrain extends Subsystem {
 
-    VictorSP frontLeftMotor;
-    VictorSP frontRightMotor;
-    VictorSP backLeftMotor;
-    VictorSP backRightMotor;
-    SpeedControllerGroup left;
-    SpeedControllerGroup right;
-    public DifferentialDrive robotDrive;
+//     VictorSP frontLeftMotor;
+//     VictorSP frontRightMotor;
+//     VictorSP backLeftMotor;
+//     VictorSP backRightMotor;
+//     SpeedControllerGroup left;
+//     SpeedControllerGroup right;
+//     public DifferentialDrive robotDrive;
     
-    double speedF;
-    double speedT;
+//     double speedF;
+//     double speedT;
 
-     double turnDamp;
-     double speedDamp;
+//      double turnDamp;
+//      double speedDamp;
 
-    public DriveTrain() {
-	frontLeftMotor = new VictorSP(RobotMap.frontLeftMotor); //whats plugged in victor 0
-	frontRightMotor = new VictorSP(RobotMap.frontRightMotor); //ditto 1
-	backLeftMotor = new VictorSP(RobotMap.backLeftMotor); //ditto 2
-	backRightMotor = new VictorSP(RobotMap.backRightMotor); //ditto 3
-	left = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
-	right = new SpeedControllerGroup(frontRightMotor, backRightMotor);
-		robotDrive = new DifferentialDrive(left, right);
+//     public DriveTrain() {
+// 	frontLeftMotor = new VictorSP(RobotMap.frontLeftMotor); //whats plugged in victor 0
+// 	frontRightMotor = new VictorSP(RobotMap.frontRightMotor); //ditto 1
+// 	backLeftMotor = new VictorSP(RobotMap.backLeftMotor); //ditto 2
+// 	backRightMotor = new VictorSP(RobotMap.backRightMotor); //ditto 3
+// 	left = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
+// 	right = new SpeedControllerGroup(frontRightMotor, backRightMotor);
+// 		robotDrive = new DifferentialDrive(left, right);
 
-	// roborDrive.setSafetyEnabled(false); if needed to stop jumpyness
+// 	// roborDrive.setSafetyEnabled(false); if needed to stop jumpyness
 
-    }
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+//     }
+//     // Put methods for controlling this subsystem
+//     // here. Call these from Commands.
 
-    public void initDefaultCommand() {
-	// Set the default command for a subsystem here.
-	// setDefaultCommand(new MySpecialCommand());
+//     public void initDefaultCommand() {
+// 	// Set the default command for a subsystem here.
+// 	// setDefaultCommand(new MySpecialCommand());
 
-	setDefaultCommand(new DriveTrainControllerDrive());
+// 	setDefaultCommand(new DriveTrainControllerDrive());
 
-    }
+//     }
 
-    /*
-     * public static final Boolean FLM = new Boolean(false) {
-     * if(xboxController1.getX(Hand.kLeft)>0||xboxController1.getX(Hand.kLeft)<0
-     * ||xboxController1.getY(Hand.kRight)>0||xboxController1.getY(Hand.kRight)<
-     * 0){ return true; }else{ return false; } }
-     */
-    //TODO: funtions dont start with capitals
-    public void driveWithController(XboxController xboxController) {
+//     /*
+//      * public static final Boolean FLM = new Boolean(false) {
+//      * if(xboxController1.getX(Hand.kLeft)>0||xboxController1.getX(Hand.kLeft)<0
+//      * ||xboxController1.getY(Hand.kRight)>0||xboxController1.getY(Hand.kRight)<
+//      * 0){ return true; }else{ return false; } }
+//      */
+//     //TODO: funtions dont start with capitals
+//     public void driveWithController(XboxController xboxController) {
 
-	turnDamp = SmartDashboard.getNumber("Turn Damp", 0.01);
-	speedDamp = SmartDashboard.getNumber("Speed Damp", 0.01);
+// 	turnDamp = SmartDashboard.getNumber("Turn Damp", 0.01);
+// 	speedDamp = SmartDashboard.getNumber("Speed Damp", 0.01);
     	
-    speedF = -0.5*speedDamp*xboxController.getY(Hand.kRight);
-    speedT = -0.5*turnDamp*xboxController.getX(Hand.kLeft);
+//     speedF = -0.5*speedDamp*xboxController.getY(Hand.kRight);
+//     speedT = -0.5*turnDamp*xboxController.getX(Hand.kLeft);
     
-	robotDrive.arcadeDrive(speedF, speedT, true);
+// 	robotDrive.arcadeDrive(speedF, speedT, true);
 
-    }
+//     }
     
-    public void DriveWithJoystick (Joystick joystick) {
+//     public void DriveWithJoystick (Joystick joystick) {
     
-    turnDamp = SmartDashboard.getNumber("Turn Damp", 0.01);
-    speedDamp = SmartDashboard.getNumber("Speed Damp", 0.01);
+//     turnDamp = SmartDashboard.getNumber("Turn Damp", 0.01);
+//     speedDamp = SmartDashboard.getNumber("Speed Damp", 0.01);
     
-    speedF = -0.5*speedDamp*joystick.getY();
-    speedT = -0.5*turnDamp*joystick.getZ();
+//     speedF = -0.5*speedDamp*joystick.getY();
+//     speedT = -0.5*turnDamp*joystick.getZ();
     
     
-    robotDrive.arcadeDrive(speedF, speedT, true);
-    }
+//     robotDrive.arcadeDrive(speedF, speedT, true);
+//     }
   
-    public void Stop() {
+//     public void Stop() {
     	
-    	robotDrive.arcadeDrive(0, 0);
-    }
+//     	robotDrive.arcadeDrive(0, 0);
+//     }
 	
-*/
-}
+// */
+// }
 
 

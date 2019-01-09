@@ -1,8 +1,5 @@
 package org.usfirst.frc.team7707.robot;
 
-import org.usfirst.frc.team7707.robot.commands.Intake;
-import org.usfirst.frc.team7707.robot.commands.Outtake;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -26,9 +23,9 @@ public class OI {
 
 	public OI () {
 		// speed is set for 1 rn but idk what it should be
-		double speed = 1;
-		button5.whenPressed(new Intake(speed));
-		button6.whenPressed(new Outtake(speed));
+		// double speed = 1;
+		// button5.whenPressed(new Intake(speed));
+		// button6.whenPressed(new Outtake(speed));
 	}
 	
 	//// CREATING BUTTONS
