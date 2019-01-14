@@ -11,11 +11,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.VictorSP;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 
@@ -30,45 +29,49 @@ public class DriveTrain extends Subsystem {
 	//test Team Laptop new
 	//test John
 
-    public WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(RobotMap.frontLeftMotor);
-    public WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(RobotMap.backLeftMotor);
-    public SpeedControllerGroup leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
-    public WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(RobotMap.frontRightMotor);
-    public WPI_TalonSRX backRightMotor = new WPI_TalonSRX(RobotMap.backRightMotor);
-    public SpeedControllerGroup rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);	 
+    public WPI_VictorSPX frontLeftMotor = new WPI_VictorSPX(RobotMap.frontLeftMotor);
+	public WPI_VictorSPX backLeftMotor = new WPI_VictorSPX(RobotMap.backLeftMotor);
+	public SpeedControllerGroup leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
+   
+	public WPI_VictorSPX frontRightMotor = new WPI_VictorSPX(RobotMap.frontRightMotor);
+    public WPI_VictorSPX backRightMotor = new WPI_VictorSPX(RobotMap.backRightMotor);
+	public SpeedControllerGroup rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);	 
     public DifferentialDrive robotDrive = new DifferentialDrive(backLeftMotor, backRightMotor);
 	
-    double kP;
-    double kI;
-    double straightAdjustment;
 	double turnDamp;
 	double speedDamp;
 	double speedF;
 	double speedT;
+
+	/*
+    double kP;
+    double kI;
+    double straightAdjustment;
 	double error;
 	double distancePerPulse;
 	
 	Encoder encoderLeft;
 	Encoder encoderRight;
-	
+	*/
 	
     public DriveTrain() {
     	
     	frontLeftMotor.set(ControlMode.Follower, RobotMap.backLeftMotor);
     	frontRightMotor.set(ControlMode.Follower, RobotMap.backRightMotor);
-    	
-    	backRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    	backLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-	
+
+    	//backRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    	//backLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		
+		/*
     	encoderLeft = new Encoder(1, 2, false, Encoder.EncodingType.k4X); 
     	encoderRight = new Encoder(3, 4, false, Encoder.EncodingType.k4X);
     	encoderLeft.setMaxPeriod(10);
     	encoderRight.setMaxPeriod(10);
     	
     	distancePerPulse = SmartDashboard.getNumber("Distance per pulse", 1);
-
+		*/
 	    robotDrive.setSafetyEnabled(false); //if needed to stop jumpyness
-	
+		
     }
 
 	
@@ -105,13 +108,13 @@ public class DriveTrain extends Subsystem {
     }
     
     //below are encoder methods
-    public void resetEncoders() {
+	/*
+	public void resetEncoders() {
     	encoderLeft.reset();
     	encoderRight.reset();
     	SmartDashboard.putNumber("Left Encoder ticks", 0);
     	SmartDashboard.putNumber("Right Encoder ticks", 0);
     }
-    
     
     public double leftTicks() {
     	return (double)encoderLeft.get();
@@ -125,8 +128,9 @@ public class DriveTrain extends Subsystem {
     	SmartDashboard.putNumber("Left Encoder ticks", (double)encoderLeft.get());
     	SmartDashboard.putNumber("Right Encoder ticks", (double)encoderRight.get());
      }
-    
-    }
+    */
+	}
+	
 /*    
 import org.usfirst.frc.team1014.robot.RobotMap;
 import org.usfirst.frc.team1014.robot.commands.DriveTrainControllerDrive;
