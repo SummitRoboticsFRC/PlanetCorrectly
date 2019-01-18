@@ -1,10 +1,10 @@
 package org.usfirst.frc.team7707.robot.subsystems;
 
-import org.usfirst.frc.team7707.robot.Robot;
+//import org.usfirst.frc.team7707.robot.Robot;
 import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.commands.DriveTrainControllerDrive;
 
-import edu.wpi.first.wpilibj.Encoder;
+//import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,10 +13,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+//import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
 
 public class DriveTrain extends Subsystem {
     // Put methods for controlling this subsystem
@@ -193,7 +191,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //      * ||xboxController1.getY(Hand.kRight)>0||xboxController1.getY(Hand.kRight)<
 //      * 0){ return true; }else{ return false; } }
 //      */
-//     //TODO: funtions dont start with capitals
+//     //todo funtions dont start with capitals
 //     public void driveWithController(XboxController xboxController) {
 
 // 	turnDamp = SmartDashboard.getNumber("Turn Damp", 0.01);
