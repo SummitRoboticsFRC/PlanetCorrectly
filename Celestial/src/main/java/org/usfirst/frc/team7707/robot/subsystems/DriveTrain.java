@@ -27,14 +27,13 @@ public class DriveTrain extends Subsystem {
 	//test Team Laptop new
 	//test John
 
-    public WPI_VictorSPX frontLeftMotor = new WPI_VictorSPX(RobotMap.frontLeftMotor);
-	public WPI_VictorSPX backLeftMotor = new WPI_VictorSPX(RobotMap.backLeftMotor);
-	public SpeedControllerGroup leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
-   
-	public WPI_VictorSPX frontRightMotor = new WPI_VictorSPX(RobotMap.frontRightMotor);
-    public WPI_VictorSPX backRightMotor = new WPI_VictorSPX(RobotMap.backRightMotor);
-	public SpeedControllerGroup rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);	 
-    public DifferentialDrive robotDrive = new DifferentialDrive(backLeftMotor, backRightMotor);
+    final public WPI_VictorSPX frontLeftMotor;
+	final public WPI_VictorSPX backLeftMotor; 
+	final public SpeedControllerGroup leftMotors;
+	final public WPI_VictorSPX frontRightMotor;
+    final public WPI_VictorSPX backRightMotor;
+	final public SpeedControllerGroup rightMotors; 
+    final public DifferentialDrive robotDrive; 
 	
 	double turnDamp;
 	double speedDamp;
@@ -53,9 +52,18 @@ public class DriveTrain extends Subsystem {
 	*/
 	
     public DriveTrain() {
-    	
-    	frontLeftMotor.set(ControlMode.Follower, RobotMap.backLeftMotor);
+    			
+		frontLeftMotor = new WPI_VictorSPX(RobotMap.frontLeftMotor);
+		backLeftMotor = new WPI_VictorSPX(RobotMap.backLeftMotor);
+		leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
+	   
+		frontRightMotor = new WPI_VictorSPX(RobotMap.frontRightMotor);
+		backRightMotor = new WPI_VictorSPX(RobotMap.backRightMotor);
+		rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);
+		
+		frontLeftMotor.set(ControlMode.Follower, RobotMap.backLeftMotor);
     	frontRightMotor.set(ControlMode.Follower, RobotMap.backRightMotor);
+		robotDrive = new DifferentialDrive(backLeftMotor, backRightMotor); 	
 
     	//backRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     	//backLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -75,7 +83,10 @@ public class DriveTrain extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-    	setDefaultCommand(new DriveTrainControllerDrive());
+		setDefaultCommand(new DriveTrainControllerDrive());
+
+		
+
     	//encoderLeft.setDistancePerPulse(distancePerPulse);
     	//encoderRight.setDistancePerPulse(distancePerPulse);
     	//resetEncoders();
@@ -130,8 +141,8 @@ public class DriveTrain extends Subsystem {
 	}
 	
 /*    
-import org.usfirst.frc.team1014.robot.RobotMap;
-import org.usfirst.frc.team1014.robot.commands.DriveTrainControllerDrive;
+import org.usfirst.frc.team7707.robot.RobotMap;
+import org.usfirst.frc.team7707.robot.commands.DriveTrainControllerDrive;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
