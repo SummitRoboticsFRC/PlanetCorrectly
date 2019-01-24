@@ -70,9 +70,17 @@ public class DriveTrain extends Subsystem {
 		// backRightMotor = new WPI_VictorSPX(RobotMap.backRightMotor);
 		// rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);
 		
+		frontLeftMotor = new PWMVictorSPX(RobotMap.frontLeftMotor);
+		backLeftMotor = new PWMVictorSPX(RobotMap.backLeftMotor);
+		frontRightMotor = new PWMVictorSPX(RobotMap.frontRightMotor);
+		backRightMotor = new PWMVictorSPX(RobotMap.backRightMotor);
+		
+		leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
+		rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);
+
 		// frontLeftMotor.set(ControlMode.Follower, RobotMap.backLeftMotor);
     	// frontRightMotor.set(ControlMode.Follower, RobotMap.backRightMotor);
-		
+
 		robotDrive = new DifferentialDrive(backLeftMotor, backRightMotor); 	
 
     	//backRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
