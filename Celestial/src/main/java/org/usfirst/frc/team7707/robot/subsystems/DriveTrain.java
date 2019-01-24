@@ -5,6 +5,7 @@ import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.commands.DriveTrainControllerDrive;
 
 //import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 //import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+// import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class DriveTrain extends Subsystem {
     // Put methods for controlling this subsystem
@@ -27,14 +28,22 @@ public class DriveTrain extends Subsystem {
 	//test Team Laptop new
 	//test John
 
-    final public WPI_VictorSPX frontLeftMotor;
-	final public WPI_VictorSPX backLeftMotor; 
-	final public SpeedControllerGroup leftMotors;
-	final public WPI_VictorSPX frontRightMotor;
-    final public WPI_VictorSPX backRightMotor;
-	final public SpeedControllerGroup rightMotors; 
-    final public DifferentialDrive robotDrive; 
+    // final public WPI_VictorSPX frontLeftMotor;
+	// final public WPI_VictorSPX backLeftMotor; 
+	// final public SpeedControllerGroup leftMotors;
+	// final public WPI_VictorSPX frontRightMotor;
+    // final public WPI_VictorSPX backRightMotor;
+	// final public SpeedControllerGroup rightMotors; 
+    // final public DifferentialDrive robotDrive; 
 	
+	final public PWMVictorSPX frontLeftMotor;
+	final public PWMVictorSPX backLeftMotor;
+	final public PWMVictorSPX frontRightMotor;
+	final public PWMVictorSPX backRightMotor;
+	final public SpeedControllerGroup leftMotors;
+	final public SpeedControllerGroup rightMotors;
+	final public DifferentialDrive robotDrive;
+
 	double turnDamp;
 	double speedDamp;
 	double speedF;
@@ -52,17 +61,18 @@ public class DriveTrain extends Subsystem {
 	*/
 	
     public DriveTrain() {
-    			
-		frontLeftMotor = new WPI_VictorSPX(RobotMap.frontLeftMotor);
-		backLeftMotor = new WPI_VictorSPX(RobotMap.backLeftMotor);
-		leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
+    		
+		// frontLeftMotor = new WPI_VictorSPX(RobotMap.frontLeftMotor);
+		// backLeftMotor = new WPI_VictorSPX(RobotMap.backLeftMotor);
+		// leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
 	   
-		frontRightMotor = new WPI_VictorSPX(RobotMap.frontRightMotor);
-		backRightMotor = new WPI_VictorSPX(RobotMap.backRightMotor);
-		rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);
+		// frontRightMotor = new WPI_VictorSPX(RobotMap.frontRightMotor);
+		// backRightMotor = new WPI_VictorSPX(RobotMap.backRightMotor);
+		// rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);
 		
-		frontLeftMotor.set(ControlMode.Follower, RobotMap.backLeftMotor);
-    	frontRightMotor.set(ControlMode.Follower, RobotMap.backRightMotor);
+		// frontLeftMotor.set(ControlMode.Follower, RobotMap.backLeftMotor);
+    	// frontRightMotor.set(ControlMode.Follower, RobotMap.backRightMotor);
+		
 		robotDrive = new DifferentialDrive(backLeftMotor, backRightMotor); 	
 
     	//backRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
