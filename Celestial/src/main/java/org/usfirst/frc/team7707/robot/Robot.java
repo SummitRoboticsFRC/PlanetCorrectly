@@ -1,204 +1,197 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc.team7707.robot;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DriverStation;
+//import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+/*
+ * If there is an error on this line (com.ctre is highlighted in red) it means that you have not added the Cross The Road Electronics libraries
+ * to your build environment. Add them using the steps outlined in https://phoenix-documentation.readthedocs.io/en/latest/ch05a_CppJava.html
+ */
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GamepadBase;
+import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team7707.robot.commands.PIDautodrive;
-import org.usfirst.frc.team7707.robot.commands.PneumaticsOut;
-import org.usfirst.frc.team7707.robot.commands.PneumaticsRepeat;
-import org.usfirst.frc.team7707.robot.commands.PumpUp;
-import org.usfirst.frc.team7707.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team7707.robot.subsystems.PneumaticsSubsystem;
-
+import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
+import org.usfirst.frc.team7707.robot.library.GamepadButtons;
+import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
+ * functions corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
+ * creating this project, you must also update the build.gradle file in the
+ * project.
  */
 public class Robot extends TimedRobot {
+  private XboxController driverGamePad;
+  private DifferentialDrive drive;
+  private SpeedController leftController, rightController;
+  private DriveSubsystem driveSubsystem;
+  private Joystick driverInput;
+  public static OI m_oi;
 
-	
-	public static OI oi;
+  Command m_autonomousCommand;
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  /**
+   * This function is run when the robot is first started up and should be
+   * used for any initialization code.
+   */
+  @Override
+  public void robotInit() {
+    driverGamePad = new XboxController(0);
 
-	Command autonomousCommand;
-	SendableChooser chooser;
-	double FMSAutoData;
+    /*
+     * These two lines are for one or move PWM style drive controllers.
+     * Uncomment the lines and add (or remove) Spark definitions as necessary
+     */
+    leftController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontLeftMotor), new PWMVictorSPX(RobotMap.backLeftMotor));
+    rightController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontRightMotor), new PWMVictorSPX(RobotMap.backRightMotor));
 
-	public static final DriveTrain driveTrain = new DriveTrain();
-    public static final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-    public static final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
-    //public static final IntakeMotors intakeMotors = new IntakeMotors();
-	
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
-	@Override
-	public void robotInit() {
-		
-		oi = new OI();
-		chooser = new SendableChooser<Command>();
-		
-		
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		chooser.addDefault("Pneumatics Out", new PneumaticsOut(3));
-		chooser.addObject("Pneumatics Repeat", new PneumaticsRepeat());
-		chooser.addObject("Pump up", new PumpUp());
-		chooser.addObject("PID straight", new PIDautodrive(6, 0.5));
-		//PIDautodrive(distance, speed)
+    /*
+     * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
+     * Uncomment the lines and add (or remove) WPI_TalonSRX definitions as necessary
+     * Note: you will also need to add the CTRE phoenix libraries (see above)
+     */
+    //leftController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_LEFT1_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_LEFT2_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_LEFT3_CAN_ID));
+    //rightController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_RIGHT1_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT2_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT3_CAN_ID));
 
-		SmartDashboard.putData("Auto mode", chooser);
+    drive = new DifferentialDrive(leftController, rightController);
+    /*
+     * These drive subsystem definitions are defining how the driver's controlls affect the motor.
+     * You need ONE of these uncommented, so depending on which style you want chose the appropriate line.
+     */
+    //driveSubsystem = new DriveSubsystem(driverGamePad::getY, (double) () -> driverInput.getRawAxis(4), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE);   // single flight stick with twist for turning
+    driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
+    driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(1), () -> 0.6*driverInput.getRawAxis(0), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
 
-
-		
-		SmartDashboard.putNumber("kP Straight", 0.1);
-		SmartDashboard.putNumber("kI Straight", 0.01);
-		SmartDashboard.putNumber("kP Turn", 0.1);
-		SmartDashboard.putNumber("kI Turn", 0.01);
-		SmartDashboard.putNumber("Speed Damp", 0.01);
-		SmartDashboard.putNumber("Turn Damp", 0.01);
-		SmartDashboard.putNumber("Left Encoder ticks", 0);
-		SmartDashboard.putNumber("Right Encoder ticks", 0);
-		//SmartDashboard.putNumber("speedF", driveTrain.driveWithController.speedF);
-		//SmartDashboard.putNumber("speedT", driveTrain.driveWithController,speedT);
-		//SmartDashboard.putNumber("RE", driveTrain.backRightMotor.getSelectedSensorPosition(0));
-		//SmartDashboard.putNumber("LE", driveTrain.backLeftMotor.getSelectedSensorPosition(0));
-		//SmartDashboard.putNumber("LEE");
-		//SmartDashboard.putNumber("REE");
-		//SmartDashboard.putNumber("Distance per pulse", 1);
-
-		
+    /*
+      *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
+      *  We create a speed controller for the motor, and this needs to be to the subsystem to be manipulate.
+      *  
+      *  Here we use the Victor SP, a PWM controller that will be available. Yes, we can mix and match our motor controllers,
+      *  although it is better to use th e same controller when working in groups (such as left and right on the drive train).
+      */
+    //widgetSubsystem = new WidgetSubsystem(new VictorSP(RobotMap.WIDGET_CONTROLLER_ID));
 
 
-	}
+    m_oi = new OI(driverGamePad);
+    m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
+    // chooser.addOption("My Auto", new MyAutoCommand());
+    SmartDashboard.putData("Auto mode", m_chooser);
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
-	@Override
-	public void disabledInit() {
+    /*
+     * Start a camera server - this allows you to have a camera mounted on your robot and the image being shown on the drivers startion.
+     * https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/669166-using-the-cameraserver-on-the-roborio for details.
+     * 
+     * if you don't want a camera server comment out this line.
+     */
+    CameraServer.getInstance().startAutomaticCapture();
+  }
 
-	}
+  /**
+   * This function is called every robot packet, no matter the mode. Use
+   * this for items like diagnostics that you want ran during disabled,
+   * autonomous, teleoperated and test.
+   *
+   * <p>This runs after the mode specific periodic functions, but before
+   * LiveWindow and SmartDashboard integrated updating.
+   */
+  @Override
+  public void robotPeriodic() {
+  }
 
-	@Override
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
+  /**
+   * This function is called once each time the robot enters Disabled mode.
+   * You can use it to reset any subsystem information you want to clear when
+   * the robot is disabled.
+   */
+  @Override
+  public void disabledInit() {
+  }
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
-	 */
-	@Override
-	public void autonomousInit() {
-		
-		
-		/*This is where the robot gets the robot gets the data from the FMS 
-		 then turns it into 1 of 4 options from LLL(1) RRR(2) LRL(3) RLR(4)
-		*/
-		String gameData;
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		 
-		if(gameData.charAt(0) == 'L')
-		{
-			FMSAutoData = 1;
-		} if(gameData.charAt(1) == 'R'){
-			FMSAutoData = 3;
-		} if(gameData.charAt(0) == 'R'){
-			FMSAutoData = 2;
-		} if(gameData.charAt(1) == 'L'){
-			FMSAutoData = 4;
-		}
+  @Override
+  public void disabledPeriodic() {
+    Scheduler.getInstance().run();
+  }
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-		/*
-		//LLL
-		if (FMSAutoData == 1 ){
-			
-		} 
-		///RRR
-		if (FMSAutoData == 2){
-			
-		} 
-		//LRL
-		if (FMSAutoData == 3){
-			
-		} 
-		//RLR
-		if (FMSAutoData == 4){
-			
-		} */
-		
-		
-		//Here we would use chooser to input the starting position and choice of scale 
-		//or switch rather than to select the auto command
-		autonomousCommand = (Command) chooser.getSelected();
-		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			autonomousCommand.start();
-	}
+  /**
+   * This autonomous (along with the chooser code above) shows how to select
+   * between different autonomous modes using the dashboard. The sendable
+   * chooser code works with the Java SmartDashboard. If you prefer the
+   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
+   * getString code to get the auto name from the text box below the Gyro
+   *
+   * <p>You can add additional auto modes by adding additional commands to the
+   * chooser code above (like the commented example) or additional comparisons
+   * to the switch structure below with additional strings & commands.
+   */
+  @Override
+  public void autonomousInit() {
+    m_autonomousCommand = m_chooser.getSelected();
+    driveSubsystem.setEnabled(true);
 
-	/**
-	 * This function is called periodically during autonomous
-	 */
-	@Override
-	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
-	}
+    /*
+     * String autoSelected = SmartDashboard.getString("Auto Selector",
+     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+     * = new MyAutoCommand(); break; case "Default Auto": default:
+     * autonomousCommand = new ExampleCommand(); break; }
+     */
 
-	@Override
-	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
-	}
+    // schedule the autonomous command (example)
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.start();
+    }
+  }
 
-	/**
-	 * This function is called periodically during operator control
-	 */
-	@Override
-	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
-		//double REE = driveTrain.backRightMotor.getSelectedSensorPosition(0);
-		//double LEE = driveTrain.backLeftMotor.getSelectedSensorPosition(0);
-	
-		//SmartDashboard.putNumber("REE", REE);
-		//SmartDashboard.putNumber("LEE",LEE);
-	}
+  /**
+   * This function is called periodically during autonomous.
+   */
+  @Override
+  public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
+  }
 
-	/**
-	 * This function is called periodically during test mode
-	 */
+  @Override
+  public void teleopInit() {
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+    driveSubsystem.setEnabled(true);
+  }
 
-	@Override
-	public void testPeriodic() {
+  /**
+   * This function is called periodically during operator control.
+   */
+  @Override
+  public void teleopPeriodic() {
+    Scheduler.getInstance().run();
+  }
 
-	}
+  /**
+   * This function is called periodically during test mode.
+   */
+  @Override
+  public void testPeriodic() {
+  }
 }
