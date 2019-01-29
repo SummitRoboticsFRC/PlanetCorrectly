@@ -7,7 +7,7 @@
 
 package org.usfirst.frc.team7707.robot;
 
-//import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -52,7 +52,7 @@ public class OI {
   // button.whenReleased(new ExampleCommand());
 
   public OI(
-			XboxController driverGamePad
+			Joystick driverGamePad
 	) {
       
 		/*

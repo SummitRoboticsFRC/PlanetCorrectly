@@ -39,11 +39,11 @@ import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  private XboxController driverGamePad;
+  private Joystick driverGamePad;
+  //private Joystick driverInput;
   private DifferentialDrive drive;
   private SpeedController leftController, rightController;
   private DriveSubsystem driveSubsystem;
-  private Joystick driverInput;
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    driverGamePad = new XboxController(0);
+    driverGamePad = new Joystick(RobotMap.DRIVER_GAMEPAD);
 
     /*
      * These two lines are for one or move PWM style drive controllers.
@@ -78,8 +78,12 @@ public class Robot extends TimedRobot {
      * You need ONE of these uncommented, so depending on which style you want chose the appropriate line.
      */
     //driveSubsystem = new DriveSubsystem(driverGamePad::getY, (double) () -> driverInput.getRawAxis(4), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE);   // single flight stick with twist for turning
-    driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
-    driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(1), () -> 0.6*driverInput.getRawAxis(0), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
+    //driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
+    driveSubsystem = new DriveSubsystem(
+      () -> -0.6*driverGamePad.getRawAxis(1),  //can switch to "driverInput"
+      () -> 0.6*driverGamePad.getRawAxis(0), drive, //^^
+      RobotMap.DriveStyle.DRIVE_STYLE_ARCADE
+      ); // single gamepad using thumb sticks as tank control
 
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
