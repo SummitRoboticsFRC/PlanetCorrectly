@@ -23,6 +23,29 @@ import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+
+    
+  public boolean buttonAPressed;
+  public boolean buttonBPressed;
+  public boolean buttonXPressed;
+  public boolean buttonYPressed;
+  public boolean buttonLPressed;
+  public boolean buttonRPressed;
+  public boolean buttonBackPressed;
+  public boolean buttonStartPressed;
+  public boolean buttonLThumbPressed;
+  public boolean buttonRThumbPressed;
+
+  public boolean rightTriggerPressed;
+  public boolean leftTriggerPressed;
+
+  public double leftX;
+  public double leftY;
+  public double rightTriggerPressure;
+  public double leftTriggerPressure;
+  public double rightX;
+  public double rightY;
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
@@ -54,6 +77,17 @@ public class OI {
   public OI(
 			Joystick driverGamePad
 	) {
+
+      buttonAPressed = driverGamePad.getRawButton(RobotMap.buttonA);
+      buttonBPressed = driverGamePad.getRawButton(RobotMap.buttonB);
+      buttonXPressed = driverGamePad.getRawButton(RobotMap.buttonX);
+      buttonYPressed = driverGamePad.getRawButton(RobotMap.buttonY);
+      buttonLPressed = driverGamePad.getRawButton(RobotMap.buttonL);
+      buttonRPressed = driverGamePad.getRawButton(RobotMap.buttonR);
+      buttonBackPressed = driverGamePad.getRawButton(RobotMap.buttonBack);
+      buttonStartPressed = driverGamePad.getRawButton(RobotMap.buttonStart);
+
+
       
 		/*
 		 * The trigger buttons on the joysticks move the widget up and down whilst held.

@@ -38,11 +38,36 @@ public class RobotMap {
   // public static final int DRIVE_RIGHT2_CAN_ID = 6;
   // public static final int DRIVE_RIGHT3_CAN_ID = 7;
 
+  /*
+   * Motor Controller PWM/CAN IDs
+   */
 	public static final int frontRightMotor = 0;
 	public static final int backRightMotor = 1; 	
 	public static final int frontLeftMotor = 2;
 	public static final int backLeftMotor = 3;
-	/*
+  
+  /*
+   * Controller Axes/Buttons
+   */
+
+  public static final int buttonA = 0;
+  public static final int buttonB = 1;
+  public static final int buttonX = 2;
+  public static final int buttonY = 3;
+  public static final int buttonL = 3;
+  public static final int buttonR = 3;
+  public static final int buttonBack = 3;
+  public static final int buttonStart = 3;
+
+  public static final int leftAxisX = 3;
+  public static final int leftAxisY = 3;
+  public static final int leftTrigger = 3;
+  public static final int rightTrigger = 3;
+  public static final int rightAxisX = 3;
+  public static final int rightAxisY = 3;
+
+
+  /*
 	 * Drive style choices.
 	 */
 	public enum DriveStyle {
@@ -52,6 +77,7 @@ public class RobotMap {
 	}
 	public static final DriveStyle DRIVE_STYLE = DriveStyle.DRIVE_STYLE_TANK; // XXXXX CHOICE XXXXX pick your drive style here.
 
+  
 
 	// Widget subsystem
 	// The demo robot controls a widget through a motor and speed controller (talon or whatever!)

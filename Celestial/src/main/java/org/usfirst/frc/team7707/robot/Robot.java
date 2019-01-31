@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   private SpeedController leftController, rightController;
   private DriveSubsystem driveSubsystem;
   public static OI m_oi;
-
+  
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -80,8 +80,8 @@ public class Robot extends TimedRobot {
     //driveSubsystem = new DriveSubsystem(driverGamePad::getY, (double) () -> driverInput.getRawAxis(4), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE);   // single flight stick with twist for turning
     //driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
     driveSubsystem = new DriveSubsystem(
-      () -> -0.6*driverGamePad.getRawAxis(1),  //can switch to "driverInput"
-      () -> 0.6*driverGamePad.getRawAxis(0), drive, //^^
+      () -> -0.6*driverGamePad.getRawAxis(RobotMap.leftAxisY),  
+      () -> 0.6*driverGamePad.getRawAxis(RobotMap.leftAxisX), drive, 
       RobotMap.DriveStyle.DRIVE_STYLE_ARCADE
       ); // single gamepad using thumb sticks as tank control
 
