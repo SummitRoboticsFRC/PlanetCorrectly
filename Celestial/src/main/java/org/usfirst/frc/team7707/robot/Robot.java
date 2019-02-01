@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
   private SpeedController leftController, rightController, liftController, backRatchetController, frontRatchetController;
   private DriveSubsystem driveSubsystem;
   private LiftSubsystem liftSubsystem;
-  private RatchetSubsystem RatchetSubsystem;
+  private RatchetSubsystem ratchetSubsystem;
   public static OI oi;
   
   //Command m_autonomousCommand;
@@ -100,13 +100,15 @@ public class Robot extends TimedRobot {
       );
     
     ratchetSubsystem = new RatchetSubsystem(
-      () -> 0.2*driverGamePad.getRawAxis(RobotMap.leftTriggerPressure), 
-      () -> 0.2*driverGamePad.getRawAxis(RobotMap.rightTriggerPressure), 
-      backRatchetController, 
-      frontRatchetController, 
-      driverGamePad, 
-      RobotMap.buttonL, 
-      RobotMap.buttonR);
+      () -> driverGamePad.getRawAxis(RobotMap.leftTrigger),
+      () -> driverGamePad.getRawAxis(RobotMap.rightTrigger),
+      backRatchetController,
+      frontRatchetController,
+      driverGamePad,
+      RobotMap.buttonL,
+      RobotMap.buttonR
+      );
+
 
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.

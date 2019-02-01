@@ -19,7 +19,6 @@ public class RatchetCommand extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.ratchetSubsystem = ratchetSubsystem;
-    
     requires(ratchetSubsystem);
     setInterruptible(true);
   }
