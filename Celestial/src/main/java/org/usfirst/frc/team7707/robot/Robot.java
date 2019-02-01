@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.command.Command;
@@ -29,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 
 /**
@@ -42,12 +44,13 @@ public class Robot extends TimedRobot {
   private Joystick driverGamePad;
   //private Joystick driverInput;
   private DifferentialDrive drive;
-  private SpeedController leftController, rightController;
+  private SpeedController leftController, rightController, liftController;
   private DriveSubsystem driveSubsystem;
-  public static OI m_oi;
+  private LiftSubsystem liftSubsystem;
+  public static OI oi;
   
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //Command m_autonomousCommand;
+  SendableChooser<Command> chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -63,6 +66,8 @@ public class Robot extends TimedRobot {
      */
     leftController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontLeftMotor), new PWMVictorSPX(RobotMap.backLeftMotor));
     rightController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontRightMotor), new PWMVictorSPX(RobotMap.backRightMotor));
+
+    liftController = new VictorSP(RobotMap.liftMotor);
 
     /*
      * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
@@ -85,6 +90,11 @@ public class Robot extends TimedRobot {
       RobotMap.DriveStyle.DRIVE_STYLE_ARCADE
       ); // single gamepad using thumb sticks as tank control
 
+    liftSubsystem = new LiftSubsystem(
+      () -> -0.4*driverGamePad.getRawAxis(RobotMap.rightAxisY), 
+      liftController
+      );
+
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
       *  We create a speed controller for the motor, and this needs to be to the subsystem to be manipulate.
@@ -95,10 +105,10 @@ public class Robot extends TimedRobot {
     //widgetSubsystem = new WidgetSubsystem(new VictorSP(RobotMap.WIDGET_CONTROLLER_ID));
 
 
-    m_oi = new OI(driverGamePad);
-    m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
+    oi = new OI(driverGamePad);
+    //chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
+    //SmartDashboard.putData("Auto mode", chooser);
 
     /*
      * Start a camera server - this allows you to have a camera mounted on your robot and the image being shown on the drivers startion.
@@ -148,9 +158,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    //m_autonomousCommand = m_chooser.getSelected();
     driveSubsystem.setEnabled(true);
-
+    liftSubsystem.setEnabled(true);
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -159,9 +169,11 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
+    /*
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
+    */
   }
 
   /**
@@ -178,10 +190,12 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    /*
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
     driveSubsystem.setEnabled(true);
+    */
   }
 
   /**

@@ -9,10 +9,10 @@ package org.usfirst.frc.team7707.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
-import org.usfirst.frc.team7707.robot.commands.LiftCommand;
+import org.usfirst.frc.team7707.robot.commands.DefaultLiftCommand;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.SpeedController;;
 
 /**
  * Add your docs here.
@@ -22,10 +22,10 @@ public class LiftSubsystem extends Subsystem {
   // here. Call these from Commands.
 
   private DoubleSupplier speed;
-  private VictorSP motor;
+  private SpeedController motor;
   private boolean enabled;
 
-  public LiftSubsystem(DoubleSupplier speed, VictorSP motor) {
+  public LiftSubsystem(DoubleSupplier speed, SpeedController motor) {
     this.speed = speed;
     this.motor = motor;
     this.enabled = false;
@@ -44,6 +44,6 @@ public class LiftSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new LiftCommand(this));
+    setDefaultCommand(new DefaultLiftCommand(this));
   }
 }
