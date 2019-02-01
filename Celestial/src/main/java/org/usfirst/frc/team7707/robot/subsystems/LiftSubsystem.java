@@ -7,7 +7,12 @@
 
 package org.usfirst.frc.team7707.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
+import org.usfirst.frc.team7707.robot.commands.LiftCommand;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.VictorSP;
 
 /**
  * Add your docs here.
@@ -16,9 +21,29 @@ public class LiftSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  @Override
+  private DoubleSupplier speed;
+  private VictorSP motor;
+  private boolean enabled;
+
+  public LiftSubsystem(DoubleSupplier speed, VictorSP motor) {
+    this.speed = speed;
+    this.motor = motor;
+    this.enabled = false;
+  }
+
+  public void lift() {
+    motor.set(speed.getAsDouble());
+  }
+
+  public LiftSubsystem setEnabled(boolean enabled) {
+    this.enabled = enabled;
+    return this;
+  }
+
+    @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new LiftCommand(this));
   }
 }
