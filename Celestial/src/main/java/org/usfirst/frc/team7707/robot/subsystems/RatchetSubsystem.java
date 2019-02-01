@@ -13,6 +13,7 @@ import org.usfirst.frc.team7707.robot.commands.RatchetCommand;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Joystick;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -24,13 +25,23 @@ public class RatchetSubsystem extends Subsystem {
   // here. Call these from Commands.
   private DoubleSupplier backSpeed, frontSpeed;
   private SpeedController backMotor, frontMotor;
+  private Joystick driverInput;
+  private int backDescendButton, frontDescendButton;
+  
+  public boolean doBackDescend, doFrontDescend;
+  
   private boolean enabled;
 
-  public RatchetSubsystem(DoubleSupplier backSpeed, DoubleSupplier frontSpeed, SpeedController backMotor, SpeedController frontMotor) {
+  public RatchetSubsystem(DoubleSupplier backSpeed, DoubleSupplier frontSpeed, SpeedController backMotor, SpeedController frontMotor, Joystick driverInput, int backDescendButton, int frontDescendButton) {
     this.backSpeed = backSpeed;
     this.frontSpeed = frontSpeed;
     this.backMotor = backMotor;
     this.frontMotor = frontMotor;
+    this.driverInput = driverInput;
+    this.backDescendButton = frontDescendButton;
+    this.frontDescendButton = backDescendButton;
+    this.doBackDescend = false;
+    this.doFrontDescend = false;
     this.enabled = false;
   }
 
@@ -39,9 +50,17 @@ public class RatchetSubsystem extends Subsystem {
     frontMotor.set(frontSpeed.getAsDouble());
   }
 
-  public void descend() {
+  public void backDescend() {
     backMotor.set(-0.5);
+  }
+  
+  public void frontDescend() {
     frontMotor.set(-0.5);
+  }
+
+  public void getButtons() {
+    this.doFrontDescend = driverInput.getRawButton(backDescendButton);
+    this.doBackDescend = driverInput.getRawButton(frontDescendButton);
   }
 
   @Override

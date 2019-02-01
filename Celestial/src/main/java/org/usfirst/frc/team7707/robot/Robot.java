@@ -31,6 +31,7 @@ import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
+import org.usfirst.frc.team7707.robot.subsystems.RatchetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 
 /**
@@ -44,9 +45,10 @@ public class Robot extends TimedRobot {
   private Joystick driverGamePad;
   //private Joystick driverInput;
   private DifferentialDrive drive;
-  private SpeedController leftController, rightController, liftController;
+  private SpeedController leftController, rightController, liftController, backRatchetController, frontRatchetController;
   private DriveSubsystem driveSubsystem;
   private LiftSubsystem liftSubsystem;
+  private RatchetSubsystem RatchetSubsystem;
   public static OI oi;
   
   //Command m_autonomousCommand;
@@ -68,6 +70,8 @@ public class Robot extends TimedRobot {
     rightController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontRightMotor), new PWMVictorSPX(RobotMap.backRightMotor));
 
     liftController = new VictorSP(RobotMap.liftMotor);
+    backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
+    frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
 
     /*
      * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
@@ -94,6 +98,15 @@ public class Robot extends TimedRobot {
       () -> -0.4*driverGamePad.getRawAxis(RobotMap.rightAxisY), 
       liftController
       );
+    
+    ratchetSubsystem = new RatchetSubsystem(
+      () -> 0.2*driverGamePad.getRawAxis(RobotMap.leftTriggerPressure), 
+      () -> 0.2*driverGamePad.getRawAxis(RobotMap.rightTriggerPressure), 
+      backRatchetController, 
+      frontRatchetController, 
+      driverGamePad, 
+      RobotMap.buttonL, 
+      RobotMap.buttonR);
 
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.

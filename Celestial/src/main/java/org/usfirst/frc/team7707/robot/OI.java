@@ -25,26 +25,26 @@ import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 public class OI {
 
     
-  public boolean buttonAPressed;
-  public boolean buttonBPressed;
-  public boolean buttonXPressed;
-  public boolean buttonYPressed;
-  public boolean buttonLPressed;
-  public boolean buttonRPressed;
-  public boolean buttonBackPressed;
-  public boolean buttonStartPressed;
-  public boolean buttonLeftThumbPressed;
-  public boolean buttonRightThumbPressed;
+  public static boolean buttonAPressed;
+  public static boolean buttonBPressed;
+  public static boolean buttonXPressed;
+  public static boolean buttonYPressed;
+  public static boolean buttonLPressed;
+  public static boolean buttonRPressed;
+  public static boolean buttonBackPressed;
+  public static boolean buttonStartPressed;
+  public static boolean buttonLeftThumbPressed;
+  public static boolean buttonRightThumbPressed;
 
-  public double leftX;
-  public double leftY;
-  public double rightTriggerPressure;
-  public double leftTriggerPressure;
-  public double rightX;
-  public double rightY;
+  public static double leftX;
+  public static double leftY;
+  public static double rightTriggerPressure;
+  public static double leftTriggerPressure;
+  public static double rightX;
+  public static double rightY;
 
-  public boolean rightTriggerPressed;
-  public boolean leftTriggerPressed;
+  public static boolean rightTriggerPressed;
+  public static boolean leftTriggerPressed;
 
 
   //// CREATING BUTTONS

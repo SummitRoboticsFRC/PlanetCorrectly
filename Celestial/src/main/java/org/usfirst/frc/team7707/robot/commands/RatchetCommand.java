@@ -14,13 +14,12 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class RatchetCommand extends Command {
   RatchetSubsystem ratchetSubsystem;
-  boolean leftTriggerPressed;
-  boolean rightTriggerPressed;
 
   public RatchetCommand(RatchetSubsystem ratchetSubsystem) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.ratchetSubsystem = ratchetSubsystem;
+    
     requires(ratchetSubsystem);
     setInterruptible(true);
   }
@@ -33,9 +32,15 @@ public class RatchetCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    rightTriggerPressed = OI.rightTriggerPr
-    if( || ) {
-      
+    ratchetSubsystem.getButtons();
+    if (ratchetSubsystem.doBackDescend) {
+      ratchetSubsystem.backDescend();
+    }
+    else if (ratchetSubsystem.doFrontDescend) {
+      ratchetSubsystem.frontDescend();
+    }
+    else if (OI.leftTriggerPressed || OI.rightTriggerPressed){
+      ratchetSubsystem.lift();
     }
   }
 
