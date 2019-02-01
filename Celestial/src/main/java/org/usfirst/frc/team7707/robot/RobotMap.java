@@ -50,21 +50,23 @@ public class RobotMap {
    * Controller Axes/Buttons
    */
 
-  public static final int buttonA = 0;
-  public static final int buttonB = 1;
-  public static final int buttonX = 2;
-  public static final int buttonY = 3;
-  public static final int buttonL = 3;
-  public static final int buttonR = 3;
-  public static final int buttonBack = 3;
-  public static final int buttonStart = 3;
+  public static final int buttonA = 1;
+  public static final int buttonB = 2;
+  public static final int buttonX = 3;
+  public static final int buttonY = 4;
+  public static final int buttonL = 5;
+  public static final int buttonR = 6;
+  public static final int buttonBack = 7;
+  public static final int buttonStart = 8;
+  public static final int buttonLeftThumb = 9;
+  public static final int buttonRightThumb = 10;
 
-  public static final int leftAxisX = 3;
-  public static final int leftAxisY = 3;
-  public static final int leftTrigger = 3;
+  public static final int leftAxisX = 0;
+  public static final int leftAxisY = 1;
+  public static final int leftTrigger = 2;
   public static final int rightTrigger = 3;
-  public static final int rightAxisX = 3;
-  public static final int rightAxisY = 3;
+  public static final int rightAxisX = 4;
+  public static final int rightAxisY = 5;
 
 
   /*
