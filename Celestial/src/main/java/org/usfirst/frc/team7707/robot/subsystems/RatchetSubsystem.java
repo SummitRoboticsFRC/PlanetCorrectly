@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team7707.robot.subsystems;
 
+import org.usfirst.frc.team7707.robot.commands.RatchetCommand;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -20,5 +22,6 @@ public class RatchetSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new RatchetCommand(this));
   }
 }
