@@ -86,8 +86,6 @@ public class OI {
       buttonRPressed = driverGamePad.getRawButton(RobotMap.buttonR);
       buttonBackPressed = driverGamePad.getRawButton(RobotMap.buttonBack);
       buttonStartPressed = driverGamePad.getRawButton(RobotMap.buttonStart);
-
-      
       
 		/*
 		 * The trigger buttons on the joysticks move the widget up and down whilst held.
