@@ -36,15 +36,16 @@ public class OI {
   public boolean buttonLeftThumbPressed;
   public boolean buttonRightThumbPressed;
 
-  public boolean rightTriggerPressed;
-  public boolean leftTriggerPressed;
-
   public double leftX;
   public double leftY;
   public double rightTriggerPressure;
   public double leftTriggerPressure;
   public double rightX;
   public double rightY;
+
+  public boolean rightTriggerPressed;
+  public boolean leftTriggerPressed;
+
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
@@ -87,6 +88,16 @@ public class OI {
       buttonBackPressed = driverGamePad.getRawButton(RobotMap.buttonBack);
       buttonStartPressed = driverGamePad.getRawButton(RobotMap.buttonStart);
       
+      leftX = driverGamePad.getRawAxis(RobotMap.leftAxisX);
+      leftY = driverGamePad.getRawAxis(RobotMap.leftAxisY);
+      leftTriggerPressure = driverGamePad.getRawAxis(RobotMap.leftTrigger);
+      rightTriggerPressure = driverGamePad.getRawAxis(RobotMap.rightTrigger);
+      rightX = driverGamePad.getRawAxis(RobotMap.rightAxisX);
+      rightY = driverGamePad.getRawAxis(RobotMap.rightAxisY);
+
+      leftTriggerPressed = leftTriggerPressure > 0.5;
+      rightTriggerPressed = rightTriggerPressure > 0.5;
+
 		/*
 		 * The trigger buttons on the joysticks move the widget up and down whilst held.
 		 * releasing a button stops the widget movement.

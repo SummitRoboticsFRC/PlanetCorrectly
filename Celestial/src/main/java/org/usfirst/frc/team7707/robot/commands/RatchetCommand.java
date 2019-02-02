@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class RatchetCommand extends Command {
   RatchetSubsystem ratchetSubsystem;
+  boolean leftTriggerPressed;
+  boolean rightTriggerPressed;
 
   public RatchetCommand(RatchetSubsystem ratchetSubsystem) {
     // Use requires() here to declare subsystem dependencies
@@ -31,6 +33,10 @@ public class RatchetCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    rightTriggerPressed = OI.rightTriggerPr
+    if( || ) {
+      
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
