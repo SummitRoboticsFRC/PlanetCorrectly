@@ -63,6 +63,11 @@ public class RatchetSubsystem extends Subsystem {
     this.doBackDescend = driverInput.getRawButton(frontDescendButton);
   }
 
+  public RatchetSubsystem setEnabled(boolean enabled) {
+    this.enabled = enabled;
+    return this;
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

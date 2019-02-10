@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
+import org.usfirst.frc.team7707.robot.commands.DefaultDriveCommand;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
@@ -95,7 +96,7 @@ public class Robot extends TimedRobot {
       ); // single gamepad using thumb sticks as tank control
 
     liftSubsystem = new LiftSubsystem(
-      () -> -0.4*driverGamePad.getRawAxis(RobotMap.rightAxisY), 
+      () -> 0.4*driverGamePad.getRawAxis(RobotMap.rightAxisY), 
       liftController
       );
     
@@ -176,6 +177,7 @@ public class Robot extends TimedRobot {
     //m_autonomousCommand = m_chooser.getSelected();
     driveSubsystem.setEnabled(true);
     liftSubsystem.setEnabled(true);
+    
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
