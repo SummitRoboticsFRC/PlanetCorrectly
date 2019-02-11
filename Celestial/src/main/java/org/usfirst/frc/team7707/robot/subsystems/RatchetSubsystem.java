@@ -46,8 +46,21 @@ public class RatchetSubsystem extends Subsystem {
   }
 
   public void lift() {
-    backMotor.set(backSpeed.getAsDouble());
-    frontMotor.set(frontSpeed.getAsDouble());
+    double back = backSpeed.getAsDouble();
+    double front = frontSpeed.getAsDouble();
+
+    if (back > 0.5) {
+      backMotor.set(1.0);
+      frontMotor.set(1.0);
+    } else if (front > 0.5) {
+      backMotor.set(-1.0);
+      frontMotor.set(-1.0);
+    } else {
+      backMotor.set(0);
+      frontMotor.set(0);
+    }
+    /* backMotor.set(backSpeed.getAsDouble());
+    frontMotor.set(frontSpeed.getAsDouble()); */
   }
 
   public void backDescend() {

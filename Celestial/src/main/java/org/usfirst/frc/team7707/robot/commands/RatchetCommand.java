@@ -31,7 +31,8 @@ public class RatchetCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    ratchetSubsystem.getButtons();
+    ratchetSubsystem.lift();
+/*    ratchetSubsystem.getButtons();
     if (ratchetSubsystem.doBackDescend) {
       ratchetSubsystem.backDescend();
     }
@@ -40,7 +41,7 @@ public class RatchetCommand extends Command {
     }
     else if (OI.leftTriggerPressed || OI.rightTriggerPressed){
       ratchetSubsystem.lift();
-    }
+    } */
   }
 
   // Make this return true when this Command no longer needs to run execute()
