@@ -12,7 +12,8 @@ import java.util.function.DoubleSupplier;
 import org.usfirst.frc.team7707.robot.commands.DefaultLiftCommand;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.SpeedController;;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Ultrasonic;;
 
 /**
  * Add your docs here.
@@ -23,16 +24,22 @@ public class LiftSubsystem extends Subsystem {
 
   private DoubleSupplier speed;
   private SpeedController motor;
+  private Ultrasonic ultrasonic;
   private boolean enabled;
 
   public LiftSubsystem(DoubleSupplier speed, SpeedController motor) {
     this.speed = speed;
     this.motor = motor;
+    this.ultrasonic = ultrasonic;
     this.enabled = false;
   }
 
   public void lift() {
     motor.set(speed.getAsDouble());
+  }
+
+  public double getHeight() {
+    return 1.3; //INFO: fix this
   }
 
   public LiftSubsystem setEnabled(boolean enabled) {

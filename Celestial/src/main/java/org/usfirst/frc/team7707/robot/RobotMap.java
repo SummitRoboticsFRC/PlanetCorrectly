@@ -7,6 +7,9 @@
 
 package org.usfirst.frc.team7707.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -71,6 +74,18 @@ public class RobotMap {
   public static final int rightAxisX = 4;
   public static final int rightAxisY = 5;
 
+  /*
+   * Ultrasonic sensor
+   */
+
+  public static final int ultrasonicInput = 0;
+  public static final int ultrasonicOutput = 0;
+
+  /*
+   * Gyro
+   */
+
+  public static final int gyroInput = 1;
 
   /*
 	 * Drive style choices.

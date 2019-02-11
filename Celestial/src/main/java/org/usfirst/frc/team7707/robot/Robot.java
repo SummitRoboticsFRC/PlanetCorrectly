@@ -177,6 +177,7 @@ public class Robot extends TimedRobot {
     //m_autonomousCommand = m_chooser.getSelected();
     driveSubsystem.setEnabled(true);
     liftSubsystem.setEnabled(true);
+    ratchetSubsystem.setEnabled(true);
     
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
