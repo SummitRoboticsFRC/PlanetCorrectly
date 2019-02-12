@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
 import org.usfirst.frc.team7707.robot.commands.DefaultDriveCommand;
+import org.usfirst.frc.team7707.robot.commands.PIDMaintainLiftHeight;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
@@ -52,6 +53,7 @@ public class Robot extends TimedRobot {
   private DriveSubsystem driveSubsystem;
   private LiftSubsystem liftSubsystem;
   private RatchetSubsystem ratchetSubsystem;
+  private PIDMaintainLiftHeight autoLiftCommand;
   public static OI oi;
   
   private double initLiftHeight;
@@ -120,10 +122,12 @@ public class Robot extends TimedRobot {
       RobotMap.buttonR
       );
 
-      // () -> driverGamePad.getRawButton(RobotMap.buttonA),
-      // () -> driverGamePad.getRawButton(RobotMap.buttonB),
-      // () -> driverGamePad.getRawButton(RobotMap.buttonX)
-
+    autoLiftCommand = new PIDMaintainLiftHeight(
+      liftSubsystem,
+      () -> driverGamePad.getRawButton(RobotMap.buttonA),
+      () -> driverGamePad.getRawButton(RobotMap.buttonB),
+      () -> driverGamePad.getRawButton(RobotMap.buttonX)
+      );
 
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
@@ -170,7 +174,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Lift Height (inches)", ultrasonic.getRangeInches());
   }
 
   /**

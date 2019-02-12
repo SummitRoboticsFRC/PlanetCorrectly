@@ -48,16 +48,16 @@ public class LiftSubsystem extends Subsystem {
     // this.buttonL2 = buttonL2;
     // this.buttonL3 = buttonL3;
 
-    this.kP = SmartDashboard.getNumber("Lift kP", 0.1);
-    this.kI = SmartDashboard.getNumber("Lift kI", 0.1);
-    this.kD = SmartDashboard.getNumber("Lift kD", 0.1);
-    this.period = SmartDashboard.getNumber("Lift Period", 10);
+    kP = SmartDashboard.getNumber("Lift kP", 0.1);
+    kI = SmartDashboard.getNumber("Lift kI", 0.1);
+    kD = SmartDashboard.getNumber("Lift kD", 0.1);
+    period = SmartDashboard.getNumber("Lift Period", 10);
 
-    this.liftL1 = SmartDashboard.getNumber("Level 1 Height (inches)", 10);
-    this.liftL2 = SmartDashboard.getNumber("Level 2 Height (inches)", 10);
-    this.liftL3 = SmartDashboard.getNumber("Level 3 Height (inches)", 10);
-    this.liftMin = SmartDashboard.getNumber("Min Lift Height (inches)", 0);
-    this.liftMax = SmartDashboard.getNumber("Max Lift Height (inches)", 36);
+    liftL1 = SmartDashboard.getNumber("Level 1 Height (inches)", 10);
+    liftL2 = SmartDashboard.getNumber("Level 2 Height (inches)", 10);
+    liftL3 = SmartDashboard.getNumber("Level 3 Height (inches)", 10);
+    liftMin = SmartDashboard.getNumber("Min Lift Height (inches)", 0);
+    liftMax = SmartDashboard.getNumber("Max Lift Height (inches)", 36);
 
     this.heightControl = new PIDController(kP, kI, kD, ultrasonic, motor);
 
@@ -66,11 +66,25 @@ public class LiftSubsystem extends Subsystem {
 
   public double height() {
     //return ultrasonic.getRangeInches();
-    return SmartDashboard.getNumber("Lift Height (inches)", ultrasonic.getRangeInches());
+    SmartDashboard.putNumber("Lift Height (inches)", ultrasonic.getRangeInches());
+    return ultrasonic.getRangeInches();
   }
 
   public boolean inRange() {
     return height() > liftMin && height() < liftMax;
+  }
+
+  public void smartdashUpdate() {
+    kP = SmartDashboard.getNumber("Lift kP", 0.1);
+    kI = SmartDashboard.getNumber("Lift kI", 0.1);
+    kD = SmartDashboard.getNumber("Lift kD", 0.1);
+    period = SmartDashboard.getNumber("Lift Period", 10);
+
+    liftL1 = SmartDashboard.getNumber("Level 1 Height (inches)", 10);
+    liftL2 = SmartDashboard.getNumber("Level 2 Height (inches)", 10);
+    liftL3 = SmartDashboard.getNumber("Level 3 Height (inches)", 10);
+    liftMin = SmartDashboard.getNumber("Min Lift Height (inches)", 0);
+    liftMax = SmartDashboard.getNumber("Max Lift Height (inches)", 36);
   }
 
   // public int getButton() {
