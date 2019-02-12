@@ -82,8 +82,8 @@ public class RatchetSubsystem extends Subsystem {
   }
 
   public void getButtons() {
-    this.doFrontDescend = driverInput.getRawButton(backDescendButton);
-    this.doBackDescend = driverInput.getRawButton(frontDescendButton);
+    this.doFrontDescend = driverInput.getRawButtonPressed(backDescendButton);
+    this.doBackDescend = driverInput.getRawButtonPressed(frontDescendButton);
   }
 
   public RatchetSubsystem setEnabled(boolean enabled) {
