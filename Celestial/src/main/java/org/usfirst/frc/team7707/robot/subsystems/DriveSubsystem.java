@@ -41,7 +41,6 @@ public void autoDrive(double forwardPower, double turnPower) {
      */
     switch (driveType) {
     case DRIVE_STYLE_ARCADE:
-    default:
       //drive.arcadeDrive(-leftJoystick.getY(), rightJoystick.getX(), true);
       drive.arcadeDrive(left.getAsDouble(), right.getAsDouble(), true);
       break;
@@ -50,6 +49,9 @@ public void autoDrive(double forwardPower, double turnPower) {
       break;
     case DRIVE_STYLE_CURVE:
       drive.curvatureDrive(left.getAsDouble(), right.getAsDouble(), false);
+      break;
+    default:
+      drive.arcadeDrive(left.getAsDouble(), right.getAsDouble(), true);
       break;
     }
   }
