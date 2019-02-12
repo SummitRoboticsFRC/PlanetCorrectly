@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team7707.robot.commands;
 
+import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -30,7 +31,7 @@ public class DefaultLiftCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    liftSubsystem.lift();
+    liftSubsystem.lift(RobotMap.LiftStatus.LIFT_MANUAL);
   }
 
   // Make this return true when this Command no longer needs to run execute()

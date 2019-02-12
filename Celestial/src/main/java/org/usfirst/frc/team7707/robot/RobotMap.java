@@ -78,14 +78,21 @@ public class RobotMap {
    * Ultrasonic sensor
    */
 
-  public static final int ultrasonicInput = 0;
   public static final int ultrasonicOutput = 0;
+  public static final int ultrasonicInput = 0;
 
   /*
    * Gyro
    */
 
   public static final int gyroInput = 1;
+
+  public enum LiftStatus {
+    LIFT_MANUAL,
+    LIFT_LEVEL_1,
+    LIFT_LEVEL_2,
+    LIFT_LEVEL_3
+  }
 
   /*
 	 * Drive style choices.

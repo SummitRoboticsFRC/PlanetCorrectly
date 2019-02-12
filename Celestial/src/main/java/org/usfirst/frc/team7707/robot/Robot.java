@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -47,11 +48,14 @@ public class Robot extends TimedRobot {
   //private Joystick driverInput;
   private DifferentialDrive drive;
   private SpeedController leftController, rightController, liftController, backRatchetController, frontRatchetController;
+  private Ultrasonic ultrasonic;
   private DriveSubsystem driveSubsystem;
   private LiftSubsystem liftSubsystem;
   private RatchetSubsystem ratchetSubsystem;
   public static OI oi;
   
+  private double initLiftHeight;
+
   //Command m_autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -74,6 +78,10 @@ public class Robot extends TimedRobot {
     backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
     frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
 
+    ultrasonic = new Ultrasonic(RobotMap.ultrasonicOutput, RobotMap.ultrasonicInput);
+
+    initLiftHeight = ultrasonic.getRangeInches();
+
     /*
      * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
      * Uncomment the lines and add (or remove) WPI_TalonSRX definitions as necessary
@@ -83,6 +91,7 @@ public class Robot extends TimedRobot {
     //rightController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_RIGHT1_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT2_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT3_CAN_ID));
 
     drive = new DifferentialDrive(leftController, rightController);
+ 
     /*
      * These drive subsystem definitions are defining how the driver's controlls affect the motor.
      * You need ONE of these uncommented, so depending on which style you want chose the appropriate line.
@@ -97,8 +106,9 @@ public class Robot extends TimedRobot {
 
     liftSubsystem = new LiftSubsystem(
       () -> 0.4*driverGamePad.getRawAxis(RobotMap.rightAxisY), 
-      liftController
-      );
+      liftController,
+      ultrasonic
+    );
     
     ratchetSubsystem = new RatchetSubsystem(
       () -> driverGamePad.getRawAxis(RobotMap.leftTrigger),
@@ -109,6 +119,10 @@ public class Robot extends TimedRobot {
       RobotMap.buttonL,
       RobotMap.buttonR
       );
+
+      // () -> driverGamePad.getRawButton(RobotMap.buttonA),
+      // () -> driverGamePad.getRawButton(RobotMap.buttonB),
+      // () -> driverGamePad.getRawButton(RobotMap.buttonX)
 
 
     /*
@@ -124,8 +138,19 @@ public class Robot extends TimedRobot {
     oi = new OI(driverGamePad);
     //chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
     // chooser.addOption("My Auto", new MyAutoCommand());
-    //SmartDashboard.putData("Auto mode", chooser);
+    SmartDashboard.putNumber("Lift kP", 0.1);
+    SmartDashboard.putNumber("Lift kI", 0.1);
+    SmartDashboard.putNumber("Lift kD", 0.1);
+    SmartDashboard.putNumber("Lift Period", 10);
 
+    SmartDashboard.putNumber("Lift Height (inches)", initLiftHeight);
+    
+    SmartDashboard.putNumber("Level 1 Height (inches)", 10);
+    SmartDashboard.putNumber("Level 2 Height (inches)", 10);
+    SmartDashboard.putNumber("Level 3 Height (inches)", 10);
+    SmartDashboard.putNumber("Min Lift Height (inches)", 0);
+    SmartDashboard.putNumber("Max Lift Height (inches)", 36);
+    
     /*
      * Start a camera server - this allows you to have a camera mounted on your robot and the image being shown on the drivers startion.
      * https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/669166-using-the-cameraserver-on-the-roborio for details.
@@ -145,6 +170,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Lift Height (inches)", ultrasonic.getRangeInches());
   }
 
   /**
@@ -178,7 +204,7 @@ public class Robot extends TimedRobot {
     driveSubsystem.setEnabled(true);
     liftSubsystem.setEnabled(true);
     ratchetSubsystem.setEnabled(true);
-    
+
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
