@@ -32,6 +32,12 @@ public class RatchetCommand extends Command {
   @Override
   protected void execute() {
     ratchetSubsystem.lift();
+    if (ratchetSubsystem.doBackDescend) {
+      ratchetSubsystem.backDescend();
+    }
+    if (ratchetSubsystem.doFrontDescend) {
+      ratchetSubsystem.frontDescend();
+    }
 /*    ratchetSubsystem.getButtons();
     if (ratchetSubsystem.doBackDescend) {
       ratchetSubsystem.backDescend();

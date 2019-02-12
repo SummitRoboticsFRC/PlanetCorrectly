@@ -57,7 +57,7 @@ public class RatchetSubsystem extends Subsystem {
         frontMotor.set(1.0);
     //  frontMotor.set(-1.0);
     } else {
-    //  backMotor.set(0);
+      backMotor.set(0);
       frontMotor.set(0);
     }
     
@@ -66,11 +66,11 @@ public class RatchetSubsystem extends Subsystem {
   }
 
   public void backDescend() {
-    backMotor.set(-1.0);
+    backMotor.set(-0.5);
   }
   
   public void frontDescend() {
-    frontMotor.set(-1.0);
+    frontMotor.set(-0.5);
   }
 
   public void getButtons() {
