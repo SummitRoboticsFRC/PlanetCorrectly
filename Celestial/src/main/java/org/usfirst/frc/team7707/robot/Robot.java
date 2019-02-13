@@ -113,13 +113,9 @@ public class Robot extends TimedRobot {
     );
     
     ratchetSubsystem = new RatchetSubsystem(
-      () -> driverGamePad.getRawAxis(RobotMap.leftTrigger),
-      () -> driverGamePad.getRawAxis(RobotMap.rightTrigger),
       backRatchetController,
       frontRatchetController,
-      driverGamePad,
-      RobotMap.buttonL,
-      RobotMap.buttonR
+      driverGamePad
       );
 
     autoLiftCommand = new PIDMaintainLiftHeight(

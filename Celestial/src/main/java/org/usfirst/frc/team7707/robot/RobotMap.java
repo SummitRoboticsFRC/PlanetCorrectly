@@ -102,7 +102,13 @@ public class RobotMap {
 		DRIVE_STYLE_TANK,			// use tank drive - left joystick = left wheels, right joystick = right wheels.
 		DRIVE_STYLE_CURVE 			// use curve drive
 	}
-	public static final DriveStyle DRIVE_STYLE = DriveStyle.DRIVE_STYLE_TANK; // XXXXX CHOICE XXXXX pick your drive style here.
+  public static final DriveStyle DRIVE_STYLE = DriveStyle.DRIVE_STYLE_TANK; // XXXXX CHOICE XXXXX pick your drive style here.
+  
+  /*
+   * Ratchet lift speed
+   */
+  public static final double ratchetBackMotorSpeed = 1.0;
+  public static final double ratchetFrontMotorSpeed = 1.0;
 
   
 
