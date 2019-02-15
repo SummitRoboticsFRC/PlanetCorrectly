@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
-import edu.wpi.first.wpilibj.Ultrasonic;
+//import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   //private Joystick driverInput;
   private DifferentialDrive drive;
   private SpeedController leftController, rightController, liftController, backRatchetController, frontRatchetController;
-  private Ultrasonic ultrasonic;
+  //private Ultrasonic ultrasonic;
   private DriveSubsystem driveSubsystem;
   private LiftSubsystem liftSubsystem;
   private RatchetSubsystem ratchetSubsystem;
@@ -80,9 +80,9 @@ public class Robot extends TimedRobot {
     backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
     frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
 
-    ultrasonic = new Ultrasonic(RobotMap.ultrasonicOutput, RobotMap.ultrasonicInput);
+    //ultrasonic = new Ultrasonic(RobotMap.ultrasonicOutput, RobotMap.ultrasonicInput);
 
-    initLiftHeight = ultrasonic.getRangeInches();
+    //initLiftHeight = ultrasonic.getRangeInches();
 
     /*
      * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
@@ -108,8 +108,9 @@ public class Robot extends TimedRobot {
 
     liftSubsystem = new LiftSubsystem(
       () -> 0.4*driverGamePad.getRawAxis(RobotMap.rightAxisY), 
-      liftController,
-      ultrasonic
+      liftController
+      //,
+      //ultrasonic
     );
     
     ratchetSubsystem = new RatchetSubsystem(
@@ -143,7 +144,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lift kD", 0.1);
     SmartDashboard.putNumber("Lift Period", 10);
 
-    SmartDashboard.putNumber("Lift Height (inches)", initLiftHeight);
+    //SmartDashboard.putNumber("Lift Height (inches)", initLiftHeight);
     
     SmartDashboard.putNumber("Level 1 Height (inches)", 10);
     SmartDashboard.putNumber("Level 2 Height (inches)", 10);
@@ -229,6 +230,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    driveSubsystem.setEnabled(true);
+    liftSubsystem.setEnabled(true);
+    ratchetSubsystem.setEnabled(true);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

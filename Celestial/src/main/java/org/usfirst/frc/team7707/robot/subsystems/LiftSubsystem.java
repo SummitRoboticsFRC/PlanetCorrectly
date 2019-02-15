@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jdk.dynalink.beans.StaticClass;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
+//import edu.wpi.first.wpilibj.Ultrasonic;
+//import edu.wpi.first.wpilibj.PIDController;
+//import edu.wpi.first.wpilibj.PIDSource;
 
 /**
  * Add your docs here.
@@ -31,18 +31,20 @@ public class LiftSubsystem extends Subsystem {
 
   private DoubleSupplier speed;
   private SpeedController motor;
-  private Ultrasonic ultrasonic;
+  //private Ultrasonic ultrasonic;
   private boolean enabled;
   //private BooleanSupplier buttonL1, buttonL2, buttonL3;
 
   public double kP, kI, kD, period, liftL1, liftL2, liftL3, liftMin, liftMax;
 
-  private PIDController heightControl;
+  //private PIDController heightControl;
 
-  public LiftSubsystem(DoubleSupplier speed, SpeedController motor, Ultrasonic ultrasonic) {
+  public LiftSubsystem(DoubleSupplier speed, SpeedController motor
+  //, Ultrasonic ultrasonic
+  ) {
     this.speed = speed;
     this.motor = motor;
-    this.ultrasonic = ultrasonic;
+    //this.ultrasonic = ultrasonic;
 
     // this.buttonL1 = buttonL1;
     // this.buttonL2 = buttonL2;
@@ -59,19 +61,21 @@ public class LiftSubsystem extends Subsystem {
     liftMin = SmartDashboard.getNumber("Min Lift Height (inches)", 0);
     liftMax = SmartDashboard.getNumber("Max Lift Height (inches)", 36);
 
-    this.heightControl = new PIDController(kP, kI, kD, ultrasonic, motor);
+    //this.heightControl = new PIDController(kP, kI, kD, ultrasonic, motor);
 
     this.enabled = false;
   }
 
   public double height() {
     //return ultrasonic.getRangeInches();
-    SmartDashboard.putNumber("Lift Height (inches)", ultrasonic.getRangeInches());
-    return ultrasonic.getRangeInches();
+    //SmartDashboard.putNumber("Lift Height (inches)", ultrasonic.getRangeInches());
+    //return ultrasonic.getRangeInches();
+    return 0;
   }
 
   public boolean inRange() {
-    return height() > liftMin && height() < liftMax;
+    //return height() > liftMin && height() < liftMax;
+    return true;
   }
 
   public void smartdashUpdate() {
@@ -109,16 +113,16 @@ public class LiftSubsystem extends Subsystem {
         }
         break;
       case LIFT_LEVEL_1:
-        heightControl.enable();
-        heightControl.setSetpoint(liftL1);
+        //heightControl.enable();
+        //heightControl.setSetpoint(liftL1);
         break;
       case LIFT_LEVEL_2:
-        heightControl.enable();
-        heightControl.setSetpoint(liftL2);
+        //heightControl.enable();
+        //heightControl.setSetpoint(liftL2);
         break;
       case LIFT_LEVEL_3:
-        heightControl.enable();
-        heightControl.setSetpoint(liftL3);
+        //heightControl.enable();
+        //heightControl.setSetpoint(liftL3);
         break;
     }
   }
