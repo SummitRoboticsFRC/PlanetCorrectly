@@ -19,18 +19,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
-//import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
-import org.usfirst.frc.team7707.robot.commands.DefaultDriveCommand;
-import org.usfirst.frc.team7707.robot.commands.PIDMaintainLiftHeight;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
@@ -46,20 +43,16 @@ import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
  */
 public class Robot extends TimedRobot {
   private Joystick driverGamePad;
-  //private Joystick driverInput;
   private DifferentialDrive drive;
   private SpeedController leftController, rightController, liftController, backRatchetController, frontRatchetController;
-  //private Ultrasonic ultrasonic;
   private DriveSubsystem driveSubsystem;
   private LiftSubsystem liftSubsystem;
   private RatchetSubsystem ratchetSubsystem;
-  private PIDMaintainLiftHeight autoLiftCommand;
-  public static OI oi;
-  
-  private double initLiftHeight;
+  private Joystick driverInput;
+  public static OI m_oi;
 
-  //Command m_autonomousCommand;
-  SendableChooser<Command> chooser = new SendableChooser<>();
+  Command m_autonomousCommand;
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -67,7 +60,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    driverGamePad = new Joystick(RobotMap.DRIVER_GAMEPAD);
+    driverGamePad = new Joystick(0);
 
     /*
      * These two lines are for one or move PWM style drive controllers.
@@ -80,10 +73,6 @@ public class Robot extends TimedRobot {
     backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
     frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
 
-    //ultrasonic = new Ultrasonic(RobotMap.ultrasonicOutput, RobotMap.ultrasonicInput);
-
-    //initLiftHeight = ultrasonic.getRangeInches();
-
     /*
      * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
      * Uncomment the lines and add (or remove) WPI_TalonSRX definitions as necessary
@@ -93,18 +82,13 @@ public class Robot extends TimedRobot {
     //rightController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_RIGHT1_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT2_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT3_CAN_ID));
 
     drive = new DifferentialDrive(leftController, rightController);
- 
     /*
      * These drive subsystem definitions are defining how the driver's controlls affect the motor.
      * You need ONE of these uncommented, so depending on which style you want chose the appropriate line.
      */
     //driveSubsystem = new DriveSubsystem(driverGamePad::getY, (double) () -> driverInput.getRawAxis(4), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE);   // single flight stick with twist for turning
-    //driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
-    driveSubsystem = new DriveSubsystem(
-      () -> -0.6*driverGamePad.getRawAxis(RobotMap.leftAxisY),  
-      () -> 0.6*driverGamePad.getRawAxis(RobotMap.leftAxisX), drive, 
-      RobotMap.DriveStyle.DRIVE_STYLE_ARCADE
-      ); // single gamepad using thumb sticks as tank control
+    driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
+    driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(1), () -> 0.6*driverInput.getRawAxis(0), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
 
     liftSubsystem = new LiftSubsystem(
       () -> 0.4*driverGamePad.getRawAxis(RobotMap.rightAxisY), 
@@ -113,18 +97,7 @@ public class Robot extends TimedRobot {
       //ultrasonic
     );
     
-    ratchetSubsystem = new RatchetSubsystem(
-      backRatchetController,
-      frontRatchetController,
-      driverGamePad
-      );
-
-    autoLiftCommand = new PIDMaintainLiftHeight(
-      liftSubsystem,
-      () -> driverGamePad.getRawButton(RobotMap.buttonA),
-      () -> driverGamePad.getRawButton(RobotMap.buttonB),
-      () -> driverGamePad.getRawButton(RobotMap.buttonX)
-      );
+    ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverGamePad);
 
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
@@ -136,22 +109,11 @@ public class Robot extends TimedRobot {
     //widgetSubsystem = new WidgetSubsystem(new VictorSP(RobotMap.WIDGET_CONTROLLER_ID));
 
 
-    oi = new OI(driverGamePad);
-    //chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
+    m_oi = new OI(driverGamePad);
+    m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putNumber("Lift kP", 0.1);
-    SmartDashboard.putNumber("Lift kI", 0.1);
-    SmartDashboard.putNumber("Lift kD", 0.1);
-    SmartDashboard.putNumber("Lift Period", 10);
+    SmartDashboard.putData("Auto mode", m_chooser);
 
-    //SmartDashboard.putNumber("Lift Height (inches)", initLiftHeight);
-    
-    SmartDashboard.putNumber("Level 1 Height (inches)", 10);
-    SmartDashboard.putNumber("Level 2 Height (inches)", 10);
-    SmartDashboard.putNumber("Level 3 Height (inches)", 10);
-    SmartDashboard.putNumber("Min Lift Height (inches)", 0);
-    SmartDashboard.putNumber("Max Lift Height (inches)", 36);
-    
     /*
      * Start a camera server - this allows you to have a camera mounted on your robot and the image being shown on the drivers startion.
      * https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/669166-using-the-cameraserver-on-the-roborio for details.
@@ -200,10 +162,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_chooser.getSelected();
+    m_autonomousCommand = m_chooser.getSelected();
     driveSubsystem.setEnabled(true);
-    liftSubsystem.setEnabled(true);
-    ratchetSubsystem.setEnabled(true);
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -213,11 +173,9 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    /*
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
-    */
   }
 
   /**
@@ -230,19 +188,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    driveSubsystem.setEnabled(true);
-    liftSubsystem.setEnabled(true);
-    ratchetSubsystem.setEnabled(true);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    /*
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
     driveSubsystem.setEnabled(true);
-    */
   }
 
   /**

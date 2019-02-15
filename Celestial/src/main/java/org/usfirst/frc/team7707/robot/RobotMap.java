@@ -7,9 +7,6 @@
 
 package org.usfirst.frc.team7707.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
-
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -41,9 +38,6 @@ public class RobotMap {
   // public static final int DRIVE_RIGHT2_CAN_ID = 6;
   // public static final int DRIVE_RIGHT3_CAN_ID = 7;
 
-  /*
-   * Motor Controller PWM/CAN IDs
-   */
 	public static final int frontRightMotor = 0;
 	public static final int backRightMotor = 1; 	
 	public static final int frontLeftMotor = 2;
@@ -51,6 +45,8 @@ public class RobotMap {
   public static final int liftMotor = 4;
   public static final int backRatchetMotor = 5;
   public static final int frontRatchetMotor = 6;
+
+  
   
   /*
    * Controller Axes/Buttons
@@ -82,6 +78,13 @@ public class RobotMap {
   public static final int ultrasonicInput = 0;
 
   /*
+   * Ratchet lift speed
+   */
+  public static final double ratchetBackMotorSpeed = 1.0;
+  public static final double ratchetFrontMotorSpeed = 1.0;
+
+
+  /*
    * Gyro
    */
 
@@ -94,7 +97,7 @@ public class RobotMap {
     LIFT_LEVEL_3
   }
 
-  /*
+	/*
 	 * Drive style choices.
 	 */
 	public enum DriveStyle {
@@ -102,15 +105,8 @@ public class RobotMap {
 		DRIVE_STYLE_TANK,			// use tank drive - left joystick = left wheels, right joystick = right wheels.
 		DRIVE_STYLE_CURVE 			// use curve drive
 	}
-  public static final DriveStyle DRIVE_STYLE = DriveStyle.DRIVE_STYLE_TANK; // XXXXX CHOICE XXXXX pick your drive style here.
-  
-  /*
-   * Ratchet lift speed
-   */
-  public static final double ratchetBackMotorSpeed = 1.0;
-  public static final double ratchetFrontMotorSpeed = 1.0;
+	public static final DriveStyle DRIVE_STYLE = DriveStyle.DRIVE_STYLE_TANK; // XXXXX CHOICE XXXXX pick your drive style here.
 
-  
 
 	// Widget subsystem
 	// The demo robot controls a widget through a motor and speed controller (talon or whatever!)

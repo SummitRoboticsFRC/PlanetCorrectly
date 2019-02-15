@@ -23,30 +23,6 @@ import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
-    
-  public static boolean buttonAPressed;
-  public static boolean buttonBPressed;
-  public static boolean buttonXPressed;
-  public static boolean buttonYPressed;
-  public static boolean buttonLPressed;
-  public static boolean buttonRPressed;
-  public static boolean buttonBackPressed;
-  public static boolean buttonStartPressed;
-  public static boolean buttonLeftThumbPressed;
-  public static boolean buttonRightThumbPressed;
-
-  public static double leftX;
-  public static double leftY;
-  public static double rightTriggerPressure;
-  public static double leftTriggerPressure;
-  public static double rightX;
-  public static double rightY;
-
-  public static boolean rightTriggerPressed;
-  public static boolean leftTriggerPressed;
-
-
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
@@ -78,26 +54,7 @@ public class OI {
   public OI(
 			Joystick driverGamePad
 	) {
-
-      buttonAPressed = driverGamePad.getRawButton(RobotMap.buttonA);
-      buttonBPressed = driverGamePad.getRawButton(RobotMap.buttonB);
-      buttonXPressed = driverGamePad.getRawButton(RobotMap.buttonX);
-      buttonYPressed = driverGamePad.getRawButton(RobotMap.buttonY);
-      buttonLPressed = driverGamePad.getRawButton(RobotMap.buttonL);
-      buttonRPressed = driverGamePad.getRawButton(RobotMap.buttonR);
-      buttonBackPressed = driverGamePad.getRawButton(RobotMap.buttonBack);
-      buttonStartPressed = driverGamePad.getRawButton(RobotMap.buttonStart);
       
-      leftX = driverGamePad.getRawAxis(RobotMap.leftAxisX);
-      leftY = driverGamePad.getRawAxis(RobotMap.leftAxisY);
-      leftTriggerPressure = driverGamePad.getRawAxis(RobotMap.leftTrigger);
-      rightTriggerPressure = driverGamePad.getRawAxis(RobotMap.rightTrigger);
-      rightX = driverGamePad.getRawAxis(RobotMap.rightAxisX);
-      rightY = driverGamePad.getRawAxis(RobotMap.rightAxisY);
-
-      leftTriggerPressed = leftTriggerPressure > 0.5;
-      rightTriggerPressed = rightTriggerPressure > 0.5;
-
 		/*
 		 * The trigger buttons on the joysticks move the widget up and down whilst held.
 		 * releasing a button stops the widget movement.

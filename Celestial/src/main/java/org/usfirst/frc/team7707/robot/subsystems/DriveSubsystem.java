@@ -40,10 +40,8 @@ public void autoDrive(double forwardPower, double turnPower) {
      *  If you are using a gamepad as the driver's controller then you will want to use one joystick, and read the two thumb sticks from it instead.
      */
     switch (driveType) {
-    default:
-      drive.arcadeDrive(left.getAsDouble(), right.getAsDouble(), true);
-      break;
     case DRIVE_STYLE_ARCADE:
+    default:
       //drive.arcadeDrive(-leftJoystick.getY(), rightJoystick.getX(), true);
       drive.arcadeDrive(left.getAsDouble(), right.getAsDouble(), true);
       break;
