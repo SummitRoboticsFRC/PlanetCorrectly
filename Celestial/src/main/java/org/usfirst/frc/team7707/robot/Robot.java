@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -48,14 +49,15 @@ import org.usfirst.frc.team7707.robot.subsystems.VisionSubsystem;
 public class Robot extends TimedRobot {
   private XboxController driverGamePad;
   private DifferentialDrive drive;
-  private SpeedController leftController, rightController, backRatchetController, frontRatchetController;
+  private SpeedController leftController, rightController, backRatchetController, frontRatchetController, liftController;
+  private Ultrasonic ultrasonic;
   private DriveSubsystem driveSubsystem;
   //private PneumaticsSubsystem pneumaticsSubsystem;
   private LiftSubsystem liftSubsystem;
   private RatchetSubsystem ratchetSubsystem;
-  private VictorSP liftController;
   private Joystick driverInput;
   private VisionSubsystem visionSubsystem; 
+  private double initLiftHeight;
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -78,6 +80,10 @@ public class Robot extends TimedRobot {
 
     backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
     frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
+    
+    ultrasonic = new Ultrasonic(RobotMap.ultrasonicOutput, RobotMap.ultrasonicInput);
+    initLiftHeight = ultrasonic.getRangeInches();
+
 
     /*
      * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
@@ -118,6 +124,18 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putNumber("Lift kP", 0.1);
+    SmartDashboard.putNumber("Lift kI", 0.1);
+    SmartDashboard.putNumber("Lift kD", 0.1);
+    SmartDashboard.putNumber("Lift Period", 10);
+
+    SmartDashboard.putNumber("Lift Height (inches)", initLiftHeight);
+    
+    SmartDashboard.putNumber("Level 1 Height (inches)", 10);
+    SmartDashboard.putNumber("Level 2 Height (inches)", 10);
+    SmartDashboard.putNumber("Level 3 Height (inches)", 10);
+    SmartDashboard.putNumber("Min Lift Height (inches)", 0);
+    SmartDashboard.putNumber("Max Lift Height (inches)", 36);
 
     /*
      * Start a camera server - this allows you to have a camera mounted on your robot and the image being shown on the drivers startion.
@@ -138,6 +156,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Lift Height (inches)", ultrasonic.getRangeInches());
   }
 
   /**
