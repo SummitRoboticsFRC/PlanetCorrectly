@@ -24,7 +24,7 @@ public class VisionSubsystem extends Subsystem {
   NetworkTableEntry ty;
   final double CAMERA_Y_ANGLE=0.0;  
   final double TARGET_HEIGHT = 79.0956;
-  double cameraHeight;
+  double cameraHeight = 58.5; //temporary height
   double x; 
   double y; 
   double distanceToTarg; 
