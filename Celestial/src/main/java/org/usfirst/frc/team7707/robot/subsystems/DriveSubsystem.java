@@ -45,8 +45,8 @@ public void autoDrive(double forwardPower, double turnPower) {
     // Threshold controller joystick so don't activite when commands too small
     double leftAxis = left.getAsDouble();
     double rightAxis = right.getAsDouble();
-    if (leftAxis < 0.1) { leftAxis = 0.0; }
-    if (rightAxis < 0.1) { rightAxis = 0.0; }
+    if (leftAxis < 0.1 && leftAxis > -0.1) { leftAxis = 0.0; }
+    if (rightAxis < 0.1 && rightAxis > -0.1) { rightAxis = 0.0; }
 
     switch (driveType) {
     case DRIVE_STYLE_ARCADE:
