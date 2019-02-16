@@ -65,6 +65,15 @@ public class RobotMap {
   public static final int rightAxisX = 4;
   public static final int rightAxisY = 5;
 
+	
+  /*
+   * Ultrasonic sensor
+   */
+
+  public static final int ultrasonicOutput = 0;
+  public static final int ultrasonicInput = 0;
+
+	
 
 	/*
 	 * Drive style choices.
