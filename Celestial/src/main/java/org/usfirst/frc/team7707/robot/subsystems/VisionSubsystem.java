@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.*;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import java.lang.Math;
+import org.usfirst.frc.team7707.robot.commands.VisionCommand;
 /**
  * Add your docs here.
  */
@@ -49,5 +50,6 @@ public class VisionSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new VisionCommand(this));
   }
 }

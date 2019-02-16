@@ -36,6 +36,7 @@ import org.usfirst.frc.team7707.robot.subsystems.RatchetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team7707.robot.RobotMap;
+import org.usfirst.frc.team7707.robot.subsystems.VisionSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,6 +55,7 @@ public class Robot extends TimedRobot {
   private RatchetSubsystem ratchetSubsystem;
   private VictorSP liftController;
   private Joystick driverInput;
+  private VisionSubsystem visionSubsystem; 
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -99,7 +101,7 @@ public class Robot extends TimedRobot {
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), liftController);
 
     ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverInput);
-
+    visionSubsystem = new VisionSubsystem();
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
       *  We create a speed controller for the motor, and this needs to be to the subsystem to be manipulate.
