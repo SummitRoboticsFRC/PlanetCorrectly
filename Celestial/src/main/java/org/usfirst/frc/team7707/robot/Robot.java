@@ -32,6 +32,7 @@ import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.PneumaticsSubsystem;
+import org.usfirst.frc.team7707.robot.subsystems.RatchetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team7707.robot.RobotMap;
@@ -46,10 +47,11 @@ import org.usfirst.frc.team7707.robot.RobotMap;
 public class Robot extends TimedRobot {
   private XboxController driverGamePad;
   private DifferentialDrive drive;
-  private SpeedController leftController, rightController;
+  private SpeedController leftController, rightController, backRatchetController, frontRatchetController;
   private DriveSubsystem driveSubsystem;
   private PneumaticsSubsystem pneumaticsSubsystem;
   private LiftSubsystem liftSubsystem;
+  private RatchetSubsystem ratchetSubsystem;
   private VictorSP liftController;
   private Joystick driverInput;
   public static OI m_oi;
@@ -72,6 +74,9 @@ public class Robot extends TimedRobot {
     leftController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontLeftMotor), new PWMVictorSPX(RobotMap.backLeftMotor));
     rightController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontRightMotor), new PWMVictorSPX(RobotMap.backRightMotor));
 
+    backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
+    frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
+
     /*
      * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
      * Uncomment the lines and add (or remove) WPI_TalonSRX definitions as necessary
@@ -92,6 +97,8 @@ public class Robot extends TimedRobot {
     pneumaticsSubsystem = new PneumaticsSubsystem();
     liftController = new VictorSP(RobotMap.liftMotor);
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), liftController);
+
+    ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverInput);
 
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
