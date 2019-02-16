@@ -21,16 +21,20 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.PneumaticsSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
+import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
+import org.usfirst.frc.team7707.robot.RobotMap;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -45,6 +49,8 @@ public class Robot extends TimedRobot {
   private SpeedController leftController, rightController;
   private DriveSubsystem driveSubsystem;
   private PneumaticsSubsystem pneumaticsSubsystem;
+  private LiftSubsystem liftSubsystem;
+  private VictorSP liftController;
   private Joystick driverInput;
   public static OI m_oi;
 
@@ -84,6 +90,8 @@ public class Robot extends TimedRobot {
     driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(1), () -> 0.6*driverInput.getRawAxis(0), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
 
     pneumaticsSubsystem = new PneumaticsSubsystem();
+    liftController = new VictorSP(RobotMap.liftMotor);
+    liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), liftController);
 
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.

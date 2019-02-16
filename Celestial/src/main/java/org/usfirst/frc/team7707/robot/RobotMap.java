@@ -41,7 +41,30 @@ public class RobotMap {
 	public static final int frontRightMotor = 0;
 	public static final int backRightMotor = 1; 	
 	public static final int frontLeftMotor = 2;
-	public static final int backLeftMotor = 3;
+  public static final int backLeftMotor = 3;
+  
+  public static final int liftMotor = 4;
+
+  // Controller Button Mappings
+  public static final int buttonA = 1;
+  public static final int buttonB = 2;
+  public static final int buttonX = 3;
+  public static final int buttonY = 4;
+  public static final int buttonL = 5;
+  public static final int buttonR = 6;
+  public static final int buttonBack = 7;
+  public static final int buttonStart = 8;
+  public static final int buttonLThumb = 9;
+  public static final int buttonRightThumb = 10;
+
+  public static final int leftAxisX = 0;
+  public static final int leftAxisY = 1;
+  public static final int leftTrigger = 2;
+  public static final int rightTrigger = 3;
+  public static final int rightAxisX = 4;
+  public static final int rightAxisY = 5;
+
+
 	/*
 	 * Drive style choices.
 	 */
