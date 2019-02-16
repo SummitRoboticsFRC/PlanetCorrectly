@@ -94,8 +94,8 @@ public class Robot extends TimedRobot {
      */
     //driveSubsystem = new DriveSubsystem(driverGamePad::getY, (double) () -> driverInput.getRawAxis(4), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE);   // single flight stick with twist for turning
     driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
-    driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(1), 
-                                        () -> 0.6*driverInput.getRawAxis(0), 
+    driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(RobotMap.leftAxisY), 
+                                        () -> 0.6*driverInput.getRawAxis(RobotMap.leftAxisX), 
                                         drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
 
     //pneumaticsSubsystem = new PneumaticsSubsystem();

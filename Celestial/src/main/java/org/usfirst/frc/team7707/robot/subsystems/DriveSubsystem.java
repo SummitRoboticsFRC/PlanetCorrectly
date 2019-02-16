@@ -4,6 +4,8 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.RobotMap.DriveStyle;
 import org.usfirst.frc.team7707.robot.commands.DefaultDriveCommand;
@@ -52,6 +54,9 @@ public void autoDrive(double forwardPower, double turnPower) {
       drive.curvatureDrive(left.getAsDouble(), right.getAsDouble(), false);
       break;
     }
+
+    SmartDashboard.putNumber("Left", left.getAsDouble());
+    SmartDashboard.putNumber("Right", right.getAsDouble());
   }
 
   public void driveStop() {
