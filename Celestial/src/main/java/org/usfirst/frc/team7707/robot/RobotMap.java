@@ -41,7 +41,10 @@ public class RobotMap {
 	public static final int frontRightMotor = 0;
 	public static final int backRightMotor = 1; 	
 	public static final int frontLeftMotor = 2;
-	public static final int backLeftMotor = 3;
+  public static final int backLeftMotor = 3;
+  
+  public static final int liftMotor = 4;
+
 	/*
 	 * Drive style choices.
 	 */
