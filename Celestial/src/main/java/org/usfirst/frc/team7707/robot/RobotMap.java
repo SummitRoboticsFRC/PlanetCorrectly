@@ -68,7 +68,13 @@ public class RobotMap {
   public static final int rightAxisX = 4;
   public static final int rightAxisY = 5;
 
-	
+  public enum LiftStatus {
+    LIFT_MANUAL,
+    LIFT_LEVEL_1,
+    LIFT_LEVEL_2,
+    LIFT_LEVEL_3
+  }
+
   /*
    * Ultrasonic sensor
    */

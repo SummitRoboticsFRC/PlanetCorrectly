@@ -11,10 +11,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.usfirst.frc.team7707.robot.Robot;
 import org.usfirst.frc.team7707.robot.RobotMap;
+import org.usfirst.frc.team7707.robot.RobotMap.LiftStatus;
 import org.usfirst.frc.team7707.robot.commands.DefaultLiftCommand;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.SpeedController;
-
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.function.DoubleSupplier;
+import java.util.function.BooleanSupplier;
 
 /**
  * Add your docs here.
@@ -24,21 +28,89 @@ public class LiftSubsystem extends Subsystem {
   // here. Call these from Commands.
 
   private DoubleSupplier speed;
+  private BooleanSupplier buttonL1, buttonL2, buttonL3;
+  private double kP, kI, kD, period, level1, level2, level3, min, max;
   private SpeedController motor;
+  private Ultrasonic ultrasonic;
+  private PIDController heightController;
   private boolean enabled;
 
-  public LiftSubsystem(DoubleSupplier speed, SpeedController motor) {
+  public LiftSubsystem(DoubleSupplier speed, SpeedController motor, Ultrasonic ultrasonic, BooleanSupplier buttonL1, BooleanSupplier buttonL2, BooleanSupplier buttonL3) {
 
     this.speed = speed;
     this.motor = motor;
-    this.enabled = false;
+    this.ultrasonic = ultrasonic;
+    this.buttonL1 = buttonL1;
+    this.buttonL2 = buttonL2;
+    this.buttonL3 = buttonL3;
 
+    this.kP = SmartDashboard.getNumber("Lift kP", 0.1);
+    this.kI = SmartDashboard.getNumber("Lift kI", 0.1);
+    this.kD = SmartDashboard.getNumber("Lift kD", 0.1);
+    this.period = SmartDashboard.getNumber("Lift Period", 10);
+    
+    this.level1 = SmartDashboard.getNumber("Level 1 Height (inches)", 10);
+    this.level2 = SmartDashboard.getNumber("Level 2 Height (inches)", 10);
+    this.level3 = SmartDashboard.getNumber("Level 3 Height (inches)", 10);
+    this.min = SmartDashboard.getNumber("Min Lift Height (inches)", 0);
+    this.max = SmartDashboard.getNumber("Max Lift Height (inches)", 36);
+
+    this.heightController = new PIDController(kP, kI, kD, ultrasonic, motor);
+
+    heightController.enable();
+
+    this.enabled = false;
   }
 
-  public void lift() {
+  public double height() {
+    return ultrasonic.getRangeInches();
+  }
 
-    motor.set(speed.getAsDouble());
+  public boolean inRange() {
+    return height() > min && height() < max;
+  }
 
+  public void updateValues() {
+    kP = SmartDashboard.getNumber("Lift kP", 0.1);
+    kI = SmartDashboard.getNumber("Lift kI", 0.1);
+    kD = SmartDashboard.getNumber("Lift kD", 0.1);
+    period = SmartDashboard.getNumber("Lift Period", 10);
+
+    SmartDashboard.putNumber("Lift Height (inches)", height());
+    
+    level1 = SmartDashboard.getNumber("Level 1 Height (inches)", 10);
+    level2 = SmartDashboard.getNumber("Level 2 Height (inches)", 10);
+    level3 = SmartDashboard.getNumber("Level 3 Height (inches)", 10);
+    min = SmartDashboard.getNumber("Min Lift Height (inches)", 0);
+    max = SmartDashboard.getNumber("Max Lift Height (inches)", 36);
+  }
+
+  public void lift(RobotMap.LiftStatus status) {
+
+    this.updateValues();
+
+    switch (status){
+
+      case LIFT_MANUAL:
+      default:
+        while(inRange()){
+          motor.set(speed.getAsDouble());
+        }
+        break;
+
+      case LIFT_LEVEL_1:
+        heightController.setSetpoint(level1);
+        break;
+
+      case LIFT_LEVEL_2:
+        heightController.setSetpoint(level2);
+        break;
+
+      case LIFT_LEVEL_3:
+        heightController.setSetpoint(level3);
+        break;
+
+    }
   }
 
   public LiftSubsystem setEnabled(boolean enabled) {
@@ -53,6 +125,6 @@ public class LiftSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new DefaultLiftCommand(this));
+    setDefaultCommand(new DefaultLiftCommand(this, speed, buttonL1, buttonL2, buttonL3));
   }
 }
