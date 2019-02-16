@@ -54,6 +54,10 @@ public void autoDrive(double forwardPower, double turnPower) {
     }
   }
 
+  public void driveStop() {
+    drive.tankDrive(0.0, 0.0, true);
+  }
+
   public DriveSubsystem setEnabled(boolean enabled) {
     this.enabled = enabled;
     return this;
