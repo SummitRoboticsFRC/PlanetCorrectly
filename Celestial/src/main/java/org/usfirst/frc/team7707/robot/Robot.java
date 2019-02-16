@@ -36,6 +36,7 @@ import org.usfirst.frc.team7707.robot.subsystems.RatchetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team7707.robot.RobotMap;
+import org.usfirst.frc.team7707.robot.subsystems.VisionSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,6 +55,7 @@ public class Robot extends TimedRobot {
   private RatchetSubsystem ratchetSubsystem;
   private VictorSP liftController;
   private Joystick driverInput;
+  private VisionSubsystem visionSubsystem; 
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -92,14 +94,16 @@ public class Robot extends TimedRobot {
      */
     //driveSubsystem = new DriveSubsystem(driverGamePad::getY, (double) () -> driverInput.getRawAxis(4), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE);   // single flight stick with twist for turning
     driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
-    driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(1), () -> 0.6*driverInput.getRawAxis(0), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
+    driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(1), 
+                                        () -> 0.6*driverInput.getRawAxis(0), 
+                                        drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
 
     //pneumaticsSubsystem = new PneumaticsSubsystem();
     liftController = new VictorSP(RobotMap.liftMotor);
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), liftController);
 
     ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverInput);
-
+    visionSubsystem = new VisionSubsystem();
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
       *  We create a speed controller for the motor, and this needs to be to the subsystem to be manipulate.
