@@ -106,7 +106,13 @@ public class Robot extends TimedRobot {
 
     //pneumaticsSubsystem = new PneumaticsSubsystem();
     liftController = new VictorSP(RobotMap.liftMotor);
-    liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), liftController);
+    liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), 
+      liftController,
+      ultrasonic,
+      () -> driverInput.getRawButton(RobotMap.buttonX),
+      () -> driverInput.getRawButton(RobotMap.buttonY),
+      () -> driverInput.getRawButton(RobotMap.buttonA)
+    );
 
     ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverInput);
     //visionSubsystem = new VisionSubsystem();
