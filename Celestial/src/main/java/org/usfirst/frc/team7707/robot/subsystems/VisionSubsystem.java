@@ -8,14 +8,43 @@
 package org.usfirst.frc.team7707.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+import edu.wpi.first.wpilibj.smartdashboard.*;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.*;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import java.lang.Math;
 /**
  * Add your docs here.
  */
 public class VisionSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
+  NetworkTable table; 
+  NetworkTableEntry tx; 
+  NetworkTableEntry ty;
+  final double CAMERA_Y_ANGLE=0.0;  
+  final double TARGET_HEIGHT = 79.0956;
+  double cameraHeight;
+  double x; 
+  double y; 
+  double distanceToTarg; 
+  public VisionSubsystem(){
+    table = NetworkTableInstance.getDefault().getTable("limelight");
+    tx = table.getEntry("tx"); 
+    tx = table.getEntry("ty"); 
+    UpdateValues(); 
+  }
+  public void makePath(){
+    double e = CAMERA_Y_ANGLE+this.y; 
+    this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e);
+  }
+  public void UpdateValues(){
+    this.x = tx.getDouble(0.0);
+    this.y = ty.getDouble(0.0);
+  }
+  public void PostToDashBoard(){
+    SmartDashboard.putNumber("LimelightY", y);
+    SmartDashboard.putNumber("LimelightX", x); 
+  }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team7707.robot.subsystems.PneumaticsSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 
 /**
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
   private DifferentialDrive drive;
   private SpeedController leftController, rightController;
   private DriveSubsystem driveSubsystem;
+  private PneumaticsSubsystem pneumaticsSubsystem;
   private Joystick driverInput;
   public static OI m_oi;
 
@@ -80,6 +82,8 @@ public class Robot extends TimedRobot {
     //driveSubsystem = new DriveSubsystem(driverGamePad::getY, (double) () -> driverInput.getRawAxis(4), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE);   // single flight stick with twist for turning
     driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
     driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(1), () -> 0.6*driverInput.getRawAxis(0), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
+
+    pneumaticsSubsystem = new PneumaticsSubsystem();
 
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
