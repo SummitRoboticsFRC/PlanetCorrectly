@@ -24,10 +24,17 @@ public class VisionSubsystem extends Subsystem {
   NetworkTableEntry ty;
   final double CAMERA_Y_ANGLE=0.0;  
   final double TARGET_HEIGHT = 79.0956;
-  double cameraHeight;
-  double x; 
-  double y; 
-  double distanceToTarg; 
+  final double TARGET_WIDTH = 36.5;
+  private double cameraHeight;
+  private double xTop; 
+  private double yTop; 
+  private double xSide; 
+  private double ySide;
+  private double distanceToTarg; 
+  private double angleToTarg;
+
+  public double firstTurn;
+  public double driveDist;
   public VisionSubsystem(){
     table = NetworkTableInstance.getDefault().getTable("limelight");
     tx = table.getEntry("tx"); 
@@ -36,17 +43,45 @@ public class VisionSubsystem extends Subsystem {
   }
   public void makePath(){
     UpdateValues();
-    double e = CAMERA_Y_ANGLE+this.y; 
-    this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e);
+    double eC = CAMERA_Y_ANGLE+this.yTop; 
+    double eS = CAMERA_Y_ANGLE+this.ySide; 
+    angleToTarg=this.xTop;
+    double angle_center_side = xTop-xSide; 
+    this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(eC*(Math.PI/180));
+    double distanceToTargSide = (TARGET_HEIGHT-cameraHeight)/Math.tan(eS*(Math.PI/180));
+    double angle_center_wall; 
+      angle_center_wall = Math.asin( (Math.sin((angle_center_side/2)*(Math.PI/180))*distanceToTargSide) / (TARGET_WIDTH/2))*(180/Math.PI); 
+    double angle_side_wall; 
+      angle_side_wall = 180-angle_center_wall-angle_center_side; 
+    double h = (TARGET_WIDTH/2)/(Math.cos(angle_side_wall)*(Math.PI/180));
+    double k = (TARGET_WIDTH/2)/(Math.sin(angle_side_wall)*(Math.PI/180));
+    double distanceToTarg_Y = ((distanceToTargSide-h)*k)/h+k;
+    double distanceToTarg_Ang = Math.asin(distanceToTarg_Y/distanceToTarg)*(180/Math.PI); 
+    double distanceToTarg_Yhalf = Math.asin((distanceToTarg_Y/2)/distanceToTarg)*(180/Math.PI); 
+      firstTurn = angleToTarg+(distanceToTarg_Ang-distanceToTarg_Yhalf); 
+    double distanceToTarg_X = Math.sqrt(distanceToTarg*distanceToTarg-distanceToTarg_Y*distanceToTarg_Y); 
+      driveDist = Math.sqrt(distanceToTarg_X*distanceToTarg_X+Math.pow(distanceToTarg_Y/2, 2)); 
+      
   }
   public void UpdateValues(){
-    this.x = tx.getDouble(0.0);
-    this.y = ty.getDouble(0.0);
+    table.getEntry("pipeline").setNumber(0); //top side
+    this.xTop = tx.getDouble(1.0);
+    this.yTop = ty.getDouble(1.0);
+    if(this.xTop>0){
+      table.getEntry("pipeline").setNumber(1); //Right side
+    }else{
+      table.getEntry("pipeline").setNumber(1); //Left side
+    }
+    this.xSide = tx.getDouble(1.0);
+    this.xSide = tx.getDouble(1.0);
+    table.getEntry("pipeline").setNumber(0); //top side
   }
   public void PostToDashBoard(){
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightX", x); 
+    SmartDashboard.putNumber("LimelightY", yTop);
+    SmartDashboard.putNumber("LimelightX", xTop); 
     SmartDashboard.putNumber("Target Distance", distanceToTarg); 
+    SmartDashboard.putNumber("FirstTurn", firstTurn); 
+    SmartDashboard.putNumber("Drive Distance", driveDist);
   }
   @Override
   public void initDefaultCommand() {
