@@ -9,6 +9,7 @@ package org.usfirst.frc.team7707.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.SpeedController;
 
 import org.usfirst.frc.team7707.robot.commands.DefaultHatchCommand;
 
@@ -23,13 +24,13 @@ public class HatchSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  VictorSP hatchMotorController;
+  SpeedController hatchMotorController;
   Counter hatchMotorCounter;
   Joystick driverInput;
   private int position = 0;
   private boolean goingForward = true;
 
-  public HatchSubsystem(VictorSP hatchMotorController, Counter hatchMotorCounter, Joystick driverInput) {
+  public HatchSubsystem(SpeedController hatchMotorController, Counter hatchMotorCounter, Joystick driverInput) {
     this.hatchMotorController = hatchMotorController;
     this.hatchMotorCounter = hatchMotorCounter;
     this.driverInput = driverInput;

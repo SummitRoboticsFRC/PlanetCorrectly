@@ -47,6 +47,8 @@ public class RobotMap {
   public static final int frontRatchetMotor = 6;
   public static final int hatchMotor = 7;
 
+  public static final int hatchDIO = 0;
+
   // Controller Button Mappings
   public static final int buttonA = 1;
   public static final int buttonB = 2;

@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -28,16 +27,20 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Counter;
 
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team7707.robot.subsystems.HatchSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.PneumaticsSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.RatchetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.subsystems.VisionSubsystem;
+import org.usfirst.frc.team7707.robot.subsystems.HatchSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,15 +50,26 @@ import org.usfirst.frc.team7707.robot.subsystems.VisionSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  private XboxController driverGamePad;
-  private DifferentialDrive drive;
-  private SpeedController leftController, rightController, backRatchetController, frontRatchetController, liftController;
-  private Ultrasonic ultrasonic;
-  private DriveSubsystem driveSubsystem;
-  //private PneumaticsSubsystem pneumaticsSubsystem;
-  private LiftSubsystem liftSubsystem;
-  private RatchetSubsystem ratchetSubsystem;
+  //private XboxController driverGamePad;
   private Joystick driverInput;
+
+  private SpeedController leftController, rightController;
+  private DifferentialDrive drive;
+  private DriveSubsystem driveSubsystem;
+
+  private SpeedController backRatchetController, frontRatchetController;
+  private RatchetSubsystem ratchetSubsystem;
+
+  private SpeedController liftController;
+  private LiftSubsystem liftSubsystem;
+
+  private SpeedController hatchController;
+  private Counter hatchCounter;
+  private HatchSubsystem hatchSubsystem;
+
+  private Ultrasonic ultrasonic;
+  //private PneumaticsSubsystem pneumaticsSubsystem;
+
   private VisionSubsystem visionSubsystem; 
   private double initLiftHeight;
   public static OI m_oi;
@@ -71,53 +85,35 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     //driverGamePad = new XboxController(0);
 
-    /*
-     * These two lines are for one or move PWM style drive controllers.
-     * Uncomment the lines and add (or remove) Spark definitions as necessary
-     */
+    driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
+
+    // Drive System
     leftController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontLeftMotor), new PWMVictorSPX(RobotMap.backLeftMotor));
     rightController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontRightMotor), new PWMVictorSPX(RobotMap.backRightMotor));
-
-    backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
-    frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
-    
-    ultrasonic = new Ultrasonic(RobotMap.ultrasonicOutput, RobotMap.ultrasonicInput);
-    initLiftHeight = ultrasonic.getRangeInches();
-
-
-    /*
-     * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
-     * Uncomment the lines and add (or remove) WPI_TalonSRX definitions as necessary
-     * Note: you will also need to add the CTRE phoenix libraries (see above)
-     */
-    //leftController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_LEFT1_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_LEFT2_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_LEFT3_CAN_ID));
-    //rightController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_RIGHT1_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT2_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT3_CAN_ID));
-
     drive = new DifferentialDrive(leftController, rightController);
-    /*
-     * These drive subsystem definitions are defining how the driver's controlls affect the motor.
-     * You need ONE of these uncommented, so depending on which style you want chose the appropriate line.
-     */
-    //driveSubsystem = new DriveSubsystem(driverGamePad::getY, (double) () -> driverInput.getRawAxis(4), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE);   // single flight stick with twist for turning
-    driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
+
     driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(RobotMap.leftAxisY), 
                                         () -> 0.6*driverInput.getRawAxis(RobotMap.leftAxisX), 
                                         drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
 
-    //pneumaticsSubsystem = new PneumaticsSubsystem();
+    // Lift System
     liftController = new VictorSP(RobotMap.liftMotor);
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), liftController);
 
+    //Ratchet System
+    backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
+    frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
     ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverInput);
+    
+    // Hatch System
+    hatchCounter = new Counter(new DigitalInput(RobotMap.hatchDIO));
+    hatchController = new VictorSP(RobotMap.hatchMotor);
+    hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
+    
     //visionSubsystem = new VisionSubsystem();
-    /*
-      *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
-      *  We create a speed controller for the motor, and this needs to be to the subsystem to be manipulate.
-      *  
-      *  Here we use the Victor SP, a PWM controller that will be available. Yes, we can mix and match our motor controllers,
-      *  although it is better to use th e same controller when working in groups (such as left and right on the drive train).
-      */
-    //widgetSubsystem = new WidgetSubsystem(new VictorSP(RobotMap.WIDGET_CONTROLLER_ID));
+
+    //ultrasonic = new Ultrasonic(RobotMap.ultrasonicOutput, RobotMap.ultrasonicInput);
+    //initLiftHeight = ultrasonic.getRangeInches();
 
 
    // m_oi = new OI(driverGamePad);
