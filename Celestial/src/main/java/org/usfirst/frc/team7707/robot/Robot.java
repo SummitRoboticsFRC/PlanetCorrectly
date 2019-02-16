@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   private DifferentialDrive drive;
   private SpeedController leftController, rightController, backRatchetController, frontRatchetController;
   private DriveSubsystem driveSubsystem;
-  private PneumaticsSubsystem pneumaticsSubsystem;
+  //private PneumaticsSubsystem pneumaticsSubsystem;
   private LiftSubsystem liftSubsystem;
   private RatchetSubsystem ratchetSubsystem;
   private VictorSP liftController;
@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
     driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
     driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(1), () -> 0.6*driverInput.getRawAxis(0), drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
 
-    pneumaticsSubsystem = new PneumaticsSubsystem();
+    //pneumaticsSubsystem = new PneumaticsSubsystem();
     liftController = new VictorSP(RobotMap.liftMotor);
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), liftController);
 
