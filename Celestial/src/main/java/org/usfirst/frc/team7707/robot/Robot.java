@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    driverGamePad = new XboxController(0);
+    //driverGamePad = new XboxController(0);
 
     /*
      * These two lines are for one or move PWM style drive controllers.
@@ -109,7 +109,7 @@ public class Robot extends TimedRobot {
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), liftController);
 
     ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverInput);
-    visionSubsystem = new VisionSubsystem();
+    //visionSubsystem = new VisionSubsystem();
     /*
       *  create a widget subsystem. This is code that controls some widget. In the example code it is just a simple motor.
       *  We create a speed controller for the motor, and this needs to be to the subsystem to be manipulate.
@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
     //widgetSubsystem = new WidgetSubsystem(new VictorSP(RobotMap.WIDGET_CONTROLLER_ID));
 
 
-    m_oi = new OI(driverGamePad);
+   // m_oi = new OI(driverGamePad);
     m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
