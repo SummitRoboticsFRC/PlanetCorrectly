@@ -37,11 +37,11 @@ public class VisionSubsystem extends Subsystem {
   public void makePath(){
     UpdateValues();
     double e = CAMERA_Y_ANGLE+this.y; 
-    this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e);
+    this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e*180/Math.PI);
   }
   public void UpdateValues(){
-    this.x = tx.getDouble(0.0);
-    this.y = ty.getDouble(0.0);
+    this.x = tx.getDouble(1.0);
+    this.y = ty.getDouble(1.0);
   }
   public void PostToDashBoard(){
     SmartDashboard.putNumber("LimelightY", y);

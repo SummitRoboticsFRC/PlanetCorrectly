@@ -21,6 +21,8 @@ Joystick driverInput;
     // eg. requires(chassis);
     this.hatchSubsystem = hatchSubsystem;
     this.driverInput = driverInput;
+    requires(hatchSubsystem);
+    setInterruptible(true);
   }
 
   // Called just before this Command runs the first time

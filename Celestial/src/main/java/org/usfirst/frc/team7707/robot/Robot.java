@@ -106,9 +106,9 @@ public class Robot extends TimedRobot {
     ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverInput);
     
     // Hatch System
-    hatchCounter = new Counter(new DigitalInput(RobotMap.hatchDIO));
-    hatchController = new VictorSP(RobotMap.hatchMotor);
-    hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
+    //hatchCounter = new Counter(new DigitalInput(RobotMap.hatchDIO));
+    //hatchController = new VictorSP(RobotMap.hatchMotor);
+    //hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
     
     //visionSubsystem = new VisionSubsystem();
 
