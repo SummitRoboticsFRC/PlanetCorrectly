@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
   private RatchetSubsystem ratchetSubsystem;
   private Joystick driverInput;
   private VisionSubsystem visionSubsystem; 
-  private double initLiftHeight
+  private double initLiftHeight;
   public static OI m_oi;
 
   Command m_autonomousCommand;
