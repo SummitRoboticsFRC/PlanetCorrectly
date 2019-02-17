@@ -132,9 +132,9 @@ public class LiftSubsystem extends Subsystem {
       case LIFT_MANUAL:
       default:
         while(inRange()){
-          if (speed.getAsDouble() > 0.1) {
+          if (speed.getAsDouble() < -0.1) {
             motor.set(0.3);
-          } else if (speed.getAsDouble() < -0.1) {
+          } else if (speed.getAsDouble() > 0.1) {
             motor.set(-0.2);
           } else {
             motor.set(0.0);
