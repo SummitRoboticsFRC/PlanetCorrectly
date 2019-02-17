@@ -14,6 +14,8 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+
+import java.awt.Robot;
 import java.lang.Math;
 import org.usfirst.frc.team7707.robot.commands.VisionCommand;
 import org.usfirst.frc.team7707.robot.RobotMap;
@@ -34,17 +36,17 @@ public class VisionSubsystem extends Subsystem {
   private double ySide;
   private double distanceToTarg; 
   private double angleToTarg;
-  // private AnalogInput ultrasonic; //causes error when initializing 
+  private AnalogInput ultrasonic; //causes error when initializing 
   public double firstTurn;
   public double driveDist;
 
-  public VisionSubsystem(double cameraHeight){
+  public VisionSubsystem(AnalogInput ultrasonic){
     table = NetworkTableInstance.getDefault().getTable("limelight");
     tx = table.getEntry("tx"); 
     ty = table.getEntry("ty"); 
     // ultrasonic = new AnalogInput(RobotMap.ultrasonicInput); // causes error 
-    this. cameraHeight = cameraHeight;
-    UpdateValues(); 
+    this.ultrasonic = ultrasonic;
+    UpdateValues();
   }
   public void makePath(){
     UpdateValues();
@@ -84,7 +86,7 @@ public class VisionSubsystem extends Subsystem {
     this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e*180/Math.PI);
 
     
-    //cameraHeight = 0.5 * ultrasonic.getVoltage() / 1024.0  + 20.0;
+    cameraHeight = 0.5 * ultrasonic.getVoltage() / 0.004883 + 20.0;
   }
 
   public void PostToDashBoard(){
@@ -93,6 +95,7 @@ public class VisionSubsystem extends Subsystem {
     SmartDashboard.putNumber("Target Distance", distanceToTarg); 
     SmartDashboard.putNumber("FirstTurn", firstTurn); 
     SmartDashboard.putNumber("Drive Distance", driveDist);
+    SmartDashboard.putNumber("Camera Height (cm)", cameraHeight);
   }
   @Override
   public void initDefaultCommand() {

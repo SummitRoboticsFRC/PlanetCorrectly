@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
 
   //Vision Limelight
-  private double cameraHeight = 20.0;
+  //private double cameraHeight = 20.0;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -125,7 +125,7 @@ public class Robot extends TimedRobot {
     hatchController = new VictorSP(RobotMap.hatchMotor);
     hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
     
-    visionSubsystem = new VisionSubsystem(cameraHeight);
+    visionSubsystem = new VisionSubsystem(ultrasonic);
 
    // m_oi = new OI(driverGamePad);
     m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
@@ -166,7 +166,7 @@ public class Robot extends TimedRobot {
     //john
     liftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
     SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
-    cameraHeight = liftHeight+20.0; 
+   // cameraHeight = liftHeight+20.0;
   }
 
   /**
