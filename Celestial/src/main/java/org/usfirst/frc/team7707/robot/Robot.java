@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lift Period", 10);
 
     SmartDashboard.putNumber("Lift Height (cm)", initLiftHeight);
-    
+    SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
     SmartDashboard.putNumber("Level 1 Height (cm)", 10);
     SmartDashboard.putNumber("Level 2 Height (cm)", 10);
     SmartDashboard.putNumber("Level 3 Height (cm)", 10);
