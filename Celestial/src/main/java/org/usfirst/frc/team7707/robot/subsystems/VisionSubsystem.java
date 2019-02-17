@@ -35,10 +35,11 @@ public class VisionSubsystem extends Subsystem {
 
   public double firstTurn;
   public double driveDist;
+
   public VisionSubsystem(){
     table = NetworkTableInstance.getDefault().getTable("limelight");
     tx = table.getEntry("tx"); 
-    tx = table.getEntry("ty"); 
+    ty = table.getEntry("ty"); 
     UpdateValues(); 
   }
   public void makePath(){
@@ -70,10 +71,10 @@ public class VisionSubsystem extends Subsystem {
     if(this.xTop>0){
       table.getEntry("pipeline").setNumber(1); //Right side
     }else{
-      table.getEntry("pipeline").setNumber(1); //Left side
+      table.getEntry("pipeline").setNumber(2); //Left side
     }
     this.xSide = tx.getDouble(1.0);
-    this.xSide = tx.getDouble(1.0);
+    this.ySide = ty.getDouble(1.0);
     table.getEntry("pipeline").setNumber(0); //top side
     double e = CAMERA_Y_ANGLE+this.yTop; 
     this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e*180/Math.PI);

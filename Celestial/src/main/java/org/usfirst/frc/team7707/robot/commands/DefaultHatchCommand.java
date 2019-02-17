@@ -34,9 +34,9 @@ Joystick driverInput;
   @Override
   protected void execute() {
     if (driverInput.getRawButton(RobotMap.buttonY)) {
-      hatchSubsystem.setHatchSpeed(1.0);
+      hatchSubsystem.setHatchSpeed(-0.5);
     } else if (driverInput.getRawButton(RobotMap.buttonA)) {
-      hatchSubsystem.setHatchSpeed(-1.0);
+      hatchSubsystem.setHatchSpeed(0.5);
     } else {
       hatchSubsystem.setHatchSpeed(0.0);
     }

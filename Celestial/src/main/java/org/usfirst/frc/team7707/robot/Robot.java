@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
   //private PneumaticsSubsystem pneumaticsSubsystem;
 
   private VisionSubsystem visionSubsystem; 
-  private double initLiftHeight;
+  private double initLiftHeight, liftHeight;
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -101,8 +101,8 @@ public class Robot extends TimedRobot {
     // Lift System
     liftController = new VictorSP(RobotMap.liftMotor);
      //john
-     ultrasonic = new AnalogInput(RobotMap.ultrasonicInput);
-     initLiftHeight = 0.19685 * (ultrasonic.getVoltage() / (5/1024));
+    ultrasonic = new AnalogInput(RobotMap.ultrasonicInput);
+    initLiftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
  
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), 
       liftController,
@@ -118,11 +118,11 @@ public class Robot extends TimedRobot {
     ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverInput);
     
     // Hatch System
-    //hatchCounter = new Counter(new DigitalInput(RobotMap.hatchDIO));
-    //hatchController = new VictorSP(RobotMap.hatchMotor);
-    //hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
+    hatchCounter = new Counter(new DigitalInput(RobotMap.hatchDIO));
+    hatchController = new VictorSP(RobotMap.hatchMotor);
+    hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
     
-    //visionSubsystem = new VisionSubsystem();
+    visionSubsystem = new VisionSubsystem();
 
    // m_oi = new OI(driverGamePad);
     m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
@@ -133,13 +133,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lift kD", 0.1);
     SmartDashboard.putNumber("Lift Period", 10);
 
-    SmartDashboard.putNumber("Lift Height (inches)", 0.19685 * (ultrasonic.getVoltage() / (5/1024)));
+    SmartDashboard.putNumber("Lift Height (cm)", initLiftHeight);
     
-    SmartDashboard.putNumber("Level 1 Height (inches)", 10);
-    SmartDashboard.putNumber("Level 2 Height (inches)", 10);
-    SmartDashboard.putNumber("Level 3 Height (inches)", 10);
-    SmartDashboard.putNumber("Min Lift Height (inches)", 0);
-    SmartDashboard.putNumber("Max Lift Height (inches)", 36);
+    SmartDashboard.putNumber("Level 1 Height (cm)", 10);
+    SmartDashboard.putNumber("Level 2 Height (cm)", 10);
+    SmartDashboard.putNumber("Level 3 Height (cm)", 10);
+    SmartDashboard.putNumber("Min Lift Height (cm)", 0);
+    SmartDashboard.putNumber("Max Lift Height (cm)", 36);
 
     /*
      * Start a camera server - this allows you to have a camera mounted on your robot and the image being shown on the drivers startion.
@@ -161,7 +161,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //john
-    SmartDashboard.putNumber("Lift Height (inches)", initLiftHeight);  
+    liftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
+    SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
   }
 
   /**

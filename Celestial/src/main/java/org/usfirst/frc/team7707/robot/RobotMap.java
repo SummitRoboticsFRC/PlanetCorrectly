@@ -79,7 +79,6 @@ public class RobotMap {
    * Ultrasonic sensor
    */
 
-  public static final int ultrasonicOutput = 0;
   public static final int ultrasonicInput = 0;
 
 	

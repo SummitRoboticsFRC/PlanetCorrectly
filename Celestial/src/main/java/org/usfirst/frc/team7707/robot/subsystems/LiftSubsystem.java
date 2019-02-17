@@ -32,7 +32,8 @@ public class LiftSubsystem extends Subsystem {
 
   private DoubleSupplier speed;
   private BooleanSupplier buttonL1, buttonL2, buttonL3;
-  private double kP, kI, kD, period, level1, level2, level3, min, max, Vm, Vi, Ri;
+  private double kP, kI, kD, period, level1, level2, level3, min, max; 
+  //,Vm, Vi, Ri;
   private SpeedController motor;
   private AnalogInput ultrasonic;
   // private PIDController heightController;
@@ -55,16 +56,16 @@ public class LiftSubsystem extends Subsystem {
     this.kD = SmartDashboard.getNumber("Lift kD", 0.1);
     this.period = SmartDashboard.getNumber("Lift Period", 10);
     
-    this.level1 = SmartDashboard.getNumber("Level 1 Height (inches)", 10);
-    this.level2 = SmartDashboard.getNumber("Level 2 Height (inches)", 10);
-    this.level3 = SmartDashboard.getNumber("Level 3 Height (inches)", 10);
-    this.min = SmartDashboard.getNumber("Min Lift Height (inches)", 0);
-    this.max = SmartDashboard.getNumber("Max Lift Height (inches)", 36);
+    this.level1 = SmartDashboard.getNumber("Level 1 Height (cm)", 10);
+    this.level2 = SmartDashboard.getNumber("Level 2 Height (cm)", 10);
+    this.level3 = SmartDashboard.getNumber("Level 3 Height (cm)", 10);
+    this.min = SmartDashboard.getNumber("Min Lift Height (cm)", 0);
+    this.max = SmartDashboard.getNumber("Max Lift Height (cm)", 36);
     //this.sourceType = PIDSourceType.kDisplacement;
 
     //john
-    this.Vm = ultrasonic.getVoltage();
-    this.Vi = 5 / 1024;
+    // this.Vm = ultrasonic.getVoltage();
+    // this.Vi = 5 / 1024;
 
     // this.heightSource = new PIDSource() {
     
@@ -76,8 +77,8 @@ public class LiftSubsystem extends Subsystem {
     //   @Override
     //   public double pidGet() {
     //     Vm = ultrasonic.getVoltage();
-    //     Ri = 0.19685 * (Vm / Vi);  
-    //     return Ri;
+    //     Ri = 0.5 * (Vm / Vi);  
+    //     return  0.5 * 1024 * ultrasonic.getVoltage() / 5;
     //   }
     
     //   @Override
@@ -97,14 +98,15 @@ public class LiftSubsystem extends Subsystem {
 
   //john
   public double height() {
-    Vm = ultrasonic.getVoltage();
-    Ri = 0.19685 * (Vm / Vi);  
+    //Vm = ultrasonic.getVoltage();
+    //Ri = 0.5 * (Vm / Vi);  
     //return ultrasonic.getRangeInches();
-    return Ri;
+    return  0.5 * ultrasonic.getVoltage() / 0.004883;
   }
 
   public boolean inRange() {
-    return height() > min && height() < max;
+    //return height() > min && height() < max;
+    return true;
   }
 
   //john
@@ -114,13 +116,13 @@ public class LiftSubsystem extends Subsystem {
     kD = SmartDashboard.getNumber("Lift kD", 0.1);
     period = SmartDashboard.getNumber("Lift Period", 10);
 
-    SmartDashboard.putNumber("Lift Height (inches)", height());
+    //SmartDashboard.putNumber("Lift Height (cm)", height());
     
-    level1 = SmartDashboard.getNumber("Level 1 Height (inches)", 10);
-    level2 = SmartDashboard.getNumber("Level 2 Height (inches)", 10);
-    level3 = SmartDashboard.getNumber("Level 3 Height (inches)", 10);
-    min = SmartDashboard.getNumber("Min Lift Height (inches)", 0);
-    max = SmartDashboard.getNumber("Max Lift Height (inches)", 36);
+    level1 = SmartDashboard.getNumber("Level 1 Height (cm)", 10);
+    level2 = SmartDashboard.getNumber("Level 2 Height (cm)", 10);
+    level3 = SmartDashboard.getNumber("Level 3 Height (cm)", 10);
+    min = SmartDashboard.getNumber("Min Lift Height (cm)", 0);
+    max = SmartDashboard.getNumber("Max Lift Height (cm)", 36);
   }
 
   public void lift(RobotMap.LiftStatus status) {
@@ -130,7 +132,14 @@ public class LiftSubsystem extends Subsystem {
       case LIFT_MANUAL:
       default:
         while(inRange()){
-          motor.set(speed.getAsDouble());
+          if (speed.getAsDouble() > 0.1) {
+            motor.set(0.5);
+          } else if (speed.getAsDouble() < -0.1) {
+            motor.set(0.5);
+          } else {
+            motor.set(0.0);
+          }
+          //motor.set(speed.getAsDouble());
         }
         break;
 
@@ -163,6 +172,7 @@ public class LiftSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    //john
     setDefaultCommand(new DefaultLiftCommand(this, speed, buttonL1, buttonL2, buttonL3));
   }
 }

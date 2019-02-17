@@ -25,6 +25,7 @@ public class DefaultLiftCommand extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.liftSubsystem = liftSubsystem;
+    this.speed = speed;
     this.buttonL1 = buttonL1;
     this.buttonL2 = buttonL2;
     this.buttonL3 = buttonL3;
