@@ -75,7 +75,7 @@ public class VisionSubsystem extends Subsystem {
     this.xSide = tx.getDouble(1.0);
     this.xSide = tx.getDouble(1.0);
     table.getEntry("pipeline").setNumber(0); //top side
-    double e = CAMERA_Y_ANGLE+this.y; 
+    double e = CAMERA_Y_ANGLE+this.yTop; 
     this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e*180/Math.PI);
   }
 

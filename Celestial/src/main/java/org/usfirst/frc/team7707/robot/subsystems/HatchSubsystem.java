@@ -38,6 +38,7 @@ public class HatchSubsystem extends Subsystem {
 
   public void setHatchSpeed(Double speed) {
     hatchMotorController.set(speed);
+    updateEncoder();
   }
 
   public void updateEncoder() {

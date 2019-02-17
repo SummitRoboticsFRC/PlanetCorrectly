@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Counter;
 
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
@@ -67,7 +68,8 @@ public class Robot extends TimedRobot {
   private Counter hatchCounter;
   private HatchSubsystem hatchSubsystem;
 
-  private Ultrasonic ultrasonic;
+  //private Ultrasonic ultrasonic;
+  private AnalogInput ultrasonic;
   //private PneumaticsSubsystem pneumaticsSubsystem;
 
   private VisionSubsystem visionSubsystem; 
@@ -98,7 +100,17 @@ public class Robot extends TimedRobot {
 
     // Lift System
     liftController = new VictorSP(RobotMap.liftMotor);
-    liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), liftController);
+     //john
+     ultrasonic = new AnalogInput(RobotMap.ultrasonicInput);
+     initLiftHeight = 0.19685 * (ultrasonic.getVoltage() / (5/1024));
+ 
+    liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), 
+      liftController,
+      ultrasonic,
+      () -> driverInput.getRawButton(RobotMap.buttonX),
+      () -> driverInput.getRawButton(RobotMap.buttonY),
+      () -> driverInput.getRawButton(RobotMap.buttonA)
+    );
 
     //Ratchet System
     backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
@@ -112,10 +124,6 @@ public class Robot extends TimedRobot {
     
     //visionSubsystem = new VisionSubsystem();
 
-    //ultrasonic = new Ultrasonic(RobotMap.ultrasonicOutput, RobotMap.ultrasonicInput);
-    //initLiftHeight = ultrasonic.getRangeInches();
-
-
    // m_oi = new OI(driverGamePad);
     m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -125,7 +133,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lift kD", 0.1);
     SmartDashboard.putNumber("Lift Period", 10);
 
-    SmartDashboard.putNumber("Lift Height (inches)", initLiftHeight);
+    SmartDashboard.putNumber("Lift Height (inches)", 0.19685 * (ultrasonic.getVoltage() / (5/1024)));
     
     SmartDashboard.putNumber("Level 1 Height (inches)", 10);
     SmartDashboard.putNumber("Level 2 Height (inches)", 10);
@@ -152,7 +160,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Lift Height (inches)", ultrasonic.getRangeInches());
+    //john
+    SmartDashboard.putNumber("Lift Height (inches)", initLiftHeight);  
   }
 
   /**

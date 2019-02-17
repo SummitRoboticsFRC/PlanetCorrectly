@@ -8,18 +8,26 @@
 package org.usfirst.frc.team7707.robot.commands;
 
 import org.usfirst.frc.team7707.robot.RobotMap;
+import org.usfirst.frc.team7707.robot.RobotMap.LiftStatus;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
+import java.util.function.DoubleSupplier;
+import java.util.function.BooleanSupplier;
 
 public class DefaultLiftCommand extends Command {
 
   LiftSubsystem liftSubsystem;
+  DoubleSupplier speed;
+  BooleanSupplier buttonL1, buttonL2, buttonL3;
 
-  public DefaultLiftCommand(LiftSubsystem liftSubsystem) {
+  public DefaultLiftCommand(LiftSubsystem liftSubsystem, DoubleSupplier speed, BooleanSupplier buttonL1, BooleanSupplier buttonL2, BooleanSupplier buttonL3) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.liftSubsystem = liftSubsystem;
+    this.buttonL1 = buttonL1;
+    this.buttonL2 = buttonL2;
+    this.buttonL3 = buttonL3;
     requires(liftSubsystem);
     setInterruptible(true);
   }
@@ -32,7 +40,27 @@ public class DefaultLiftCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    liftSubsystem.lift();
+    
+    liftSubsystem.updateValues();
+
+    if(speed.getAsDouble() > 0) {
+      liftSubsystem.lift(LiftStatus.LIFT_MANUAL);
+    }
+
+    //john
+
+    // else if (buttonL1.getAsBoolean()) {
+    //   liftSubsystem.lift(LiftStatus.LIFT_LEVEL_1);
+    // }
+
+    // else if (buttonL2.getAsBoolean()) {
+    //   liftSubsystem.lift(LiftStatus.LIFT_LEVEL_2);
+    // }
+
+    // else if (buttonL3.getAsBoolean()) {
+    //   liftSubsystem.lift(LiftStatus.LIFT_LEVEL_3);
+    // }
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

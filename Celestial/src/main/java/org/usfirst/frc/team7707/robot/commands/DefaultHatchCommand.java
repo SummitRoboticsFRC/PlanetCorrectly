@@ -40,7 +40,6 @@ Joystick driverInput;
     } else {
       hatchSubsystem.setHatchSpeed(0.0);
     }
-    hatchSubsystem.updateEncoder();
   }
 
   // Make this return true when this Command no longer needs to run execute()
