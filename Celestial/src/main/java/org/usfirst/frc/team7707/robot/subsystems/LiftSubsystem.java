@@ -133,9 +133,9 @@ public class LiftSubsystem extends Subsystem {
       default:
         while(inRange()){
           if (speed.getAsDouble() > 0.1) {
-            motor.set(0.5);
+            motor.set(0.3);
           } else if (speed.getAsDouble() < -0.1) {
-            motor.set(0.5);
+            motor.set(-0.2);
           } else {
             motor.set(0.0);
           }
