@@ -35,9 +35,9 @@ public class LiftSubsystem extends Subsystem {
   private double kP, kI, kD, period, level1, level2, level3, min, max, Vm, Vi, Ri;
   private SpeedController motor;
   private AnalogInput ultrasonic;
-  private PIDController heightController;
-  private PIDSource heightSource;
-  private PIDSourceType sourceType;
+  // private PIDController heightController;
+  // private PIDSource heightSource;
+  // private PIDSourceType sourceType;
   private boolean enabled;
 
   public LiftSubsystem(DoubleSupplier speed, SpeedController motor, AnalogInput ultrasonic, BooleanSupplier buttonL1, BooleanSupplier buttonL2, BooleanSupplier buttonL3) {
@@ -49,6 +49,7 @@ public class LiftSubsystem extends Subsystem {
     this.buttonL2 = buttonL2;
     this.buttonL3 = buttonL3;
 
+    //john
     this.kP = SmartDashboard.getNumber("Lift kP", 0.1);
     this.kI = SmartDashboard.getNumber("Lift kI", 0.1);
     this.kD = SmartDashboard.getNumber("Lift kD", 0.1);
@@ -59,41 +60,42 @@ public class LiftSubsystem extends Subsystem {
     this.level3 = SmartDashboard.getNumber("Level 3 Height (inches)", 10);
     this.min = SmartDashboard.getNumber("Min Lift Height (inches)", 0);
     this.max = SmartDashboard.getNumber("Max Lift Height (inches)", 36);
-    this.sourceType = PIDSourceType.kDisplacement;
+    //this.sourceType = PIDSourceType.kDisplacement;
 
-
+    //john
     this.Vm = ultrasonic.getVoltage();
     this.Vi = 5 / 1024;
 
-    this.heightSource = new PIDSource() {
+    // this.heightSource = new PIDSource() {
     
-      @Override
-      public void setPIDSourceType(PIDSourceType pidSource) {
+    //   @Override
+    //   public void setPIDSourceType(PIDSourceType pidSource) {
         
-      }
+    //   }
     
-      @Override
-      public double pidGet() {
-        Vm = ultrasonic.getVoltage();
-        Ri = 0.19685 * (Vm / Vi);  
-        return Ri;
-      }
+    //   @Override
+    //   public double pidGet() {
+    //     Vm = ultrasonic.getVoltage();
+    //     Ri = 0.19685 * (Vm / Vi);  
+    //     return Ri;
+    //   }
     
-      @Override
-      public PIDSourceType getPIDSourceType() {
-        return null;
-      }
-    };
+    //   @Override
+    //   public PIDSourceType getPIDSourceType() {
+    //     return null;
+    //   }
+    // };
     
-    this.heightSource.setPIDSourceType(sourceType);
+    // this.heightSource.setPIDSourceType(sourceType);
     
-    this.heightController = new PIDController(kP, kI, kD, heightSource, motor);
+    // this.heightController = new PIDController(kP, kI, kD, heightSource, motor);
 
-    heightController.enable();
+    // heightController.enable();
 
     this.enabled = false;
   }
 
+  //john
   public double height() {
     Vm = ultrasonic.getVoltage();
     Ri = 0.19685 * (Vm / Vi);  
@@ -105,6 +107,7 @@ public class LiftSubsystem extends Subsystem {
     return height() > min && height() < max;
   }
 
+  //john
   public void updateValues() {
     kP = SmartDashboard.getNumber("Lift kP", 0.1);
     kI = SmartDashboard.getNumber("Lift kI", 0.1);
@@ -122,8 +125,6 @@ public class LiftSubsystem extends Subsystem {
 
   public void lift(RobotMap.LiftStatus status) {
 
-    this.updateValues();
-
     switch (status){
 
       case LIFT_MANUAL:
@@ -133,17 +134,19 @@ public class LiftSubsystem extends Subsystem {
         }
         break;
 
-      case LIFT_LEVEL_1:
-        heightController.setSetpoint(level1);
-        break;
+      //john
 
-      case LIFT_LEVEL_2:
-        heightController.setSetpoint(level2);
-        break;
+      // case LIFT_LEVEL_1:
+      //   heightController.setSetpoint(level1);
+      //   break;
 
-      case LIFT_LEVEL_3:
-        heightController.setSetpoint(level3);
-        break;
+      // case LIFT_LEVEL_2:
+      //   heightController.setSetpoint(level2);
+      //   break;
+
+      // case LIFT_LEVEL_3:
+      //   heightController.setSetpoint(level3);
+      //   break;
 
     }
   }

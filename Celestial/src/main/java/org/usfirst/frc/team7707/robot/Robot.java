@@ -100,6 +100,10 @@ public class Robot extends TimedRobot {
 
     // Lift System
     liftController = new VictorSP(RobotMap.liftMotor);
+     //john
+     ultrasonic = new AnalogInput(RobotMap.ultrasonicInput);
+     initLiftHeight = 0.19685 * (ultrasonic.getVoltage() / (5/1024));
+ 
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), 
       liftController,
       ultrasonic,
@@ -119,10 +123,6 @@ public class Robot extends TimedRobot {
     //hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
     
     //visionSubsystem = new VisionSubsystem();
-
-    ultrasonic = new AnalogInput(RobotMap.ultrasonicInput);
-    initLiftHeight = 0.19685 * (ultrasonic.getVoltage() / (5/1024));
-
 
    // m_oi = new OI(driverGamePad);
     m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
@@ -160,6 +160,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //john
     SmartDashboard.putNumber("Lift Height (inches)", initLiftHeight);  
   }
 

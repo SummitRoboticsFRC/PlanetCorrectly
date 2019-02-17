@@ -40,22 +40,26 @@ public class DefaultLiftCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    
+    liftSubsystem.updateValues();
 
     if(speed.getAsDouble() > 0) {
       liftSubsystem.lift(LiftStatus.LIFT_MANUAL);
     }
 
-    else if (buttonL1.getAsBoolean()) {
-      liftSubsystem.lift(LiftStatus.LIFT_LEVEL_1);
-    }
+    //john
 
-    else if (buttonL2.getAsBoolean()) {
-      liftSubsystem.lift(LiftStatus.LIFT_LEVEL_2);
-    }
+    // else if (buttonL1.getAsBoolean()) {
+    //   liftSubsystem.lift(LiftStatus.LIFT_LEVEL_1);
+    // }
 
-    else if (buttonL3.getAsBoolean()) {
-      liftSubsystem.lift(LiftStatus.LIFT_LEVEL_3);
-    }
+    // else if (buttonL2.getAsBoolean()) {
+    //   liftSubsystem.lift(LiftStatus.LIFT_LEVEL_2);
+    // }
+
+    // else if (buttonL3.getAsBoolean()) {
+    //   liftSubsystem.lift(LiftStatus.LIFT_LEVEL_3);
+    // }
 
   }
 
