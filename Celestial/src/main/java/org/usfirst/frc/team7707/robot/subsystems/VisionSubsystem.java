@@ -34,15 +34,16 @@ public class VisionSubsystem extends Subsystem {
   private double ySide;
   private double distanceToTarg; 
   private double angleToTarg;
-  AnalogInput ultrasonic;
+  // private AnalogInput ultrasonic; //causes error when initializing 
   public double firstTurn;
   public double driveDist;
 
-  public VisionSubsystem(){
+  public VisionSubsystem(double cameraHeight){
     table = NetworkTableInstance.getDefault().getTable("limelight");
     tx = table.getEntry("tx"); 
     ty = table.getEntry("ty"); 
-    ultrasonic = new AnalogInput(RobotMap.ultrasonicInput);
+    // ultrasonic = new AnalogInput(RobotMap.ultrasonicInput); // causes error 
+    this. cameraHeight = cameraHeight;
     UpdateValues(); 
   }
   public void makePath(){
@@ -83,7 +84,7 @@ public class VisionSubsystem extends Subsystem {
     this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e*180/Math.PI);
 
     
-    cameraHeight = 0.5 * ultrasonic.getVoltage() / 1024.0  + 20.0;
+    //cameraHeight = 0.5 * ultrasonic.getVoltage() / 1024.0  + 20.0;
   }
 
   public void PostToDashBoard(){
