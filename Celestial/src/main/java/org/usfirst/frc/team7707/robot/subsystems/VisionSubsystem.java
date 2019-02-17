@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team7707.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -15,6 +16,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import java.lang.Math;
 import org.usfirst.frc.team7707.robot.commands.VisionCommand;
+import org.usfirst.frc.team7707.robot.RobotMap;
 /**
  * Add your docs here.
  */
@@ -25,14 +27,14 @@ public class VisionSubsystem extends Subsystem {
   final double CAMERA_Y_ANGLE=0.0;  
   final double TARGET_HEIGHT = 79.0956;
   final double TARGET_WIDTH = 36.5;
-  private double cameraHeight = 58.5;
+  private double cameraHeight;
   private double xTop; 
   private double yTop; 
   private double xSide; 
   private double ySide;
   private double distanceToTarg; 
   private double angleToTarg;
-
+  AnalogInput ultrasonic;
   public double firstTurn;
   public double driveDist;
 
@@ -40,6 +42,7 @@ public class VisionSubsystem extends Subsystem {
     table = NetworkTableInstance.getDefault().getTable("limelight");
     tx = table.getEntry("tx"); 
     ty = table.getEntry("ty"); 
+    ultrasonic = new AnalogInput(RobotMap.ultrasonicInput);
     UpdateValues(); 
   }
   public void makePath(){
@@ -78,6 +81,9 @@ public class VisionSubsystem extends Subsystem {
     table.getEntry("pipeline").setNumber(0); //top side
     double e = CAMERA_Y_ANGLE+this.yTop; 
     this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e*180/Math.PI);
+
+    
+    cameraHeight = 0.5 * ultrasonic.getVoltage() / 1024.0  + 20.0;
   }
 
   public void PostToDashBoard(){

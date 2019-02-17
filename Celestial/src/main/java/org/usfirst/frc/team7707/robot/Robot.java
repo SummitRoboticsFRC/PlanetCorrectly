@@ -94,6 +94,7 @@ public class Robot extends TimedRobot {
     rightController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontRightMotor), new PWMVictorSPX(RobotMap.backRightMotor));
     drive = new DifferentialDrive(leftController, rightController);
 
+    drive.setSafetyEnabled(false);
     driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(RobotMap.leftAxisY), 
                                         () -> 0.6*driverInput.getRawAxis(RobotMap.leftAxisX), 
                                         drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
@@ -102,7 +103,7 @@ public class Robot extends TimedRobot {
     liftController = new VictorSP(RobotMap.liftMotor);
      //john
     ultrasonic = new AnalogInput(RobotMap.ultrasonicInput);
-    initLiftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
+    initLiftHeight = 0.5 * ultrasonic.getVoltage() / 1024.0;
  
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), 
       liftController,
@@ -147,7 +148,7 @@ public class Robot extends TimedRobot {
      * 
      * if you don't want a camera server comment out this line.
      */
-    CameraServer.getInstance().startAutomaticCapture();
+    //CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**

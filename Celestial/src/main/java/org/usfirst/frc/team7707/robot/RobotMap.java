@@ -76,8 +76,7 @@ public class RobotMap {
   }
 
   /*
-   * Ultrasonic sensor
-   */
+   * Ultrasonic sensor Channel Number  */
 
   public static final int ultrasonicInput = 0;
 

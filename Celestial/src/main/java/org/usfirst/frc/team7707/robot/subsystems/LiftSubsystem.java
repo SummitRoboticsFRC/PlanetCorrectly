@@ -101,7 +101,7 @@ public class LiftSubsystem extends Subsystem {
     //Vm = ultrasonic.getVoltage();
     //Ri = 0.5 * (Vm / Vi);  
     //return ultrasonic.getRangeInches();
-    return  0.5 * ultrasonic.getVoltage() / 0.004883;
+    return  0.5 * ultrasonic.getVoltage() / 1024.0;
   }
 
   public boolean inRange() {
