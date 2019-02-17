@@ -25,7 +25,7 @@ public class VisionSubsystem extends Subsystem {
   final double CAMERA_Y_ANGLE=0.0;  
   final double TARGET_HEIGHT = 79.0956;
   final double TARGET_WIDTH = 36.5;
-  private double cameraHeight;
+  private double cameraHeight = 58.5;
   private double xTop; 
   private double yTop; 
   private double xSide; 
@@ -75,7 +75,10 @@ public class VisionSubsystem extends Subsystem {
     this.xSide = tx.getDouble(1.0);
     this.xSide = tx.getDouble(1.0);
     table.getEntry("pipeline").setNumber(0); //top side
+    double e = CAMERA_Y_ANGLE+this.y; 
+    this.distanceToTarg = (TARGET_HEIGHT-cameraHeight)/Math.tan(e*180/Math.PI);
   }
+
   public void PostToDashBoard(){
     SmartDashboard.putNumber("LimelightY", yTop);
     SmartDashboard.putNumber("LimelightX", xTop); 

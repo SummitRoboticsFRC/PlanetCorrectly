@@ -4,6 +4,8 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.RobotMap.DriveStyle;
 import org.usfirst.frc.team7707.robot.commands.DefaultDriveCommand;
@@ -39,19 +41,28 @@ public void autoDrive(double forwardPower, double turnPower) {
      *  
      *  If you are using a gamepad as the driver's controller then you will want to use one joystick, and read the two thumb sticks from it instead.
      */
+
+    // Threshold controller joystick so don't activite when commands too small
+    double leftAxis = left.getAsDouble();
+    double rightAxis = right.getAsDouble();
+    if (leftAxis < 0.1 && leftAxis > -0.1) { leftAxis = 0.0; }
+    if (rightAxis < 0.1 && rightAxis > -0.1) { rightAxis = 0.0; }
+
     switch (driveType) {
     case DRIVE_STYLE_ARCADE:
     default:
-      //drive.arcadeDrive(-leftJoystick.getY(), rightJoystick.getX(), true);
-      drive.arcadeDrive(left.getAsDouble(), right.getAsDouble(), true);
+      drive.arcadeDrive(leftAxis, rightAxis, true);
       break;
     case DRIVE_STYLE_TANK:
-      drive.tankDrive(-1 * left.getAsDouble(), -1 * right.getAsDouble(), true);
+      drive.tankDrive(-1 * leftAxis, -1 * rightAxis, true);
       break;
     case DRIVE_STYLE_CURVE:
-      drive.curvatureDrive(left.getAsDouble(), right.getAsDouble(), false);
+      drive.curvatureDrive(leftAxis, leftAxis, false);
       break;
     }
+
+    SmartDashboard.putNumber("Left", left.getAsDouble());
+    SmartDashboard.putNumber("Right", right.getAsDouble());
   }
 
   public void driveStop() {

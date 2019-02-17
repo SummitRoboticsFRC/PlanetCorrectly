@@ -21,6 +21,8 @@ Joystick driverInput;
     // eg. requires(chassis);
     this.hatchSubsystem = hatchSubsystem;
     this.driverInput = driverInput;
+    requires(hatchSubsystem);
+    setInterruptible(true);
   }
 
   // Called just before this Command runs the first time
@@ -38,6 +40,7 @@ Joystick driverInput;
     } else {
       hatchSubsystem.setHatchSpeed(0.0);
     }
+    hatchSubsystem.updateEncoder();
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -18,6 +18,7 @@ public class VisionCommand extends Command {
     // eg. requires(chassis);
     this.visionSubsystem=visionSubsystem;
     requires(visionSubsystem);
+    setInterruptible(true);
   }
 
   // Called just before this Command runs the first time

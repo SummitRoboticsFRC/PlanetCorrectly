@@ -49,9 +49,9 @@ public class RatchetCommand extends Command {
     boolean rightButton = driverInput.getRawButton(RobotMap.buttonR);
     double rightTrigger = driverInput.getRawAxis(RobotMap.rightTrigger);
     if (rightButton) {
-      ratchetSubsystem.setBackMotorSpeed(-1);
+      ratchetSubsystem.setBackMotorSpeed(1.0);
     } else if (rightTrigger > 0.7) {
-      ratchetSubsystem.setBackMotorSpeed(1);
+      ratchetSubsystem.setBackMotorSpeed(-1.0);
     } else {
       ratchetSubsystem.setBackMotorSpeed(0.0);
     }

@@ -45,6 +45,9 @@ public class RobotMap {
   public static final int liftMotor = 4;
   public static final int backRatchetMotor = 5;
   public static final int frontRatchetMotor = 6;
+  public static final int hatchMotor = 7;
+
+  public static final int hatchDIO = 0;
 
   // Controller Button Mappings
   public static final int buttonA = 1;
@@ -65,6 +68,15 @@ public class RobotMap {
   public static final int rightAxisX = 4;
   public static final int rightAxisY = 5;
 
+	
+  /*
+   * Ultrasonic sensor
+   */
+
+  public static final int ultrasonicOutput = 0;
+  public static final int ultrasonicInput = 0;
+
+	
 
 	/*
 	 * Drive style choices.
