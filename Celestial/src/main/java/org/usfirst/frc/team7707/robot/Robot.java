@@ -125,7 +125,7 @@ public class Robot extends TimedRobot {
     hatchController = new VictorSP(RobotMap.hatchMotor);
     hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
     
-    visionSubsystem = new VisionSubsystem(ultrasonic);
+    visionSubsystem = new VisionSubsystem();
 
    // m_oi = new OI(driverGamePad);
     m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
@@ -136,8 +136,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Lift kD", 0.1);
     SmartDashboard.putNumber("Lift Period", 10);
 
-    SmartDashboard.putNumber("Lift Height (cm)", initLiftHeight);
-    SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
+    //SmartDashboard.putNumber("Lift Height (cm)", initLiftHeight);
+    //SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
     SmartDashboard.putNumber("Level 1 Height (V)", 0.01);
     SmartDashboard.putNumber("Level 2 Height (V)", 2);
     SmartDashboard.putNumber("Level 3 Height (V)", 2);
@@ -164,10 +164,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //john
-    liftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
-    SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
-    SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
-    visionSubsystem.makePath();
+    //liftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
+    //SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
+    //SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
+    //visionSubsystem.makePath();
     visionSubsystem.PostToDashBoard();
     drive.setSafetyEnabled(false);
    // cameraHeight = liftHeight+20.0;

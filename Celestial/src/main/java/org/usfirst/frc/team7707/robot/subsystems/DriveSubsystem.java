@@ -84,6 +84,6 @@ public void autoDrive(double forwardPower, double turnPower) {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new DefaultDriveCommand(this, new VisionSubsystem(), new Joystick(RobotMap.buttonLThumb)));
+    setDefaultCommand(new DefaultDriveCommand(this, new VisionSubsystem()));
   }
 }
