@@ -69,6 +69,7 @@ public class RobotMap {
   public static final int rightAxisY = 5;
 
   public enum LiftStatus {
+    NO_COMMAND,
     LIFT_MANUAL,
     LIFT_LEVEL_1,
     LIFT_LEVEL_2,

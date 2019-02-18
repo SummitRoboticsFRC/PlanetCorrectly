@@ -110,9 +110,9 @@ public class Robot extends TimedRobot {
     liftSubsystem = new LiftSubsystem(() -> driverInput.getRawAxis(RobotMap.rightAxisY), 
       liftController,
       ultrasonic,
+      () -> driverInput.getRawButton(RobotMap.buttonRightThumb),
       () -> driverInput.getRawButton(RobotMap.buttonX),
-      () -> driverInput.getRawButton(RobotMap.buttonY),
-      () -> driverInput.getRawButton(RobotMap.buttonA)
+      () -> driverInput.getRawButton(RobotMap.buttonB)
     );
 
     //Ratchet System
@@ -138,12 +138,12 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Lift Height (cm)", initLiftHeight);
     SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
-    SmartDashboard.putNumber("Level 1 Height (cm)", 10);
-    SmartDashboard.putNumber("Level 2 Height (cm)", 10);
-    SmartDashboard.putNumber("Level 3 Height (cm)", 10);
-    SmartDashboard.putNumber("Min Lift Height (cm)", 0);
-    SmartDashboard.putNumber("Max Lift Height (cm)", 36);
-
+    SmartDashboard.putNumber("Level 1 Height (V)", 0.01);
+    SmartDashboard.putNumber("Level 2 Height (V)", 2);
+    SmartDashboard.putNumber("Level 3 Height (V)", 2);
+    SmartDashboard.putNumber("Min Lift Height (V)", 0);
+    SmartDashboard.putNumber("Max Lift Height (V)", 36);
+    robotPeriodic();
     /*
      * Start a camera server - this allows you to have a camera mounted on your robot and the image being shown on the drivers startion.
      * https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/669166-using-the-cameraserver-on-the-roborio for details.
@@ -166,6 +166,10 @@ public class Robot extends TimedRobot {
     //john
     liftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
     SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
+    SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
+    visionSubsystem.makePath();
+    visionSubsystem.PostToDashBoard();
+    drive.setSafetyEnabled(false);
    // cameraHeight = liftHeight+20.0;
   }
 
@@ -237,6 +241,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    liftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
+    SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
+    SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
+    visionSubsystem.makePath();
+    visionSubsystem.PostToDashBoard();
     Scheduler.getInstance().run();
   }
 

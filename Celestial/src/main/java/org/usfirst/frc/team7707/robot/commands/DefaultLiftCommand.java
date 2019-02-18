@@ -44,23 +44,25 @@ public class DefaultLiftCommand extends Command {
     
     liftSubsystem.updateValues();
 
-    if(speed.getAsDouble() > 0) {
+    if(speed.getAsDouble() > 0.1 || speed.getAsDouble() < -0.1) {
       liftSubsystem.lift(LiftStatus.LIFT_MANUAL);
-    }
+    } 
 
     //john
 
-    // else if (buttonL1.getAsBoolean()) {
-    //   liftSubsystem.lift(LiftStatus.LIFT_LEVEL_1);
-    // }
+    else if (buttonL1.getAsBoolean()) {
+      liftSubsystem.lift(LiftStatus.LIFT_LEVEL_1);
+    }
 
-    // else if (buttonL2.getAsBoolean()) {
-    //   liftSubsystem.lift(LiftStatus.LIFT_LEVEL_2);
-    // }
+    else if (buttonL2.getAsBoolean()) {
+      liftSubsystem.lift(LiftStatus.LIFT_LEVEL_2);
+    }
 
-    // else if (buttonL3.getAsBoolean()) {
-    //   liftSubsystem.lift(LiftStatus.LIFT_LEVEL_3);
-    // }
+    else if (buttonL3.getAsBoolean()) {
+      liftSubsystem.lift(LiftStatus.LIFT_LEVEL_3);
+    } else {
+      liftSubsystem.lift(LiftStatus.NO_COMMAND);
+    }
 
   }
 

@@ -36,9 +36,9 @@ public class LiftSubsystem extends Subsystem {
   //,Vm, Vi, Ri;
   private SpeedController motor;
   private AnalogInput ultrasonic;
-  // private PIDController heightController;
-  // private PIDSource heightSource;
-  // private PIDSourceType sourceType;
+  private PIDController heightController;
+  private PIDSource heightSource;
+  private PIDSourceType sourceType;
   private boolean enabled;
 
   public LiftSubsystem(DoubleSupplier speed, SpeedController motor, AnalogInput ultrasonic, BooleanSupplier buttonL1, BooleanSupplier buttonL2, BooleanSupplier buttonL3) {
@@ -56,16 +56,16 @@ public class LiftSubsystem extends Subsystem {
     this.kD = SmartDashboard.getNumber("Lift kD", 0.1);
     this.period = SmartDashboard.getNumber("Lift Period", 10);
     
-    this.level1 = SmartDashboard.getNumber("Level 1 Height (cm)", 10);
-    this.level2 = SmartDashboard.getNumber("Level 2 Height (cm)", 10);
-    this.level3 = SmartDashboard.getNumber("Level 3 Height (cm)", 10);
+    this.level1 = SmartDashboard.getNumber("Level 1 Height (V)", 2);
+    this.level2 = SmartDashboard.getNumber("Level 2 Height (V)", 2);
+    this.level3 = SmartDashboard.getNumber("Level 3 Height (V)", 2);
     this.min = SmartDashboard.getNumber("Min Lift Height (cm)", 0);
-    this.max = SmartDashboard.getNumber("Max Lift Height (cm)", 36);
-    //this.sourceType = PIDSourceType.kDisplacement;
+    this.max = SmartDashboard.getNumber("Max Lift Height (cm)", 2);
+    // this.sourceType = PIDSourceType.kDisplacement;
 
     //john
-    // this.Vm = ultrasonic.getVoltage();
-    // this.Vi = 5 / 1024;
+    //this.Vm = ultrasonic.getVoltage();
+    //this.Vi = 5 / 1024;
 
     // this.heightSource = new PIDSource() {
     
@@ -76,8 +76,8 @@ public class LiftSubsystem extends Subsystem {
     
     //   @Override
     //   public double pidGet() {
-    //     Vm = ultrasonic.getVoltage();
-    //     Ri = 0.5 * (Vm / Vi);  
+    //     //Vm = ultrasonic.getVoltage();
+    //     //Ri = 0.5 * (Vm / Vi);  
     //     return  0.5 * 1024 * ultrasonic.getVoltage() / 5;
     //   }
     
@@ -87,11 +87,10 @@ public class LiftSubsystem extends Subsystem {
     //   }
     // };
     
-    // this.heightSource.setPIDSourceType(sourceType);
+    //this.heightSource.setPIDSourceType(sourceType);
     
-    // this.heightController = new PIDController(kP, kI, kD, heightSource, motor);
-
-    // heightController.enable();
+    this.heightController = new PIDController(kP, kI, kD, ultrasonic, motor);
+    this.heightController.setOutputRange(-0.2, 0.3);
 
     this.enabled = false;
   }
@@ -101,7 +100,8 @@ public class LiftSubsystem extends Subsystem {
     //Vm = ultrasonic.getVoltage();
     //Ri = 0.5 * (Vm / Vi);  
     //return ultrasonic.getRangeInches();
-    return  0.5 * ultrasonic.getVoltage() / 1024.0;
+    //return  0.5 * ultrasonic.getVoltage() / 1024.0;
+    return 0.5 * ultrasonic.getVoltage() / 0.004883;
   }
 
   public boolean inRange() {
@@ -128,10 +128,14 @@ public class LiftSubsystem extends Subsystem {
   public void lift(RobotMap.LiftStatus status) {
 
     switch (status){
-
-      case LIFT_MANUAL:
+      case NO_COMMAND:
       default:
-        while(inRange()){
+        motor.set(0.0);
+        break;
+      case LIFT_MANUAL:
+      //default:
+       // while(inRange()&&(speed.getAsDouble() < -0.1 || speed.getAsDouble() > 0.1)){
+         // System.out.println("SCHMOOP");
           if (speed.getAsDouble() < -0.1) {
             motor.set(0.3);
           } else if (speed.getAsDouble() > 0.1) {
@@ -139,23 +143,27 @@ public class LiftSubsystem extends Subsystem {
           } else {
             motor.set(0.0);
           }
-          //motor.set(speed.getAsDouble());
-        }
+         // motor.set(0.0);
+        //}
+        //System.out.println("OUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUT ****************");
         break;
 
       //john
 
-      // case LIFT_LEVEL_1:
-      //   heightController.setSetpoint(level1);
-      //   break;
+      /* case LIFT_LEVEL_1:
+        heightController.setSetpoint(level1);
+        heightController.enable();
+        break;
 
-      // case LIFT_LEVEL_2:
-      //   heightController.setSetpoint(level2);
-      //   break;
+      case LIFT_LEVEL_2:
+        heightController.setSetpoint(level2);
+        heightController.enable();
+        break;
 
-      // case LIFT_LEVEL_3:
-      //   heightController.setSetpoint(level3);
-      //   break;
+      case LIFT_LEVEL_3:
+        heightController.setSetpoint(level3);
+        heightController.enable();
+        break; */
 
     }
   }
