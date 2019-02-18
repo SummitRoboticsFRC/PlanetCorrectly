@@ -105,12 +105,12 @@ public class VisionSubsystem extends Subsystem {
   }
 
   public void PostToDashBoard(){
-    SmartDashboard.putNumber("LimelightY", yTop);
-    SmartDashboard.putNumber("LimelightX", xTop); 
-    SmartDashboard.putNumber("Target Distance", distanceToTarg); 
+    //SmartDashboard.putNumber("LimelightY", yTop);
+   // SmartDashboard.putNumber("LimelightX", xTop); 
+    //SmartDashboard.putNumber("Target Distance", distanceToTarg); 
     SmartDashboard.putNumber("FirstTurn", firstTurn); 
     SmartDashboard.putNumber("Drive Distance", driveDist);
-    SmartDashboard.putNumber("Camera Height (cm)", CAMERA_HEIGHT);
+    //SmartDashboard.putNumber("Camera Height (cm)", CAMERA_HEIGHT);
   }
 
   @Override

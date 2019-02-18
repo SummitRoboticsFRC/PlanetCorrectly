@@ -15,12 +15,12 @@ import edu.wpi.first.wpilibj.Joystick;
 public class DefaultDriveCommand extends Command {
   DriveSubsystem driveSubsystem;
   VisionSubsystem vision; 
-  //Joystick activateVision; 
-  public DefaultDriveCommand(DriveSubsystem driveSubsystem, VisionSubsystem vison) {
+  Joystick activateVision; 
+  public DefaultDriveCommand(DriveSubsystem driveSubsystem, VisionSubsystem vison, Joystick activateVision) {
     // Use requires() here to declare subsystem dependencies
     this.driveSubsystem = driveSubsystem;
     this.vision = vision;
-    //this.activateVision = activateVision; 
+    this.activateVision = activateVision; 
     requires(driveSubsystem);
     setInterruptible(true);
   }
@@ -34,9 +34,10 @@ public class DefaultDriveCommand extends Command {
   @Override
   protected void execute() {
     driveSubsystem.drive();
-    /* if(activateVision.getRawButton(RobotMap.buttonLThumb)){
+    if(activateVision.getRawButton(RobotMap.buttonLThumb)){
+      System.out.println("HI");
       driveSubsystem.AlignRobotDrive(vision.firstTurn, vision.driveDist);
-    } */
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

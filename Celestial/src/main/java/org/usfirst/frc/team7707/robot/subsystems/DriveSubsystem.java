@@ -30,7 +30,6 @@ public class DriveSubsystem extends Subsystem {
 
 
 public void autoDrive(double forwardPower, double turnPower) {
-    System.out.println("ALIGNMENT ACITVATED ********!!!!!!!!!");
     drive.arcadeDrive(forwardPower, turnPower);
   }
 
@@ -77,6 +76,7 @@ public void autoDrive(double forwardPower, double turnPower) {
   }
   //AARON WRITING AUTO: alignment PID
   public void AlignRobotDrive(double turnAmount, double driveAmount){
+    System.out.println("ALIGNMENT ACITVATED ********!!!!!!!!!");
     double displacement; 
     double angleTurned; 
   }
@@ -84,6 +84,6 @@ public void autoDrive(double forwardPower, double turnPower) {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new DefaultDriveCommand(this, new VisionSubsystem()));
+    setDefaultCommand(new DefaultDriveCommand(this, new VisionSubsystem(), new Joystick(0)));
   }
 }
