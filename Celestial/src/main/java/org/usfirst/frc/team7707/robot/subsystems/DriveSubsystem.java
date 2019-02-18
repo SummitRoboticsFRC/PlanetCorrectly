@@ -2,6 +2,7 @@ package org.usfirst.frc.team7707.robot.subsystems;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +30,7 @@ public class DriveSubsystem extends Subsystem {
 
 
 public void autoDrive(double forwardPower, double turnPower) {
+    System.out.println("ALIGNMENT ACITVATED ********!!!!!!!!!");
     drive.arcadeDrive(forwardPower, turnPower);
   }
 
@@ -66,17 +68,22 @@ public void autoDrive(double forwardPower, double turnPower) {
   }
 
   public void driveStop() {
-    drive.tankDrive(0.0, 0.0, true);
+    drive.arcadeDrive(0.0, 0.0, true);
   }
 
   public DriveSubsystem setEnabled(boolean enabled) {
     this.enabled = enabled;
     return this;
   }
+  //AARON WRITING AUTO: alignment PID
+  public void AlignRobotDrive(double turnAmount, double driveAmount){
+    double displacement; 
+    double angleTurned; 
+  }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new DefaultDriveCommand(this));
+    setDefaultCommand(new DefaultDriveCommand(this, new VisionSubsystem(), new Joystick(RobotMap.buttonLThumb)));
   }
 }

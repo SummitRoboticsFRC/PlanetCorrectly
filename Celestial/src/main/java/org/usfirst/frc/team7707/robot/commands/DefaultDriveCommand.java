@@ -9,13 +9,18 @@ package org.usfirst.frc.team7707.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
-
+import org.usfirst.frc.team7707.robot.subsystems.VisionSubsystem;
+import org.usfirst.frc.team7707.robot.RobotMap;
+import edu.wpi.first.wpilibj.Joystick;
 public class DefaultDriveCommand extends Command {
   DriveSubsystem driveSubsystem;
-
-  public DefaultDriveCommand(DriveSubsystem driveSubsystem) {
+  VisionSubsystem vision; 
+  Joystick activateVision; 
+  public DefaultDriveCommand(DriveSubsystem driveSubsystem, VisionSubsystem vison, Joystick activateVision) {
     // Use requires() here to declare subsystem dependencies
     this.driveSubsystem = driveSubsystem;
+    this.vision = vision;
+    this.activateVision = activateVision; 
     requires(driveSubsystem);
     setInterruptible(true);
   }
@@ -29,6 +34,9 @@ public class DefaultDriveCommand extends Command {
   @Override
   protected void execute() {
     driveSubsystem.drive();
+    if(activateVision.getRawButton(RobotMap.buttonLThumb)){
+      driveSubsystem.AlignRobotDrive(vision.firstTurn, vision.driveDist);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

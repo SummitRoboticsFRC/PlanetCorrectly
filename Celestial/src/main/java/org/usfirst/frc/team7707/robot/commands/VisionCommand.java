@@ -29,7 +29,7 @@ public class VisionCommand extends Command {
   @Override
   protected void execute() {
     visionSubsystem.makePath();
-    //visionSubsystem.PostToDashBoard();
+    visionSubsystem.PostToDashBoard();
   }
 
   // Make this return true when this Command no longer needs to run execute()
