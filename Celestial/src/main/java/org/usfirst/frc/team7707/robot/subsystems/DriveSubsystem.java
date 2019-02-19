@@ -11,6 +11,7 @@ import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.RobotMap.DriveStyle;
 import org.usfirst.frc.team7707.robot.commands.DefaultDriveCommand;
 
+
 /**
  * Add your docs here.
  */
@@ -80,6 +81,8 @@ public void autoDrive(double forwardPower, double turnPower) {
     double displacement; 
     double angleTurned; 
   }
+  //DIY PID: aaron doesn't know how to use the library
+  
 
   @Override
   public void initDefaultCommand() {

@@ -28,14 +28,17 @@ public class DefaultDriveCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    vision = new VisionSubsystem();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    
     driveSubsystem.drive();
     if(activateVision.getRawButton(RobotMap.buttonLThumb)){
       System.out.println("HI");
+      vision.makePath();
       driveSubsystem.AlignRobotDrive(vision.firstTurn, vision.driveDist);
     }
   }
