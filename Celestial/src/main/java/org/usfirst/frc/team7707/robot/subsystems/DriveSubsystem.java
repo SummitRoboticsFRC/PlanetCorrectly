@@ -24,8 +24,10 @@ public class DriveSubsystem extends Subsystem {
   private double P_d, I_d, D_d = 1; 
   private double P_r, I_r, D_r = 1;
   private double integral_d, integral_r, Previous_error_d, Previous_error_r, setpoint_d, setpoint_r;
+  private double rotateL;
+  private double driveL;  
   private double rotateRT;
-  private double driveRT;  
+  private double driveRT; 
   private AHRS ahrs; 
   public DriveSubsystem(DoubleSupplier left, DoubleSupplier right, DifferentialDrive drive, DriveStyle driveType, AHRS ahrs) {
     this.ahrs = ahrs;
@@ -52,6 +54,7 @@ public void autoDrive(double forwardPower, double turnPower) {
      */
 
     // Threshold controller joystick so don't activite when commands too small
+  
     double leftAxis = left.getAsDouble();
     double rightAxis = right.getAsDouble();
     if (leftAxis < 0.1 && leftAxis > -0.1) { leftAxis = 0.0; }
@@ -96,17 +99,23 @@ public void autoDrive(double forwardPower, double turnPower) {
     this.setpoint_r=setpoint_r;
   }
   public void PID_d(){
+    double time = 5.0;
+    double driveMAX = 10; //m/s
     double error = setpoint_d - ahrs.getDisplacementX(); //could be y, check orientation later
     this.integral_d += (error*0.02);
     double derivative = error - this.Previous_error_d;
-    this.driveRT = P_d*error+I_d*this.integral_d + D_d*derivative; 
+    this.driveL = P_d*error+I_d*this.integral_d + D_d*derivative; 
+    this.driveRT = ((driveL/time)/(driveMAX))*0.6;
 
   }
   public void PID_r(){
+      double time = 5.0;
+      double rotateMAX = 90; //degree persecond 
       double error = setpoint_r - ahrs.getAngle(); //could be y, check orientation later
       this.integral_r += (error*0.02);
       double derivative = error - this.Previous_error_r;
-      this.rotateRT = P_r*error+I_r*this.integral_r + D_r*derivative; 
+      this.rotateL = P_r*error+I_r*this.integral_r + D_r*derivative; 
+      this.rotateRT = ((rotateL/time)/(rotateMAX))*0.6;
   }
   public void execute_r(){
     drive.arcadeDrive(0.0, rotateRT);

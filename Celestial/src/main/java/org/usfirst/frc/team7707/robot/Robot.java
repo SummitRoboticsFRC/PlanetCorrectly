@@ -172,6 +172,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
     //visionSubsystem.makePath();
     SmartDashboard.putNumber("Robot Velocity: " , ahrs.getVelocityX());
+    SmartDashboard.putNumber("Robot Velocity: " , ahrs.getRate());
     visionSubsystem.PostToDashBoard();
     drive.setSafetyEnabled(false);
    // cameraHeight = liftHeight+20.0;
