@@ -99,25 +99,15 @@ public class VisionSubsystem extends Subsystem {
       
   }
   public void UpdateValues(){
-    table.getEntry("pipeline").setNumber(0); //top side
-    double xTop = (tx.getDouble(1.0))*1.0;
-    this.xTop = xTop;
-    double yTop = (ty.getDouble(1.0))*1.0;
-    this.yTop = yTop;
+    this.xTop = getPipeLineZero()[0];
+    this.yTop = getPipeLineZero()[1];
     if(this.xTop>0){
-      table.getEntry("pipeline").setNumber(1); //Right side
-      double xSide =(tx.getDouble(2.0)*1.0);
-      this.xSide = xSide;
-    double ySide = (ty.getDouble(2.0)*1.0);
-      this.ySide = ySide;
+      this.xSide = getPipeLineOne()[0];
+      this.ySide = getPipeLineOne()[1];
     }else{
-      table.getEntry("pipeline").setNumber(2); //Left side
-      double xSide =(tx.getDouble(2.0)*1.0);
-      this.xSide = xSide;
-    double ySide = (ty.getDouble(2.0)*1.0);
-      this.ySide = ySide;
+      this.xSide = getPipeLineTwo()[0]; 
+      this.ySide = getPipeLineTwo()[1]; 
     }
-    
     //table.getEntry("pipeline").setNumber(0); //top side
     //double e = CAMERA_Y_ANGLE+this.yTop; 
     //this.distanceToTarg = (TARGET_HEIGHT-CAMERA_HEIGHT)/Math.tan(e*180/Math.PI);
@@ -125,7 +115,21 @@ public class VisionSubsystem extends Subsystem {
     
    // cameraHeight = 0.5 * ultrasonic.getVoltage() / 0.004883 + 20.0;
   }
-
+  public double[] getPipeLineZero(){
+    table.getEntry("pipeline").setNumber(0);
+    double[] ret = {tx.getDouble(1.0), ty.getDouble(1.0)};
+    return ret;
+  }
+  public double[] getPipeLineOne(){
+    table.getEntry("pipeline").setNumber(1);
+    double[] ret = {tx.getDouble(1.0), ty.getDouble(1.0)};
+    return ret;
+  }
+  public double[] getPipeLineTwo(){
+    table.getEntry("pipeline").setNumber(2);
+    double[] ret = {tx.getDouble(1.0), ty.getDouble(1.0)};
+    return ret;
+  }
   public void PostToDashBoard(){
     //SmartDashboard.putNumber("LimelightY", yTop);
    // SmartDashboard.putNumber("LimelightX", xTop); 

@@ -105,17 +105,17 @@ public void autoDrive(double forwardPower, double turnPower) {
     this.integral_d += (error*0.02);
     double derivative = error - this.Previous_error_d;
     this.driveL = P_d*error+I_d*this.integral_d + D_d*derivative; 
-    this.driveRT = ((driveL/time)/(driveMAX))*0.6;
+    this.driveRT = ((driveL/time)/(driveMAX))*-0.6;
 
   }
   public void PID_r(){
-      double time = 5.0;
-      double rotateMAX = 90; //degree persecond 
-      double error = setpoint_r - ahrs.getAngle(); //could be y, check orientation later
+      double time = 1.0;
+      double rotateMAX = 114.59; //degree persecond 
+      double error = setpoint_r - ahrs.getAngle()*(180/Math.PI); //could be y, check orientation later
       this.integral_r += (error*0.02);
       double derivative = error - this.Previous_error_r;
       this.rotateL = P_r*error+I_r*this.integral_r + D_r*derivative; 
-      this.rotateRT = ((rotateL/time)/(rotateMAX))*0.6;
+      this.rotateRT = ((rotateL/time)/(rotateMAX))*0.5;
   }
   public void execute_r(){
     drive.arcadeDrive(0.0, rotateRT);

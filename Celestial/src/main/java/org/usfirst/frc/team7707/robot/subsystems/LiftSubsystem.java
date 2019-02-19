@@ -13,17 +13,17 @@ import org.usfirst.frc.team7707.robot.Robot;
 import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.RobotMap.LiftStatus;
 import org.usfirst.frc.team7707.robot.commands.DefaultLiftCommand;
-import edu.wpi.first.wpilibj.Ultrasonic;
+//import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
+//import edu.wpi.first.wpilibj.PIDController;
+//import edu.wpi.first.wpilibj.PIDSource;
+//import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.function.DoubleSupplier;
 import java.util.function.BooleanSupplier;
 
-/**
+/*
  * Add your docs here.
  */
 public class LiftSubsystem extends Subsystem {
@@ -31,22 +31,22 @@ public class LiftSubsystem extends Subsystem {
   // here. Call these from Commands.
 
   private DoubleSupplier speed;
-  private BooleanSupplier buttonL1, buttonL2, buttonL3;
-  private double kP, kI, kD, period, level1, level2, level3, min, max; 
+  //private BooleanSupplier buttonL1, buttonL2, buttonL3;
+  //private double kP, kI, kD, period, level1, level2, level3, min, max; 
   //,Vm, Vi, Ri;
   private SpeedController motor;
-  private AnalogInput ultrasonic;
-  private PIDController heightController;
-  private PIDSource heightSource;
-  private PIDSourceType sourceType;
+  //private AnalogInput ultrasonic;
+  //private PIDController heightController;
+  //private PIDSource heightSource;
+  //private PIDSourceType sourceType;
   private boolean enabled;
 
   public LiftSubsystem(DoubleSupplier speed, SpeedController motor, AnalogInput ultrasonic, BooleanSupplier buttonL1, BooleanSupplier buttonL2, BooleanSupplier buttonL3) {
 
     this.speed = speed;
     this.motor = motor;
-    this.ultrasonic = ultrasonic;
-    this.buttonL1 = buttonL1;
+    //this.ultrasonic = ultrasonic;
+    /* this.buttonL1 = buttonL1;
     this.buttonL2 = buttonL2;
     this.buttonL3 = buttonL3;
 
@@ -60,7 +60,7 @@ public class LiftSubsystem extends Subsystem {
     this.level2 = SmartDashboard.getNumber("Level 2 Height (V)", 2);
     this.level3 = SmartDashboard.getNumber("Level 3 Height (V)", 2);
     this.min = SmartDashboard.getNumber("Min Lift Height (cm)", 0);
-    this.max = SmartDashboard.getNumber("Max Lift Height (cm)", 2);
+    this.max = SmartDashboard.getNumber("Max Lift Height (cm)", 2); */
     // this.sourceType = PIDSourceType.kDisplacement;
 
     //john
@@ -89,20 +89,20 @@ public class LiftSubsystem extends Subsystem {
     
     //this.heightSource.setPIDSourceType(sourceType);
     
-    this.heightController = new PIDController(kP, kI, kD, ultrasonic, motor);
-    this.heightController.setOutputRange(-0.2, 0.3);
+    //this.heightController = new PIDController(kP, kI, kD, ultrasonic, motor);
+    //this.heightController.setOutputRange(-0.2, 0.3);
 
     this.enabled = false;
   }
 
   //john
-  public double height() {
+  /* public double height() {
     //Vm = ultrasonic.getVoltage();
     //Ri = 0.5 * (Vm / Vi);  
     //return ultrasonic.getRangeInches();
     //return  0.5 * ultrasonic.getVoltage() / 1024.0;
     return 0.5 * ultrasonic.getVoltage() / 0.004883;
-  }
+  } */
 
   public boolean inRange() {
     //return height() > min && height() < max;
@@ -111,7 +111,7 @@ public class LiftSubsystem extends Subsystem {
 
   //john
   public void updateValues() {
-    kP = SmartDashboard.getNumber("Lift kP", 0.1);
+    /* kP = SmartDashboard.getNumber("Lift kP", 0.1);
     kI = SmartDashboard.getNumber("Lift kI", 0.1);
     kD = SmartDashboard.getNumber("Lift kD", 0.1);
     period = SmartDashboard.getNumber("Lift Period", 10);
@@ -122,7 +122,7 @@ public class LiftSubsystem extends Subsystem {
     level2 = SmartDashboard.getNumber("Level 2 Height (cm)", 10);
     level3 = SmartDashboard.getNumber("Level 3 Height (cm)", 10);
     min = SmartDashboard.getNumber("Min Lift Height (cm)", 0);
-    max = SmartDashboard.getNumber("Max Lift Height (cm)", 36);
+    max = SmartDashboard.getNumber("Max Lift Height (cm)", 36); */
   }
 
   public void lift(RobotMap.LiftStatus status) {
@@ -181,6 +181,6 @@ public class LiftSubsystem extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
     //john
-    setDefaultCommand(new DefaultLiftCommand(this, speed, buttonL1, buttonL2, buttonL3));
+    setDefaultCommand(new DefaultLiftCommand(this, speed));
   }
 }

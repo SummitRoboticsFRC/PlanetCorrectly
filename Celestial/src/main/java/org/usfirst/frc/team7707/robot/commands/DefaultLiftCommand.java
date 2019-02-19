@@ -19,16 +19,16 @@ public class DefaultLiftCommand extends Command {
 
   LiftSubsystem liftSubsystem;
   DoubleSupplier speed;
-  BooleanSupplier buttonL1, buttonL2, buttonL3;
+  //BooleanSupplier buttonL1, buttonL2, buttonL3;
 
-  public DefaultLiftCommand(LiftSubsystem liftSubsystem, DoubleSupplier speed, BooleanSupplier buttonL1, BooleanSupplier buttonL2, BooleanSupplier buttonL3) {
+  public DefaultLiftCommand(LiftSubsystem liftSubsystem, DoubleSupplier speed) { // paramater for buttons removed
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.liftSubsystem = liftSubsystem;
     this.speed = speed;
-    this.buttonL1 = buttonL1;
+    /* this.buttonL1 = buttonL1;
     this.buttonL2 = buttonL2;
-    this.buttonL3 = buttonL3;
+    this.buttonL3 = buttonL3; */
     requires(liftSubsystem);
     setInterruptible(true);
   }
@@ -50,7 +50,7 @@ public class DefaultLiftCommand extends Command {
 
     //john
 
-    else if (buttonL1.getAsBoolean()) {
+    /* else if (buttonL1.getAsBoolean()) {
       liftSubsystem.lift(LiftStatus.LIFT_LEVEL_1);
     }
 
@@ -62,7 +62,7 @@ public class DefaultLiftCommand extends Command {
       liftSubsystem.lift(LiftStatus.LIFT_LEVEL_3);
     } else {
       liftSubsystem.lift(LiftStatus.NO_COMMAND);
-    }
+    } */
 
   }
 
