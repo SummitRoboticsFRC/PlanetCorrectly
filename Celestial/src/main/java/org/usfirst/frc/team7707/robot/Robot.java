@@ -16,10 +16,12 @@ package org.usfirst.frc.team7707.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
@@ -42,7 +44,7 @@ import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.subsystems.VisionSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.HatchSubsystem;
-
+import com.kauailabs.navx.frc.AHRS;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -77,6 +79,7 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
 
   //Vision Limelight
+  private AHRS ahrs;
   //private double cameraHeight = 20.0;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -95,11 +98,11 @@ public class Robot extends TimedRobot {
     leftController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontLeftMotor), new PWMVictorSPX(RobotMap.backLeftMotor));
     rightController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontRightMotor), new PWMVictorSPX(RobotMap.backRightMotor));
     drive = new DifferentialDrive(leftController, rightController);
-
+    ahrs = new AHRS(Port.kUSB); // !!! possible error
     drive.setSafetyEnabled(false);
     driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(RobotMap.leftAxisY), 
                                         () -> 0.6*driverInput.getRawAxis(RobotMap.leftAxisX), 
-                                        drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE); // single gamepad using thumb sticks as tank control
+                                        drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE, ahrs); // single gamepad using thumb sticks as tank control
 
     // Lift System
     liftController = new VictorSP(RobotMap.liftMotor);
@@ -168,6 +171,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
     //SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
     //visionSubsystem.makePath();
+    SmartDashboard.putNumber("Robot Velocity: " , ahrs.getVelocityX());
     visionSubsystem.PostToDashBoard();
     drive.setSafetyEnabled(false);
    // cameraHeight = liftHeight+20.0;

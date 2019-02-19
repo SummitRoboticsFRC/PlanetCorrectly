@@ -3,6 +3,7 @@ package org.usfirst.frc.team7707.robot.subsystems;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,7 +12,7 @@ import org.usfirst.frc.team7707.robot.RobotMap;
 import org.usfirst.frc.team7707.robot.RobotMap.DriveStyle;
 import org.usfirst.frc.team7707.robot.commands.DefaultDriveCommand;
 
-
+import com.kauailabs.navx.frc.AHRS;
 /**
  * Add your docs here.
  */
@@ -20,8 +21,14 @@ public class DriveSubsystem extends Subsystem {
   private DoubleSupplier left, right;
   private RobotMap.DriveStyle driveType = RobotMap.DriveStyle.DRIVE_STYLE_ARCADE;
   private boolean enabled;
-
-  public DriveSubsystem(DoubleSupplier left, DoubleSupplier right, DifferentialDrive drive, DriveStyle driveType) {
+  private double P_d, I_d, D_d = 1; 
+  private double P_r, I_r, D_r = 1;
+  private double integral_d, integral_r, Previous_error_d, Previous_error_r, setpoint_d, setpoint_r;
+  private double rotateRT;
+  private double driveRT;  
+  private AHRS ahrs; 
+  public DriveSubsystem(DoubleSupplier left, DoubleSupplier right, DifferentialDrive drive, DriveStyle driveType, AHRS ahrs) {
+    this.ahrs = ahrs;
     this.left = left;
     this.right = right;
     this.drive = drive;
@@ -82,7 +89,31 @@ public void autoDrive(double forwardPower, double turnPower) {
     double angleTurned; 
   }
   //DIY PID: aaron doesn't know how to use the library
-  
+  void setSetpoint_D(int setpoint_d){
+    this.setpoint_d=setpoint_d;
+  }
+  void setSetpoint_R(int setpoint_r){
+    this.setpoint_r=setpoint_r;
+  }
+  public void PID_d(){
+    double error = setpoint_d - ahrs.getDisplacementX(); //could be y, check orientation later
+    this.integral_d += (error*0.02);
+    double derivative = error - this.Previous_error_d;
+    this.driveRT = P_d*error+I_d*this.integral_d + D_d*derivative; 
+
+  }
+  public void PID_r(){
+      double error = setpoint_r - ahrs.getAngle(); //could be y, check orientation later
+      this.integral_r += (error*0.02);
+      double derivative = error - this.Previous_error_r;
+      this.rotateRT = P_r*error+I_r*this.integral_r + D_r*derivative; 
+  }
+  public void execute_r(){
+    drive.arcadeDrive(0.0, rotateRT);
+  }
+  public void execute_d(){
+    drive.arcadeDrive(driveRT, 0.0);
+  }
 
   @Override
   public void initDefaultCommand() {
