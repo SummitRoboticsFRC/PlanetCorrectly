@@ -39,6 +39,7 @@ public class DefaultDriveCommand extends Command {
     if(activateVision.getRawButton(RobotMap.buttonLThumb)){
       System.out.println("HI");
       vision.makePath();
+      vision.PostToDashBoard();
       driveSubsystem.AlignRobotDrive(vision.firstTurn, vision.driveDist);
     }
   }

@@ -249,8 +249,8 @@ public class Robot extends TimedRobot {
     liftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
     SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
     SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
-    visionSubsystem.makePath();
-    visionSubsystem.PostToDashBoard();
+    //visionSubsystem.makePath();
+    //visionSubsystem.PostToDashBoard();
     Scheduler.getInstance().run();
   }
 

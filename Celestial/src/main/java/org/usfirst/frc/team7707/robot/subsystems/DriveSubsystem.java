@@ -88,6 +88,7 @@ public void autoDrive(double forwardPower, double turnPower) {
   //AARON WRITING AUTO: alignment PID
   public void AlignRobotDrive(double turnAmount, double driveAmount){
     System.out.println("ALIGNMENT ACITVATED ********!!!!!!!!!");
+    
     double displacement; 
     double angleTurned; 
   }
