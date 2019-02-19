@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
     ahrs = new AHRS(Port.kUSB); // !!! possible error
     drive.setSafetyEnabled(false);
     driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(RobotMap.leftAxisY), 
-                                        () -> 0.6*driverInput.getRawAxis(RobotMap.leftAxisX), 
+                                        () -> 0.5*driverInput.getRawAxis(RobotMap.leftAxisX), 
                                         drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE, ahrs); // single gamepad using thumb sticks as tank control
 
     // Lift System
@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    SmartDashboard.putNumber("Lift kP", 0.1);
+    /* SmartDashboard.putNumber("Lift kP", 0.1);
     SmartDashboard.putNumber("Lift kI", 0.1);
     SmartDashboard.putNumber("Lift kD", 0.1);
     SmartDashboard.putNumber("Lift Period", 10);
@@ -145,7 +145,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Level 2 Height (V)", 2);
     SmartDashboard.putNumber("Level 3 Height (V)", 2);
     SmartDashboard.putNumber("Min Lift Height (V)", 0);
-    SmartDashboard.putNumber("Max Lift Height (V)", 36);
+    SmartDashboard.putNumber("Max Lift Height (V)", 36); */
     robotPeriodic();
     /*
      * Start a camera server - this allows you to have a camera mounted on your robot and the image being shown on the drivers startion.
@@ -172,7 +172,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
     //visionSubsystem.makePath();
     SmartDashboard.putNumber("Robot Velocity: " , ahrs.getVelocityX());
-    SmartDashboard.putNumber("Robot Velocity: " , ahrs.getRate());
+    SmartDashboard.putNumber("Robot Rate: " , ahrs.getRate());
     visionSubsystem.PostToDashBoard();
     drive.setSafetyEnabled(false);
    // cameraHeight = liftHeight+20.0;

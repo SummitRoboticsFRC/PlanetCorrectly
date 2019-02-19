@@ -28,6 +28,7 @@ public class VisionSubsystem extends Subsystem {
   NetworkTableEntry ty;
   final double CAMERA_Y_ANGLE=0.0;  
   final double TARGET_HEIGHT = 79.0956;
+  final double TARGET_HEIGHT_MID = 73.5;
   final double TARGET_WIDTH = 36.5;
   private double CAMERA_HEIGHT = 61.0;
   private double xTop; 
@@ -63,7 +64,7 @@ public class VisionSubsystem extends Subsystem {
     this.distanceToTarg = (TARGET_HEIGHT-CAMERA_HEIGHT)/Math.tan(eC*(Math.PI/180));
       //System.out.println("Distance To Target: "+ distanceToTarg);
       SmartDashboard.putNumber("Distance To Target: ", distanceToTarg);
-    double distanceToTargSide = (TARGET_HEIGHT-CAMERA_HEIGHT)/Math.tan(eS*(Math.PI/180));
+    double distanceToTargSide = (TARGET_HEIGHT_MID-CAMERA_HEIGHT)/Math.tan(eS*(Math.PI/180));
       //System.out.println("Distance To Side: "+ distanceToTargSide);
       SmartDashboard.putNumber("Distance To Side: ", distanceToTargSide);
     double angle_center_wall; 
@@ -99,16 +100,25 @@ public class VisionSubsystem extends Subsystem {
   }
   public void UpdateValues(){
     table.getEntry("pipeline").setNumber(0); //top side
-    this.xTop = tx.getDouble(1.0);
-    this.yTop = ty.getDouble(1.0);
+    double xTop = (tx.getDouble(1.0))*1.0;
+    this.xTop = xTop;
+    double yTop = (ty.getDouble(1.0))*1.0;
+    this.yTop = yTop;
     if(this.xTop>0){
       table.getEntry("pipeline").setNumber(1); //Right side
+      double xSide =(tx.getDouble(2.0)*1.0);
+      this.xSide = xSide;
+    double ySide = (ty.getDouble(2.0)*1.0);
+      this.ySide = ySide;
     }else{
       table.getEntry("pipeline").setNumber(2); //Left side
+      double xSide =(tx.getDouble(2.0)*1.0);
+      this.xSide = xSide;
+    double ySide = (ty.getDouble(2.0)*1.0);
+      this.ySide = ySide;
     }
-    this.xSide = tx.getDouble(1.0);
-    this.ySide = ty.getDouble(1.0);
-    table.getEntry("pipeline").setNumber(0); //top side
+    
+    //table.getEntry("pipeline").setNumber(0); //top side
     //double e = CAMERA_Y_ANGLE+this.yTop; 
     //this.distanceToTarg = (TARGET_HEIGHT-CAMERA_HEIGHT)/Math.tan(e*180/Math.PI);
 
