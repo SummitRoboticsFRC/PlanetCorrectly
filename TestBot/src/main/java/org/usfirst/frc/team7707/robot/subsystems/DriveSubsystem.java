@@ -3,6 +3,8 @@ package org.usfirst.frc.team7707.robot.subsystems;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -13,10 +15,14 @@ import org.usfirst.frc.team7707.robot.RobotMap.DriveStyle;
 import org.usfirst.frc.team7707.robot.commands.DefaultDriveCommand;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
+
+import org.usfirst.frc.team7707.robot.subsystems.VisionSubsystem;
 /**
  * Add your docs here.
  */
-public class DriveSubsystem extends Subsystem {
+public class DriveSubsystem extends Subsystem implements PIDOutput{
   private DifferentialDrive drive;
   private DoubleSupplier left, right;
   private RobotMap.DriveStyle driveType = RobotMap.DriveStyle.DRIVE_STYLE_ARCADE;
@@ -29,13 +35,22 @@ public class DriveSubsystem extends Subsystem {
   private double rotateRT;
   private double driveRT; 
   private AHRS ahrs; 
-  public DriveSubsystem(DoubleSupplier left, DoubleSupplier right, DifferentialDrive drive, DriveStyle driveType, AHRS ahrs) {
+  private PIDController visionPID;
+  private PIDOutput output; 
+  private VisionSubsystem vision; 
+  public DriveSubsystem(DoubleSupplier left, DoubleSupplier right, DifferentialDrive drive, DriveStyle driveType, AHRS ahrs, VisionSubsystem vision) {
     this.ahrs = ahrs;
     this.left = left;
     this.right = right;
     this.drive = drive;
     this.driveType = driveType;
     enabled = false;
+    this.vision = vision;
+    visionPID = new PIDController(1.0, 0.2, 0.7, vision, this,0.05);
+    visionPID.setAbsoluteTolerance(1.0);
+    visionPID.setPID(1.0, 0.0, 0.4);
+    visionPID.setOutputRange(-0.7, 0.7);
+    visionPID.setInputRange(-27.0, 27.0);
   }
 
 
@@ -88,12 +103,29 @@ public void autoDrive(double forwardPower, double turnPower) {
   //AARON WRITING AUTO: alignment PID
   public void AlignRobotDrive(double turnAmount, double driveAmount){
     System.out.println("ALIGNMENT ACITVATED ********!!!!!!!!!");
-    
+    visionPID.reset();
+    visionPID.setSetpoint(0.0);
+    visionPID.enable();
+    System.out.println("done");
+  if(visionPID.onTarget()){
+      System.out.println("STOPPING PID");
+      visionPID.disable();
+  }
+    //visionPID.disable();
     double displacement; 
     double angleTurned; 
   }
+  
+  public void pidWrite(double turnOutput) {
+    System.out.println("is on target: " + visionPID.onTarget());
+    drive.arcadeDrive(0.0, -1*turnOutput);
+    /* if(visionPID.onTarget()){
+      System.out.println("STOPPING PID");
+      visionPID.disable();
+    }  */
+  }
   //DIY PID: aaron doesn't know how to use the library
-  void setSetpoint_D(int setpoint_d){
+/*   void setSetpoint_D(int setpoint_d){
     this.setpoint_d=setpoint_d;
   }
   void setSetpoint_R(int setpoint_r){
@@ -109,10 +141,10 @@ public void autoDrive(double forwardPower, double turnPower) {
     this.driveRT = ((driveL/time)/(driveMAX))*-0.6;
 
   }
-  public void PID_r(){
+  public void PID_r(double angles){
       double time = 1.0;
       double rotateMAX = 114.59; //degree persecond 
-      double error = setpoint_r - ahrs.getAngle()*(180/Math.PI); //could be y, check orientation later
+      double error = setpoint_r - angles*(180/Math.PI); //could be y, check orientation later
       this.integral_r += (error*0.02);
       double derivative = error - this.Previous_error_r;
       this.rotateL = P_r*error+I_r*this.integral_r + D_r*derivative; 
@@ -123,7 +155,7 @@ public void autoDrive(double forwardPower, double turnPower) {
   }
   public void execute_d(){
     drive.arcadeDrive(driveRT, 0.0);
-  }
+  } */
 
   @Override
   public void initDefaultCommand() {
