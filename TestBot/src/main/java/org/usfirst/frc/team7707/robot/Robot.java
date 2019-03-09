@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
     //driverGamePad = new XboxController(0);
 
     driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
-
+    visionSubsystem = new VisionSubsystem();
     // Drive System
     leftController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.frontLeftMotor), new WPI_TalonSRX(RobotMap.backLeftMotor));
     rightController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.frontRightMotor), new WPI_TalonSRX(RobotMap.backRightMotor));
@@ -116,9 +116,9 @@ public class Robot extends TimedRobot {
     drive = new DifferentialDrive(leftController, rightController);
     ahrs = new AHRS(Port.kUSB); // !!! possible error
     drive.setSafetyEnabled(false);
-    driveSubsystem = new DriveSubsystem(() -> -0.6*driverInput.getRawAxis(RobotMap.leftAxisY), 
+    driveSubsystem = new DriveSubsystem(() -> -0.6 *driverInput.getRawAxis(RobotMap.leftAxisY), 
                                         () -> 0.5*driverInput.getRawAxis(RobotMap.leftAxisX), 
-                                        drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE, ahrs); // single gamepad using thumb sticks as tank control
+                                        drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE, ahrs, visionSubsystem); // single gamepad using thumb sticks as tank control
 
     // Lift System
     // liftController = new VictorSP(RobotMap.liftMotor);
@@ -144,7 +144,7 @@ public class Robot extends TimedRobot {
     // hatchController = new VictorSP(RobotMap.hatchMotor);
     // hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
     
-     visionSubsystem = new VisionSubsystem();
+     
 
    // m_oi = new OI(driverGamePad);
     m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
