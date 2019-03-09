@@ -8,6 +8,8 @@
 package org.usfirst.frc.team7707.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -22,7 +24,7 @@ import org.usfirst.frc.team7707.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class VisionSubsystem extends Subsystem {
+public class VisionSubsystem extends Subsystem implements PIDSource{
   NetworkTable table; 
   NetworkTableEntry tx; 
   NetworkTableEntry ty;
@@ -40,7 +42,7 @@ public class VisionSubsystem extends Subsystem {
   //private AnalogInput ultrasonic; //causes error when initializing // 18/02/19 no need for ultrasound
   public double firstTurn;
   public double driveDist;
-
+  private PIDSourceType pid;
   public VisionSubsystem(){
     table = NetworkTableInstance.getDefault().getTable("limelight");
     tx = table.getEntry("tx"); 
@@ -48,6 +50,7 @@ public class VisionSubsystem extends Subsystem {
     // ultrasonic = new AnalogInput(RobotMap.ultrasonicInput); // causes error 
     //this.ultrasonic = ultrasonic;
     UpdateValues();
+    setPIDSourceType(pid);
   }
   public void makePath(){
     UpdateValues();
@@ -101,13 +104,13 @@ public class VisionSubsystem extends Subsystem {
   public void UpdateValues(){
     this.xTop = getPipeLineZero()[0];
     this.yTop = getPipeLineZero()[1];
-    if(this.xTop>0){
+    /* if(this.xTop>0){
       this.xSide = getPipeLineOne()[0];
       this.ySide = getPipeLineOne()[1];
     }else{
       this.xSide = getPipeLineTwo()[0]; 
       this.ySide = getPipeLineTwo()[1]; 
-    }
+    } */
     //table.getEntry("pipeline").setNumber(0); //top side
     //double e = CAMERA_Y_ANGLE+this.yTop; 
     //this.distanceToTarg = (TARGET_HEIGHT-CAMERA_HEIGHT)/Math.tan(e*180/Math.PI);
@@ -138,7 +141,21 @@ public class VisionSubsystem extends Subsystem {
     SmartDashboard.putNumber("Drive Distance", driveDist);
     //SmartDashboard.putNumber("Camera Height (cm)", CAMERA_HEIGHT);
   }
-
+  // implementing PIDsource interface stuff
+  
+  public void setPIDSourceType(PIDSourceType pidSource) {
+    pid = pidSource.kDisplacement;
+  }
+  public PIDSourceType getPIDSourceType(){
+     
+    return pid;
+  }
+  public double pidGet(){
+    return xTop;
+  }
+  public double getDistanceToTarg() {
+    return distanceToTarg;
+  }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
