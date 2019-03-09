@@ -35,13 +35,16 @@ public class DefaultDriveCommand extends Command {
   @Override
   protected void execute() {
     
-    driveSubsystem.drive();
-    if(activateVision.getRawButton(RobotMap.buttonLThumb)){
+   
+    while(activateVision.getRawButton(RobotMap.buttonLThumb)){
       System.out.println("HI");
       vision.makePath();
       vision.PostToDashBoard();
-      driveSubsystem.AlignRobotDrive(vision.firstTurn, vision.driveDist);
+      driveSubsystem.AlignRobotDrive(vision.pidGet(), vision.getDistanceToTarg());
     }
+
+      driveSubsystem.drive();
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
