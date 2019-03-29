@@ -7,22 +7,20 @@
 
 package org.usfirst.frc.team7707.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.*;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-import java.awt.Robot;
 import java.lang.Math;
 import org.usfirst.frc.team7707.robot.commands.VisionCommand;
-import org.usfirst.frc.team7707.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class VisionSubsystem extends Subsystem {
+public class VisionSubsystem extends Subsystem implements PIDSource{
   NetworkTable table; 
   NetworkTableEntry tx; 
   NetworkTableEntry ty;
@@ -40,6 +38,7 @@ public class VisionSubsystem extends Subsystem {
   //private AnalogInput ultrasonic; //causes error when initializing // 18/02/19 no need for ultrasound
   public double firstTurn;
   public double driveDist;
+  private PIDSourceType pid;
 
   public VisionSubsystem(){
     table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -48,88 +47,65 @@ public class VisionSubsystem extends Subsystem {
     // ultrasonic = new AnalogInput(RobotMap.ultrasonicInput); // causes error 
     //this.ultrasonic = ultrasonic;
     UpdateValues();
+    setPIDSourceType(pid);
   }
-  public void makePath(){
+
+  public void makePath() {
     UpdateValues();
-    double eC = CAMERA_Y_ANGLE+this.yTop; 
-     // System.out.println("Altitude of Center of Target: "+eC);
-     SmartDashboard.putNumber("Altitude of Center of Target: ", eC);
-    double eS = CAMERA_Y_ANGLE+this.ySide; 
-      //System.out.println("Altitide of Side of Target: " + eS);
-      SmartDashboard.putNumber("Altitide of Side of Target: " , eS);
-    angleToTarg=this.xTop;
-    double angle_center_side = xTop-xSide; 
-      //System.out.println("∆ Angle between center and side: "+angle_center_side);
-      SmartDashboard.putNumber("∆ Angle between center and side:", angle_center_side);
-    this.distanceToTarg = (TARGET_HEIGHT-CAMERA_HEIGHT)/Math.tan(eC*(Math.PI/180));
-      //System.out.println("Distance To Target: "+ distanceToTarg);
-      SmartDashboard.putNumber("Distance To Target: ", distanceToTarg);
-    double distanceToTargSide = (TARGET_HEIGHT_MID-CAMERA_HEIGHT)/Math.tan(eS*(Math.PI/180));
-      //System.out.println("Distance To Side: "+ distanceToTargSide);
-      SmartDashboard.putNumber("Distance To Side: ", distanceToTargSide);
-    double angle_center_wall; 
-      angle_center_wall = Math.asin( (Math.sin((angle_center_side/2)*(Math.PI/180))*distanceToTargSide) / (TARGET_WIDTH/2))*(180/Math.PI); 
-      //  System.out.println("Angle of center LOS to wall: "+ angle_center_wall); // should be > 90˚
-      SmartDashboard.putNumber("Angle of Cneter LOS to wall", angle_center_wall);
-      double angle_side_wall; 
-      angle_side_wall = 180-angle_center_wall-angle_center_side; 
-        //System.out.println("Angle of side LOS to wall: "+ angle_side_wall); // should be < 90˚
-        SmartDashboard.putNumber("Angle of side LOS to wall", angle_side_wall);
-    double h = (TARGET_WIDTH/2)/(Math.cos(angle_side_wall)*(Math.PI/180));
-        //System.out.println("h: "+ h); // should be (+)
-        SmartDashboard.putNumber("h", h);
-    double k = (TARGET_WIDTH/2)/(Math.sin(angle_side_wall)*(Math.PI/180));
-        //System.out.println("k: "+ k); //should be (-)
-        SmartDashboard.putNumber("k", k);
-    double distanceToTarg_Y = ((distanceToTargSide-h)*k)/h+k;
-        //System.out.println("Vertical Leg of Distance to Target: "+distanceToTarg_Y);
-        SmartDashboard.putNumber("distanceToTarg_Y:" ,distanceToTarg_Y); 
-    double distanceToTarg_Ang = Math.asin(distanceToTarg_Y/distanceToTarg)*(180/Math.PI); 
-        //System.out.println("Angle of said Triangle: " + distanceToTarg_Ang);
-        SmartDashboard.putNumber("distanceToTarg_ang:", distanceToTarg_Ang);
-    double distanceToTarg_Yhalf = Math.asin((distanceToTarg_Y/2)/distanceToTarg)*(180/Math.PI); 
-        //System.out.println("Distance to a point where Dy is halfed: "+ distanceToTarg_Yhalf);
-        SmartDashboard.putNumber("distanceToTarg_YHalf:", distanceToTarg_Yhalf);
-      firstTurn = angleToTarg+(distanceToTarg_Ang-distanceToTarg_Yhalf); 
-        //System.out.println("The first require turn: "+firstTurn);
-    double distanceToTarg_X = Math.sqrt(distanceToTarg*distanceToTarg-distanceToTarg_Y*distanceToTarg_Y); 
-        //System.out.println("the x component of D: " + distanceToTarg_X);
-      driveDist = Math.sqrt(distanceToTarg_X*distanceToTarg_X+Math.pow(distanceToTarg_Y/2, 2)); 
-        //System.out.println("the distance that robot will drive: " + driveDist);
+    double eC, eS, h, k;
+    double angle_center_side, angle_center_wall, angle_side_wall;
+    double distanceToTargSide, distanceToTarg_Ang;
+    double distanceToTarg_X, distanceToTarg_Y, distanceToTarg_Yhalf;
+
+    eC = 0.0 + this.yTop;     // camera y angle = 0
+    eS = 0.0 + this.ySide;    // target height = 79.0956, mid = 73.5 (below)
+    angleToTarg = this.xTop;  // camera height = 61.0 (below)
+    distanceToTarg = (79.0956 - 61.0) / Math.tan(eC * (Math.PI/180));
+    distanceToTargSide = (73.5 - 61.0) / Math.tan(eS * (Math.PI/180));
+
+    angle_center_side = xTop - xSide;   // target width = 36.5 (below)
+    angle_center_wall = Math.asin((Math.sin((angle_center_side / 2) * (Math.PI / 180)) * distanceToTargSide) / (36.5/2)) * (180 / Math.PI); 
+    angle_side_wall = 180 - angle_center_wall - angle_center_side; 
+
+    // DO ALL THE ACTUAL MATH ONCE YOU CAN TEST IT
+
+    h = (36.5/2) / (Math.cos(angle_side_wall) * (Math.PI / 180));
+    k = (36.5/2) / (Math.sin(angle_side_wall) * (Math.PI / 180));
+
+    distanceToTarg_Y = ((distanceToTargSide - h) * k) / h + k;
+    distanceToTarg_Ang = Math.asin(distanceToTarg_Y / distanceToTarg) * (180 / Math.PI); 
+    distanceToTarg_Yhalf = Math.asin((distanceToTarg_Y/2) / distanceToTarg) * (180 / Math.PI); 
+      firstTurn = angleToTarg + (distanceToTarg_Ang - distanceToTarg_Yhalf); 
+
+    distanceToTarg_X = Math.sqrt(distanceToTarg * distanceToTarg - distanceToTarg_Y * distanceToTarg_Y); 
+      driveDist = Math.sqrt(distanceToTarg_X * distanceToTarg_X + Math.pow(distanceToTarg_Y / 2, 2)); 
       
   }
+
+
   public void UpdateValues(){
     this.xTop = getPipeLineZero()[0];
     this.yTop = getPipeLineZero()[1];
-    if(this.xTop>0){
-      this.xSide = getPipeLineOne()[0];
-      this.ySide = getPipeLineOne()[1];
-    }else{
-      this.xSide = getPipeLineTwo()[0]; 
-      this.ySide = getPipeLineTwo()[1]; 
-    }
-    //table.getEntry("pipeline").setNumber(0); //top side
-    //double e = CAMERA_Y_ANGLE+this.yTop; 
-    //this.distanceToTarg = (TARGET_HEIGHT-CAMERA_HEIGHT)/Math.tan(e*180/Math.PI);
-
-    
-   // cameraHeight = 0.5 * ultrasonic.getVoltage() / 0.004883 + 20.0;
   }
+
   public double[] getPipeLineZero(){
     table.getEntry("pipeline").setNumber(0);
     double[] ret = {tx.getDouble(1.0), ty.getDouble(1.0)};
     return ret;
   }
+
   public double[] getPipeLineOne(){
     table.getEntry("pipeline").setNumber(1);
     double[] ret = {tx.getDouble(1.0), ty.getDouble(1.0)};
     return ret;
   }
+
   public double[] getPipeLineTwo(){
     table.getEntry("pipeline").setNumber(2);
     double[] ret = {tx.getDouble(1.0), ty.getDouble(1.0)};
     return ret;
   }
+
   public void PostToDashBoard(){
     //SmartDashboard.putNumber("LimelightY", yTop);
    // SmartDashboard.putNumber("LimelightX", xTop); 
@@ -137,6 +113,23 @@ public class VisionSubsystem extends Subsystem {
     SmartDashboard.putNumber("FirstTurn", firstTurn); 
     SmartDashboard.putNumber("Drive Distance", driveDist);
     //SmartDashboard.putNumber("Camera Height (cm)", CAMERA_HEIGHT);
+  }
+
+  // implementing PIDSource interface stuff
+  public void setPIDSourceType(PIDSourceType pidSource) {
+    pid = pidSource.kDisplacement;
+  }
+
+  public PIDSourceType getPIDSourceType(){
+    return pid;
+  }
+
+  public double pidGet(){
+    return xTop;
+  }
+
+  public double getDistanceToTarg() {
+    return distanceToTarg;
   }
 
   @Override

@@ -11,12 +11,10 @@ package org.usfirst.frc.team7707.robot;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Button;
-import org.usfirst.frc.team7707.robot.library.DemoTrigger;
-import org.usfirst.frc.team7707.robot.library.GamepadButtons;
-import org.usfirst.frc.team7707.robot.commands.WidgetMoveDownCommand;
-import org.usfirst.frc.team7707.robot.commands.WidgetMoveUpCommand;
-import org.usfirst.frc.team7707.robot.commands.WidgetStopCommand;
-import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
+//import org.usfirst.frc.team7707.robot.library.DemoTrigger;
+//import org.usfirst.frc.team7707.robot.commands.WidgetMoveUpCommand;
+//import org.usfirst.frc.team7707.robot.commands.WidgetStopCommand;
+//import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 
 /**
  * This class is the glue that binds the controls on the physical operator

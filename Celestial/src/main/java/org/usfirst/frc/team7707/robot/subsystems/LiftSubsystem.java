@@ -41,7 +41,7 @@ public class LiftSubsystem extends Subsystem {
   //private PIDSourceType sourceType;
   private boolean enabled;
 
-  public LiftSubsystem(DoubleSupplier speed, SpeedController motor, AnalogInput ultrasonic, BooleanSupplier buttonL1, BooleanSupplier buttonL2, BooleanSupplier buttonL3) {
+  public LiftSubsystem(DoubleSupplier speed, SpeedController motor, BooleanSupplier buttonL1, BooleanSupplier buttonL2, BooleanSupplier buttonL3) {
 
     this.speed = speed;
     this.motor = motor;

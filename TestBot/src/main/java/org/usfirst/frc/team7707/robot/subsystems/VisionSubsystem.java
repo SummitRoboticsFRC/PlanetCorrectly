@@ -156,6 +156,7 @@ public class VisionSubsystem extends Subsystem implements PIDSource{
   public double getDistanceToTarg() {
     return distanceToTarg;
   }
+  
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
