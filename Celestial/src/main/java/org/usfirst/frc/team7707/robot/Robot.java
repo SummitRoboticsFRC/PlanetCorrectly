@@ -21,9 +21,13 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.Ultrasonic;
+=======
+import edu.wpi.first.wpilibj.VictorSP;
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -40,8 +44,12 @@ import edu.wpi.first.wpilibj.Timer;
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
 import org.usfirst.frc.team7707.robot.subsystems.DriveSubsystem;
+<<<<<<< HEAD
 import org.usfirst.frc.team7707.robot.subsystems.HatchSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.PneumaticsSubsystem;
+=======
+import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
 import org.usfirst.frc.team7707.robot.subsystems.RatchetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.WidgetSubsystem;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
@@ -57,6 +65,7 @@ import com.kauailabs.navx.frc.AHRS;
  * project.
  */
 public class Robot extends TimedRobot {
+<<<<<<< HEAD
   //private XboxController driverGamePad;
   private Joystick driverInput;
 /*
@@ -84,6 +93,15 @@ public class Robot extends TimedRobot {
 
   private VisionSubsystem visionSubsystem; 
   private double initLiftHeight, liftHeight;
+=======
+  private Joystick driverGamePad;
+  private DifferentialDrive drive;
+  private SpeedController leftController, rightController, liftController, backRatchetController, frontRatchetController;
+  private DriveSubsystem driveSubsystem;
+  private LiftSubsystem liftSubsystem;
+  private RatchetSubsystem ratchetSubsystem;
+  private Joystick driverInput;
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
   public static OI m_oi;
 
   //Vision Limelight
@@ -99,13 +117,33 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+<<<<<<< HEAD
     //driverGamePad = new XboxController(0);
+=======
+    driverGamePad = new Joystick(0);
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
 
     //driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
     /*
     // Drive System
     leftController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontLeftMotor), new PWMVictorSPX(RobotMap.backLeftMotor));
     rightController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontRightMotor), new PWMVictorSPX(RobotMap.backRightMotor));
+<<<<<<< HEAD
+=======
+
+    liftController = new VictorSP(RobotMap.liftMotor);
+    backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
+    frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
+
+    /*
+     * These two lines are for CTRE Talon SRX CAN Bus style drive controllers.
+     * Uncomment the lines and add (or remove) WPI_TalonSRX definitions as necessary
+     * Note: you will also need to add the CTRE phoenix libraries (see above)
+     */
+    //leftController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_LEFT1_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_LEFT2_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_LEFT3_CAN_ID));
+    //rightController = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.DRIVE_RIGHT1_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT2_CAN_ID), new WPI_TalonSRX(RobotMap.DRIVE_RIGHT3_CAN_ID));
+
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
     drive = new DifferentialDrive(leftController, rightController);
     ahrs = new AHRS(Port.kUSB); // !!! possible error
     drive.setSafetyEnabled(false);
@@ -113,6 +151,7 @@ public class Robot extends TimedRobot {
                                         () -> 0.5*driverInput.getRawAxis(RobotMap.leftAxisX), 
                                         drive, RobotMap.DriveStyle.DRIVE_STYLE_ARCADE, ahrs); // single gamepad using thumb sticks as tank control
 
+<<<<<<< HEAD
     // Lift System
     liftController = new VictorSP(RobotMap.liftMotor);
      //john
@@ -131,6 +170,17 @@ public class Robot extends TimedRobot {
     cylinder = new DoubleSolenoid(0, 1);
     compressor = new Compressor ();
     pneumaticsSubsystem = new PneumaticsSubsystem(cylinder, compressor);
+=======
+    liftSubsystem = new LiftSubsystem(
+      () -> 0.4*driverGamePad.getRawAxis(RobotMap.rightAxisY), 
+      liftController
+      //,
+      //ultrasonic
+    );
+    
+    ratchetSubsystem = new RatchetSubsystem(backRatchetController, frontRatchetController, driverGamePad);
+
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
     /*
     cylinder.set(DoubleSolenoid.Value.kReverse);
     Timer.delay(1.00);

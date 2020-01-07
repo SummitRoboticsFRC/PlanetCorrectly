@@ -45,11 +45,21 @@ public class RobotMap {
   public static final int liftMotor = 4;
   public static final int backRatchetMotor = 5;
   public static final int frontRatchetMotor = 6;
+<<<<<<< HEAD
   public static final int hatchMotor = 7;
 
   public static final int hatchDIO = 0;
 
   // Controller Button Mappings
+=======
+
+  
+  
+  /*
+   * Controller Axes/Buttons
+   */
+
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
   public static final int buttonA = 1;
   public static final int buttonB = 2;
   public static final int buttonX = 3;
@@ -68,14 +78,39 @@ public class RobotMap {
   public static final int rightAxisX = 4;
   public static final int rightAxisY = 5;
 
+<<<<<<< HEAD
   public enum LiftStatus {
     NO_COMMAND,
+=======
+  /*
+   * Ultrasonic sensor
+   */
+
+  public static final int ultrasonicOutput = 0;
+  public static final int ultrasonicInput = 0;
+
+  /*
+   * Ratchet lift speed
+   */
+  public static final double ratchetBackMotorSpeed = 1.0;
+  public static final double ratchetFrontMotorSpeed = 1.0;
+
+
+  /*
+   * Gyro
+   */
+
+  public static final int gyroInput = 1;
+
+  public enum LiftStatus {
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
     LIFT_MANUAL,
     LIFT_LEVEL_1,
     LIFT_LEVEL_2,
     LIFT_LEVEL_3
   }
 
+<<<<<<< HEAD
   /*
    * Ultrasonic sensor Channel Number  */
 
@@ -83,6 +118,8 @@ public class RobotMap {
 
 	
 
+=======
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
 	/*
 	 * Drive style choices.
 	 */

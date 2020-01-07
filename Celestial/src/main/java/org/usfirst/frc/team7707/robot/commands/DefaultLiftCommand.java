@@ -8,6 +8,7 @@
 package org.usfirst.frc.team7707.robot.commands;
 
 import org.usfirst.frc.team7707.robot.RobotMap;
+<<<<<<< HEAD
 import org.usfirst.frc.team7707.robot.RobotMap.LiftStatus;
 import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
 
@@ -29,6 +30,19 @@ public class DefaultLiftCommand extends Command {
     /* this.buttonL1 = buttonL1;
     this.buttonL2 = buttonL2;
     this.buttonL3 = buttonL3; */
+=======
+import org.usfirst.frc.team7707.robot.subsystems.LiftSubsystem;
+
+import edu.wpi.first.wpilibj.command.Command;
+
+public class DefaultLiftCommand extends Command {
+  LiftSubsystem liftSubsystem;
+
+  public DefaultLiftCommand(LiftSubsystem liftSubsystem) {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    this.liftSubsystem = liftSubsystem;
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
     requires(liftSubsystem);
     setInterruptible(true);
   }
@@ -41,6 +55,7 @@ public class DefaultLiftCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+<<<<<<< HEAD
     
     liftSubsystem.updateValues();
 
@@ -64,6 +79,9 @@ public class DefaultLiftCommand extends Command {
       liftSubsystem.lift(LiftStatus.NO_COMMAND);
     } */
 
+=======
+    liftSubsystem.lift(RobotMap.LiftStatus.LIFT_MANUAL);
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
   }
 
   // Make this return true when this Command no longer needs to run execute()

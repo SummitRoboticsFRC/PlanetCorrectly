@@ -14,7 +14,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class RatchetCommand extends Command {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
   RatchetSubsystem ratchetSubsystem;
   Joystick driverInput;
 
@@ -35,6 +38,7 @@ public class RatchetCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+<<<<<<< HEAD
 
     boolean leftButton = driverInput.getRawButton(RobotMap.buttonL);
     double leftTrigger = driverInput.getRawAxis(RobotMap.leftTrigger);
@@ -42,6 +46,14 @@ public class RatchetCommand extends Command {
       ratchetSubsystem.setFrontMotorSpeed(1);
     } else if (leftTrigger > 0.7) {
       ratchetSubsystem.setFrontMotorSpeed(-1);
+=======
+    boolean leftButton = driverInput.getRawButton(RobotMap.buttonL);
+    double leftTrigger = driverInput.getRawAxis(RobotMap.leftTrigger);
+    if (leftButton) {
+      ratchetSubsystem.setFrontMotorSpeed(RobotMap.ratchetFrontMotorSpeed);
+    } else if (leftTrigger > 0.7) {
+      ratchetSubsystem.setFrontMotorSpeed(-RobotMap.ratchetFrontMotorSpeed);
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
     } else {
       ratchetSubsystem.setFrontMotorSpeed(0.0);
     }
@@ -49,9 +61,15 @@ public class RatchetCommand extends Command {
     boolean rightButton = driverInput.getRawButton(RobotMap.buttonR);
     double rightTrigger = driverInput.getRawAxis(RobotMap.rightTrigger);
     if (rightButton) {
+<<<<<<< HEAD
       ratchetSubsystem.setBackMotorSpeed(-1.0);
     } else if (rightTrigger > 0.7) {
       ratchetSubsystem.setBackMotorSpeed(1.0);
+=======
+      ratchetSubsystem.setBackMotorSpeed(RobotMap.ratchetFrontMotorSpeed);
+    } else if (rightTrigger > 0.7) {
+      ratchetSubsystem.setBackMotorSpeed(-RobotMap.ratchetFrontMotorSpeed);
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
     } else {
       ratchetSubsystem.setBackMotorSpeed(0.0);
     }
@@ -67,13 +85,22 @@ public class RatchetCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+<<<<<<< HEAD
     ratchetSubsystem.setBackMotorSpeed(0.0);
     ratchetSubsystem.setFrontMotorSpeed(0.0);
+=======
+    ratchetSubsystem.setFrontMotorSpeed(0.0);
+    ratchetSubsystem.setBackMotorSpeed(0.0);
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+<<<<<<< HEAD
+=======
+    end();
+>>>>>>> 9f4c061d26bce129ec3bc59cb0549afc523ddbf8
   }
 }
