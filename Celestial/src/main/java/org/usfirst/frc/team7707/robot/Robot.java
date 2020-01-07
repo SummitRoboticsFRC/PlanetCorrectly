@@ -30,8 +30,12 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.Timer;
+
 
 import org.usfirst.frc.team7707.robot.commands.AutoMoveCommand;
 import org.usfirst.frc.team7707.robot.library.GamepadButtons;
@@ -55,7 +59,7 @@ import com.kauailabs.navx.frc.AHRS;
 public class Robot extends TimedRobot {
   //private XboxController driverGamePad;
   private Joystick driverInput;
-
+/*
   private SpeedController leftController, rightController;
   private DifferentialDrive drive;
   private DriveSubsystem driveSubsystem;
@@ -65,14 +69,18 @@ public class Robot extends TimedRobot {
 
   private SpeedController liftController;
   private LiftSubsystem liftSubsystem;
-
+*/
+  private PneumaticsSubsystem pneumaticsSubsystem;
+/*
   private SpeedController hatchController;
   private Counter hatchCounter;
   private HatchSubsystem hatchSubsystem;
-
+*/
+  private DoubleSolenoid cylinder;
+  private Compressor compressor;
+/*
   //private Ultrasonic ultrasonic;
   private AnalogInput ultrasonic;
-  //private PneumaticsSubsystem pneumaticsSubsystem;
 
   private VisionSubsystem visionSubsystem; 
   private double initLiftHeight, liftHeight;
@@ -81,6 +89,7 @@ public class Robot extends TimedRobot {
   //Vision Limelight
   private AHRS ahrs;
   //private double cameraHeight = 20.0;
+  */
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -92,8 +101,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     //driverGamePad = new XboxController(0);
 
-    driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
-
+    //driverInput = new Joystick(RobotMap.DRIVER_GAMEPAD);
+    /*
     // Drive System
     leftController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontLeftMotor), new PWMVictorSPX(RobotMap.backLeftMotor));
     rightController = new SpeedControllerGroup(new PWMVictorSPX(RobotMap.frontRightMotor), new PWMVictorSPX(RobotMap.backRightMotor));
@@ -117,7 +126,19 @@ public class Robot extends TimedRobot {
       () -> driverInput.getRawButton(RobotMap.buttonX),
       () -> driverInput.getRawButton(RobotMap.buttonB)
     );
-
+    */
+    // Pneumtics System
+    cylinder = new DoubleSolenoid(0, 1);
+    compressor = new Compressor ();
+    pneumaticsSubsystem = new PneumaticsSubsystem(cylinder, compressor);
+    /*
+    cylinder.set(DoubleSolenoid.Value.kReverse);
+    Timer.delay(1.00);
+    cylinder.set(DoubleSolenoid.Value.kForward);
+    Timer.delay(1.00);
+    cylinder.set(DoubleSolenoid.Value.kOff);
+    */
+    /*
     //Ratchet System
     backRatchetController = new VictorSP(RobotMap.backRatchetMotor);
     frontRatchetController = new VictorSP(RobotMap.frontRatchetMotor);
@@ -129,9 +150,9 @@ public class Robot extends TimedRobot {
     hatchSubsystem = new HatchSubsystem(hatchController, hatchCounter, driverInput);
     
     visionSubsystem = new VisionSubsystem();
-
+    */
    // m_oi = new OI(driverGamePad);
-    m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
+    //m_chooser.setDefaultOption("Default Auto", new AutoMoveCommand(driveSubsystem, 0.5, 0, 0.5));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
     /* SmartDashboard.putNumber("Lift kP", 0.1);
@@ -171,10 +192,10 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
     //SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
     //visionSubsystem.makePath();
-    SmartDashboard.putNumber("Robot Velocity: " , ahrs.getVelocityX());
-    SmartDashboard.putNumber("Robot Rate: " , ahrs.getRate());
-    visionSubsystem.PostToDashBoard();
-    drive.setSafetyEnabled(false);
+    //SmartDashboard.putNumber("Robot Velocity: " , ahrs.getVelocityX());
+    //SmartDashboard.putNumber("Robot Rate: " , ahrs.getRate());
+    //visionSubsystem.PostToDashBoard();
+    //drive.setSafetyEnabled(false);
    // cameraHeight = liftHeight+20.0;
   }
 
@@ -206,7 +227,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected();
-    driveSubsystem.setEnabled(true);
+    //driveSubsystem.setEnabled(true);
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -238,7 +259,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    driveSubsystem.setEnabled(true);
+    //driveSubsystem.setEnabled(true);
   }
 
   /**
@@ -246,9 +267,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    liftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
-    SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
-    SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
+    //liftHeight = 0.5 * ultrasonic.getVoltage() / 0.004883;
+    //SmartDashboard.putNumber("Lift Height (cm)", liftHeight);  
+    //SmartDashboard.putNumber("Lift Height (V)", ultrasonic.getVoltage());
     //visionSubsystem.makePath();
     //visionSubsystem.PostToDashBoard();
     Scheduler.getInstance().run();
